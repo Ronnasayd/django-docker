@@ -125,7 +125,7 @@ docker-compose -f {PROJECT_NAME}.yml build
 #############################################################################
 # Verifica modo produção ou desenvolvimento
 if settings.DEBUG:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up'''.format(**DOCKER)
+  MAKE_AMBIENT+='''COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}.yml up'''.format(**DOCKER)
 
   
   RUNSERVER_SCRIPT+='''
