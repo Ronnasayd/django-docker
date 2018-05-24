@@ -111,13 +111,27 @@ for container in CONTAINERS:
   container_name: {}
   restart: always'''.format(container,container,container)
 DOCKERCOMPOSE+=CONTAINERS_STRUCT
+###########################################################################
+#script make ambinte
+MAKE_AMBIENT='''
+cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
+mkdir nginx
+mv nginx.conf nginx
+docker stop $(docker ps -a -q) 
+docker rm $(docker ps -a -q) 
+docker system prune --force
+docker-compose -f {PROJECT_NAME}.yml build
+docker-compose -f {PROJECT_NAME}.yml up -d   
+'''.format(**DOCKER)
 #############################################################################
 # Verifica modo produção ou desenvolvimento
 if settings.DEBUG:
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml logs --follow'''.format(**DOCKER)
 
-	RUNSERVER_SCRIPT+='''
+  
+  RUNSERVER_SCRIPT+='''
 python manage.py runserver 0.0.0.0:{WEB_PORT}
-	'''.format(**DOCKER)
+  '''.format(**DOCKER)
 else:
 
 	RUNSERVER_SCRIPT+='''
@@ -150,20 +164,6 @@ requirements=open('requirements.txt','w')
 for requirement in REQUIREMENTS:
   requirements.write(requirement+'\n')
 requirements.close()
-
-
-###########################################################################
-#script make ambinte
-MAKE_AMBIENT='''
-cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
-mkdir nginx
-mv nginx.conf nginx
-docker stop $(docker ps -a -q) 
-docker rm $(docker ps -a -q) 
-docker system prune --force
-docker-compose -f {PROJECT_NAME}.yml build
-docker-compose -f {PROJECT_NAME}.yml up -d   
-'''.format(**DOCKER)
 
 ###########################################################################
 #Arquivo de configuração nginx
