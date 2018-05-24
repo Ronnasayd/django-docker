@@ -120,28 +120,26 @@ mv nginx.conf nginx
 docker stop $(docker ps -a -q) 
 docker rm $(docker ps -a -q) 
 docker system prune --force
-docker-compose -f {PROJECT_NAME}.yml build
-docker-compose -f {PROJECT_NAME}.yml up -d   
+docker-compose -f {PROJECT_NAME}.yml build  
 '''.format(**DOCKER)
 #############################################################################
 # Verifica modo produção ou desenvolvimento
 if settings.DEBUG:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml logs --follow'''.format(**DOCKER)
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up'''.format(**DOCKER)
 
   
   RUNSERVER_SCRIPT+='''
 python manage.py runserver 0.0.0.0:{WEB_PORT}
   '''.format(**DOCKER)
 else:
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up -d'''.format(**DOCKER)
 
-	RUNSERVER_SCRIPT+='''
+  RUNSERVER_SCRIPT+='''
 python manage.py collectstatic --noinput
 gunicorn --bind=0.0.0.0:{WEB_PORT} {PROJECT_NAME}.wsgi
 	'''.format(**DOCKER)
 
-
-	NGINX='''
-
+  NGINX='''
  nginx:
   container_name: nginx
   restart: always
@@ -154,8 +152,8 @@ gunicorn --bind=0.0.0.0:{WEB_PORT} {PROJECT_NAME}.wsgi
    - web
   ports:
    - 80:{WEB_PORT}
-   '''.format(**DOCKER)
-	DOCKERCOMPOSE+=NGINX
+  '''.format(**DOCKER)
+  DOCKERCOMPOSE+=NGINX
 
 
 #########################################################################
