@@ -4,7 +4,7 @@ projeto para criar de forma semi-automática ambientes de desenvolvimento e prod
 
 ## Programas necessários
 
- - Python
+ - Python >= 3
  - Docker
  - Docker compose
 
