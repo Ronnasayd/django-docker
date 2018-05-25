@@ -5,6 +5,7 @@ REQUIREMENTS=[
 	'channels',
 	'channels_redis',
 	'psycopg2',
+	'Pillow',
 ]
 
 PROJECT_NAME='exemplo'
@@ -28,3 +29,5 @@ WEB_ENVIROMENT={
 }
 
 CONTAINERS=['redis']
+
+DOCKER_COMPOSE_VERSION='3'

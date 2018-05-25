@@ -1,6 +1,18 @@
 
 # Created by https://www.gitignore.io/api/django,python,sublimetext
 
+databases/
+logs/
+media/
+nginx/
+static/
+
+*.txt
+*.yml
+*.Dockerfile
+runserver.sh
+make_ambient.sh
+
 ### Django ###
 *.log
 *.pot

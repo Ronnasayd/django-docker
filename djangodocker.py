@@ -15,6 +15,7 @@ DOCKER={
 	'PROJECT_NAME':PROJECT_NAME,
 	'RUNSERVER_SCRIPT_NAME':RUNSERVER_SCRIPT_NAME,
 	'STATIC_ROOT':settings.STATIC_ROOT,
+  'MEDIA_ROOT':settings.MEDIA_ROOT,
 	'WEB_PORT':WEB_PORT,
 	'DATABASE':DATABASE,
 	'WEB_ENVIROMENT':WEB_ENVIROMENT,
@@ -22,6 +23,7 @@ DOCKER={
 	'DATABASE_ROOT_DESTINATION':DATABASE_ROOT['DESTINATION'],
 	'LOGS_ROOT':LOGS_ROOT,
 	'DEBUG':settings.DEBUG,
+  'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION
 
 }
 ########################################################################
@@ -71,7 +73,7 @@ python manage.py migrate'''
 #############################################################################
 # arquivo yml para docker compose
 DOCKERCOMPOSE='''
-version: '3'
+version: '{DOCKER_COMPOSE_VERSION}'
 services:
  web:
   container_name: web
@@ -87,6 +89,7 @@ services:
   volumes:
    - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw 
    - ./static:{STATIC_ROOT}:rw
+   - ./media:{MEDIA_ROOT}:rw
   command: /bin/bash {RUNSERVER_SCRIPT_NAME}.sh
 
   {DEPENDS_ON}
@@ -147,6 +150,7 @@ gunicorn --bind=0.0.0.0:{WEB_PORT} {PROJECT_NAME}.wsgi
   volumes:
    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
    - ./static:{STATIC_ROOT}:rw 
+   - ./media:{MEDIA_ROOT}:rw
    - ./logs:{LOGS_ROOT}:rw
   depends_on:
    - web
@@ -225,6 +229,12 @@ http {{
             autoindex on;
             alias {STATIC_ROOT}/;
 
+        }}
+
+        location /media/ {{
+
+            autoindex on;
+            alias {MEDIA_ROOT}/;
         }}
 
        
