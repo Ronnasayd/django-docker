@@ -1,7 +1,5 @@
 
 REQUIREMENTS=[
-	'django',
-	'gunicorn',
 	'channels',
 	'channels_redis',
 	'psycopg2',
@@ -10,7 +8,7 @@ REQUIREMENTS=[
 
 PROJECT_NAME='exemplo'
 
-IMAGE_BASE:'python:3.6'
+PYTHON_VERSION='3.6'
 
 DATABASE='postgres'
 

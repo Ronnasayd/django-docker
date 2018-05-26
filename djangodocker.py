@@ -7,6 +7,7 @@ settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
 
 RUNSERVER_SCRIPT_NAME='runserver'
 
+REQUIREMENTS+=['django','gunicorn'] # adiciona django e gunicorn a requirements
 
 #######################################################################
 # Dicionario base
@@ -23,8 +24,8 @@ DOCKER={
 	'DATABASE_ROOT_DESTINATION':DATABASE_ROOT['DESTINATION'],
 	'LOGS_ROOT':LOGS_ROOT,
 	'DEBUG':settings.DEBUG,
-  'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION
-
+  'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION,
+  'PYTHON_VERSION':PYTHON_VERSION,
 }
 ########################################################################
 DEPENDS_ON='''
@@ -33,7 +34,8 @@ DEPENDS_ON='''
  '''.format(**DOCKER)
 
 for container in CONTAINERS:
-	DEPENDS_ON+='''  - {}'''.format(container)
+	DEPENDS_ON+='''
+   - {}'''.format(container)
 
 DOCKER['DEPENDS_ON']=DEPENDS_ON
 ##########################################################################
@@ -46,7 +48,7 @@ for key in WEB_ENVIROMENT:
 DOCKER['ENVIROMENT']=ENVIROMENT
 #########################################################################3
 #arquivo dockerfile
-DOCKERFILE='''FROM python:3.6
+DOCKERFILE='''FROM python:{PYTHON_VERSION}
 
 USER root
 
@@ -108,12 +110,13 @@ services:
 ##########################################################################33
 # adiciona containers
 for container in CONTAINERS:
-	CONTAINERS_STRUCT='''
+  CONTAINERS_STRUCT='''
  {}:
   image: {}
   container_name: {}
-  restart: always'''.format(container,container,container)
-DOCKERCOMPOSE+=CONTAINERS_STRUCT
+  restart: always
+  '''.format(container,container,container)
+  DOCKERCOMPOSE+=CONTAINERS_STRUCT
 ###########################################################################
 #script make ambinte
 MAKE_AMBIENT='''
@@ -121,7 +124,6 @@ cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
 mkdir nginx
 mv nginx.conf nginx
 docker stop $(docker ps -a -q) 
-docker rm $(docker ps -a -q) 
 docker system prune --force
 docker-compose -f {PROJECT_NAME}.yml build  
 '''.format(**DOCKER)
