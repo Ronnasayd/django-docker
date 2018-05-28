@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 't85zw9&88gnle-#mnc7emhy5hs%*&%56q7bpeqm)h7eqzq%m2c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 STATIC_ROOT = '/static'
 MEDIA_ROOT = '/media'
 

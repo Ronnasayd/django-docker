@@ -65,7 +65,37 @@ WORKDIR /{PROJECT_NAME}
 
 CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
 
-
+##########################################################################
+#brosersync dockerfile
+BROWSERSYNC_DOCKERFILE='''
+FROM node
+RUN set -ex && apt-get update
+ADD ./{PROJECT_NAME} /{PROJECT_NAME}
+WORKDIR /{PROJECT_NAME}
+RUN set -ex && npm install --global browser-sync --save-dev
+'''.format(**DOCKER)
+#################################################################
+#browse-sync compose
+BROWSER_SYNC_DOCKERCOMPOSE='''
+ browsersync:
+  container_name: browsersync
+  build:
+   context: .
+   dockerfile: browsersync.Dockerfile
+  restart: always
+  ports:
+   - 3000:3000
+   - 3001:3001
+  volumes:
+   - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw
+   - ./media:{MEDIA_ROOT}:rw
+  depends_on:
+   - web
+  working_dir: /{PROJECT_NAME}
+  command: browser-sync start --proxy "web:{WEB_PORT}" --files "**/*"
+  stdin_open: true
+  tty: true
+  '''.format(**DOCKER)
 #############################################################################
 
 RUNSERVER_SCRIPT='''#!/bin/bash
@@ -83,8 +113,8 @@ services:
    context: .
    dockerfile: {PROJECT_NAME}.Dockerfile
   restart: always
-  ports:
-   - {WEB_PORT}:{WEB_PORT}
+  #ports:
+  # - {WEB_PORT}:{WEB_PORT}
   expose:
    - {WEB_PORT}
   working_dir: /{PROJECT_NAME}
@@ -136,6 +166,8 @@ if settings.DEBUG:
   RUNSERVER_SCRIPT+='''
 python manage.py runserver 0.0.0.0:{WEB_PORT}
   '''.format(**DOCKER)
+
+  DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
 else:
   MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up -d'''.format(**DOCKER)
 
@@ -281,3 +313,7 @@ makeambient.close()
 nginxconf = open('nginx.conf','w')
 nginxconf.write(NGINX_CONF)
 nginxconf.close()
+
+brosersync = open('browsersync.Dockerfile','w')
+brosersync.write(BROWSERSYNC_DOCKERFILE)
+brosersync.close()
