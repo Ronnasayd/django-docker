@@ -92,7 +92,7 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
   depends_on:
    - web
   working_dir: /{PROJECT_NAME}
-  command: browser-sync start --proxy "web:{WEB_PORT}" --files "**/*"
+  command: browser-sync start --proxy "web:{WEB_PORT}" --files "**/*" --ws "true"
   stdin_open: true
   tty: true
   '''.format(**DOCKER)
