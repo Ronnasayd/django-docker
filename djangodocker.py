@@ -6,7 +6,6 @@ settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
 ########################################################################
 
 RUNSERVER_SCRIPT_NAME='runserver'
-
 REQUIREMENTS+=['django','gunicorn'] # adiciona django e gunicorn a requirements
 
 #######################################################################
@@ -26,6 +25,12 @@ DOCKER={
 	'DEBUG':settings.DEBUG,
   'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION,
   'PYTHON_VERSION':PYTHON_VERSION,
+  'DATABASE_DB_NAME':DATABASE_ENVIROMENTS['DATABASE_DB_NAME'],
+  'DATABASE_USER_NAME':DATABASE_ENVIROMENTS['DATABASE_USER_NAME'],
+  'DATABASE_PASSWORD_NAME':DATABASE_ENVIROMENTS['DATABASE_PASSWORD_NAME'],
+  'DATABASE_DB_VALUE':DATABASE_ENVIROMENTS['DATABASE_DB_VALUE'],
+  'DATABASE_USER_VALUE':DATABASE_ENVIROMENTS['DATABASE_USER_VALUE'],
+  'DATABASE_PASSWORD_VALUE':DATABASE_ENVIROMENTS['DATABASE_PASSWORD_VALUE'],
 }
 ########################################################################
 DEPENDS_ON='''
@@ -44,25 +49,17 @@ ENVIROMENT='''
 '''
 for key in WEB_ENVIROMENT:
 	ENVIROMENT+='''
-   - {}:{}'''.format(key,WEB_ENVIROMENT[key])
+   - {}={}'''.format(key,WEB_ENVIROMENT[key])
 DOCKER['ENVIROMENT']=ENVIROMENT
 #########################################################################3
 #arquivo dockerfile
 DOCKERFILE='''FROM python:{PYTHON_VERSION}
-
-USER root
-
 ENV PYTHONUNBUFFERED 1
-
 RUN set -ex && apt-get update
-
 COPY ./requirements.txt ./requirements.txt
-
 RUN set -ex && pip install -r requirements.txt
-
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
-
 CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
 
 ##########################################################################
@@ -96,7 +93,9 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
   stdin_open: true
   tty: true
   '''.format(**DOCKER)
+############################################################################
 #############################################################################
+
 
 RUNSERVER_SCRIPT='''#!/bin/bash
 python manage.py makemigrations
@@ -113,8 +112,8 @@ services:
    context: .
    dockerfile: {PROJECT_NAME}.Dockerfile
   restart: always
-  #ports:
-  # - {WEB_PORT}:{WEB_PORT}
+  ports:
+   - {WEB_PORT}:{WEB_PORT}
   expose:
    - {WEB_PORT}
   working_dir: /{PROJECT_NAME}
@@ -133,8 +132,13 @@ services:
  {DATABASE}:
   image: {DATABASE}
   container_name: {DATABASE}
+  restart: always
   volumes:
    - {DATABASE_ROOT_SOURCE}:{DATABASE_ROOT_DESTINATION}:rw
+  environment:
+   - {DATABASE_USER_NAME}={DATABASE_USER_VALUE}
+   - {DATABASE_PASSWORD_NAME}={DATABASE_PASSWORD_VALUE}
+   - {DATABASE_DB_NAME}={DATABASE_DB_VALUE}
    '''.format(**DOCKER)
 
 ##########################################################################33
@@ -166,14 +170,13 @@ if settings.DEBUG:
   RUNSERVER_SCRIPT+='''
 python manage.py runserver 0.0.0.0:{WEB_PORT}
   '''.format(**DOCKER)
-
   DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
 else:
   MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up -d'''.format(**DOCKER)
 
   RUNSERVER_SCRIPT+='''
 python manage.py collectstatic --noinput
-gunicorn --bind=0.0.0.0:{WEB_PORT} {PROJECT_NAME}.wsgi
+gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
 	'''.format(**DOCKER)
 
   NGINX='''
@@ -317,3 +320,4 @@ nginxconf.close()
 brosersync = open('browsersync.Dockerfile','w')
 brosersync.write(BROWSERSYNC_DOCKERFILE)
 brosersync.close()
+
