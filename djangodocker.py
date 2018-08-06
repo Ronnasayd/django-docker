@@ -38,20 +38,24 @@ DEPENDS_ON='''
    - {DATABASE}
  '''.format(**DOCKER)
 
-for container in CONTAINERS:
-	DEPENDS_ON+='''
+if len(CONTAINERS) >= 1:
+  for container in CONTAINERS:
+    DEPENDS_ON+='''
    - {}'''.format(container)
 
 DOCKER['DEPENDS_ON']=DEPENDS_ON
 ##########################################################################
-ENVIROMENT='''
+if len(WEB_ENVIROMENT) >= 1:
+  ENVIROMENT='''
   environment:
-'''
-for key in WEB_ENVIROMENT:
-	ENVIROMENT+='''
-   - {}={}'''.format(key,WEB_ENVIROMENT[key])
-DOCKER['ENVIROMENT']=ENVIROMENT
-#########################################################################3
+  '''
+  for key in WEB_ENVIROMENT:
+  	ENVIROMENT+='''
+    - {}={}'''.format(key,WEB_ENVIROMENT[key])
+  DOCKER['ENVIROMENT']=ENVIROMENT
+else:
+  DOCKER['ENVIROMENT']=''
+#########################################################################3 
 #arquivo dockerfile
 DOCKERFILE='''FROM python:{PYTHON_VERSION}
 ENV PYTHONUNBUFFERED 1

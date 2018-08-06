@@ -51,6 +51,8 @@ WEB_ENVIROMENT={
 	'REDIS_URL2':'redis://redis:6379/0',
 }
 
+
 CONTAINERS=['redis']
+
 
 DOCKER_COMPOSE_VERSION='3'
