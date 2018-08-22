@@ -1,4 +1,3 @@
-
 REQUIREMENTS=[
 	'channels',
 	'channels_redis',
