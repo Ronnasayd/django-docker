@@ -146,8 +146,15 @@ services:
    - {DATABASE_PASSWORD_NAME}={DATABASE_PASSWORD_VALUE}
    - {DATABASE_DB_NAME}={DATABASE_DB_VALUE}
    '''.format(**DOCKER)
+##########################################################################
+if len(DATABASE_OTHERS_ENVIROMENTS) >= 1:
+  DOE=''
+  for key in DATABASE_OTHERS_ENVIROMENTS:
+    DOE+='''
+   - {}={}'''.format(key,DATABASE_OTHERS_ENVIROMENTS[key])
+  DOCKERCOMPOSE+=DOE
 
-##########################################################################33
+###########################################################################
 # adiciona containers
 for container in CONTAINERS:
   CONTAINERS_STRUCT='''
