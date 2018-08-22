@@ -158,6 +158,7 @@ for container in CONTAINERS:
 ###########################################################################
 #script make ambinte
 MAKE_AMBIENT='''
+sed -i "s/\\r$//" ./{RUNSERVER_SCRIPT_NAME}.sh
 cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
 mkdir nginx
 mv nginx.conf nginx
