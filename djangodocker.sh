@@ -7,12 +7,15 @@ fi
 
 
 if [ "$1" = "--make" ];then
-	if  echo $(uname -a | grep "Linux") > /dev/null ; then
- 		python3 djangodocker.py
- 	else
- 		python djangodocker.py
- 	fi
- 	echo "Ambiente criado"
+	unameOut="$(uname -s)"
+	case "${unameOut}" in
+	    Linux*)     machine=Linux && python3 djangodocker.py;;
+	    Darwin*)    machine=Mac && python3 djangodocker.py;;
+	    CYGWIN*)    machine=Cygwin && python djangodocker.py;;
+	    MINGW*)     machine=MinGw && python djangodocker.py;;
+	    *)          machine="UNKNOWN:${unameOut}"
+	esac
+	echo "Ambiente: "${machine}
 fi
 
 if [ "$1" = "--run" ];then
