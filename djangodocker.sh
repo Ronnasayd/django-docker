@@ -3,6 +3,7 @@ if [ "$1" = "--help" -o "$1" = "-h" ];then
 	echo "Modo Execução: $0 --run"
 	echo "Modo Criação de Ambiente: $0 --make"
 	echo "Limpar arquivos: $0 --clear"
+	echo "Limpar containers: $0 --stop"
 fi
 
 
