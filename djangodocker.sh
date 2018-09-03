@@ -50,6 +50,9 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
 	docker ps
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
+	sudo rm -r ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
+	echo "Enviroment cleaned"
+elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
 	sudo rm -r ./databases ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
 else 
