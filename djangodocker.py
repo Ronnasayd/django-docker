@@ -172,10 +172,7 @@ sed -i "s/\\r$//" ./wait-for-it.sh
 cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
 cp ./wait-for-it.sh ./{PROJECT_NAME}
 mkdir nginx
-mv nginx.conf nginx
-docker stop $(docker ps -a -q) 
-docker system prune --force
-docker-compose -f {PROJECT_NAME}.yml build  
+mv nginx.conf nginx  
 '''.format(**DOCKER)
 #############################################################################
 # Verifica modo produção ou desenvolvimento
