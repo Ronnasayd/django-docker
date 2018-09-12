@@ -65,7 +65,7 @@ COPY ./requirements.txt ./requirements.txt
 RUN set -ex && pip install -r requirements.txt
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
-RUN chmod +x ./wait-for-it.sh
+RUN set -ex && chmod +x ./wait-for-it.sh
 CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
 
 ##########################################################################
@@ -73,9 +73,9 @@ CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
 BROWSERSYNC_DOCKERFILE='''
 FROM node
 RUN set -ex && apt-get update
+RUN set -ex && npm install --global browser-sync --save
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
-RUN set -ex && npm install --global browser-sync --save-dev
 '''.format(**DOCKER)
 #################################################################
 #browse-sync compose
