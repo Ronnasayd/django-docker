@@ -1,10 +1,11 @@
 from config import *
 import os, importlib
 
-settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
-
+# settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
 ########################################################################
-
+WEB_ENVIROMENT['DEBUG']=str(DEBUG)
+WEB_ENVIROMENT['STATIC_ROOT']=STATIC_ROOT
+WEB_ENVIROMENT['MEDIA_ROOT']=MEDIA_ROOT
 RUNSERVER_SCRIPT_NAME='runserver'
 REQUIREMENTS+=['django','gunicorn'] # adiciona django e gunicorn a requirements
 
@@ -14,15 +15,14 @@ DOCKER={
 	'REQUIREMENTS':REQUIREMENTS,
 	'PROJECT_NAME':PROJECT_NAME,
 	'RUNSERVER_SCRIPT_NAME':RUNSERVER_SCRIPT_NAME,
-	'STATIC_ROOT':settings.STATIC_ROOT,
-  'MEDIA_ROOT':settings.MEDIA_ROOT,
+	'STATIC_ROOT':STATIC_ROOT,
+  'MEDIA_ROOT':MEDIA_ROOT,
 	'WEB_PORT':WEB_PORT,
 	'DATABASE':DATABASE,
 	'WEB_ENVIROMENT':WEB_ENVIROMENT,
 	'DATABASE_ROOT_SOURCE':DATABASE_ROOT['SOURCE'],
 	'DATABASE_ROOT_DESTINATION':DATABASE_ROOT['DESTINATION'],
 	'LOGS_ROOT':LOGS_ROOT,
-	'DEBUG':settings.DEBUG,
   'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION,
   'PYTHON_VERSION':PYTHON_VERSION,
   'DATABASE_DB_NAME':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],
@@ -31,32 +31,33 @@ DOCKER={
   'DATABASE_DB_VALUE':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_VALUE'],
   'DATABASE_USER_VALUE':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VALUE'],
   'DATABASE_PASSWORD_VALUE':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_VALUE'],
-  'DATABASE_PORT':DATABASE_PORT
+  'DATABASE_PORT':DATABASE_PORT,
+  'NETWORK_NAME':NETWORK_NAME
 }
 ########################################################################
-DEPENDS_ON='''
-  depends_on:
+DEPENDS_ON='''depends_on:
    - {DATABASE}
  '''.format(**DOCKER)
-
 if len(CONTAINERS) >= 1:
   for container in CONTAINERS:
-    DEPENDS_ON+='''
-   - {}'''.format(container)
+    DEPENDS_ON+='''  - {}'''.format(container)
 
 DOCKER['DEPENDS_ON']=DEPENDS_ON
 ##########################################################################
 if len(WEB_ENVIROMENT) >= 1:
-  ENVIROMENT='''
-  environment:
-  '''
+  ENVIROMENT='''environment:'''
   for key in WEB_ENVIROMENT:
   	ENVIROMENT+='''
-    - {}={}'''.format(key,WEB_ENVIROMENT[key])
+   - {}={}'''.format(key,WEB_ENVIROMENT[key])
   DOCKER['ENVIROMENT']=ENVIROMENT
 else:
   DOCKER['ENVIROMENT']=''
-#########################################################################3 
+#########################################################################
+NETWORK='''
+networks:
+ {NETWORK_NAME}:
+'''.format(**DOCKER)
+##########################################################################
 #arquivo dockerfile
 DOCKERFILE='''FROM python:{PYTHON_VERSION}
 ENV PYTHONUNBUFFERED 1
@@ -91,17 +92,17 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
    - 3001:3001
   volumes:
    - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw
-   - ./media:{MEDIA_ROOT}:rw
   depends_on:
    - web
   working_dir: /{PROJECT_NAME}
   command: browser-sync start --proxy "web:{WEB_PORT}" --files "**/*" --ws "true"
   stdin_open: true
   tty: true
+  networks:
+   - {NETWORK_NAME}
   '''.format(**DOCKER)
 ############################################################################
 #############################################################################
-
 
 RUNSERVER_SCRIPT='''#!/bin/bash
 python manage.py makemigrations
@@ -109,7 +110,7 @@ python manage.py migrate'''
 
 #############################################################################
 # arquivo yml para docker compose
-DOCKERCOMPOSE='''
+DOCKERCOMPOSE_BASE='''
 version: '{DOCKER_COMPOSE_VERSION}'
 services:
  web:
@@ -123,22 +124,29 @@ services:
   expose:
    - {WEB_PORT}
   working_dir: /{PROJECT_NAME}
+  command: ./wait-for-it.sh {DATABASE}:{DATABASE_PORT} --timeout=15 --strict -- /bin/bash {RUNSERVER_SCRIPT_NAME}.sh
+  {DEPENDS_ON}
+  {ENVIROMENT}
+  stdin_open: true
+  tty: true
+  networks:
+   - {NETWORK_NAME}'''.format(**DOCKER)
+###################################################################################
+VOLUMES='''
   volumes:
    - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw 
    - ./static:{STATIC_ROOT}:rw
    - ./media:{MEDIA_ROOT}:rw
-  command: ./wait-for-it.sh {DATABASE}:{DATABASE_PORT} --timeout=15 --strict -- /bin/bash {RUNSERVER_SCRIPT_NAME}.sh
+'''.format(**DOCKER)
 
-  {DEPENDS_ON}
-  {ENVIROMENT}
-
-  stdin_open: true
-  tty: true
+DATABASE_BASE=''' 
 
  {DATABASE}:
   image: {DATABASE}
   container_name: {DATABASE}
   restart: always
+  networks:
+   - {NETWORK_NAME}
   volumes:
    - {DATABASE_ROOT_SOURCE}:{DATABASE_ROOT_DESTINATION}:rw
   environment:
@@ -146,24 +154,31 @@ services:
    - {DATABASE_PASSWORD_NAME}={DATABASE_PASSWORD_VALUE}
    - {DATABASE_DB_NAME}={DATABASE_DB_VALUE}
    '''.format(**DOCKER)
+
+DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES + DATABASE_BASE
+DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + DATABASE_BASE
 ##########################################################################
 if len(DATABASE_OTHERS_ENVIROMENTS) >= 1:
   DOE=''
   for key in DATABASE_OTHERS_ENVIROMENTS:
-    DOE+='''
-   - {}={}'''.format(key,DATABASE_OTHERS_ENVIROMENTS[key])
-  DOCKERCOMPOSE+=DOE
+    DOE+='''- {}={}'''.format(key,DATABASE_OTHERS_ENVIROMENTS[key])
+  DOCKERCOMPOSE_DEVELOPMENT+=DOE
+  DOCKERCOMPOSE_PRODUCTION+=DOE
 
 ###########################################################################
 # adiciona containers
 for container in CONTAINERS:
   CONTAINERS_STRUCT='''
+  
  {}:
   image: {}
   container_name: {}
   restart: always
-  '''.format(container,container,container)
-  DOCKERCOMPOSE+=CONTAINERS_STRUCT
+  networks:
+   - {}
+  '''.format(container,container,container,NETWORK_NAME)
+  DOCKERCOMPOSE_DEVELOPMENT+=CONTAINERS_STRUCT
+  DOCKERCOMPOSE_PRODUCTION+=CONTAINERS_STRUCT
 ###########################################################################
 #script make ambinte
 MAKE_AMBIENT='''
@@ -175,28 +190,13 @@ mkdir nginx
 mv nginx.conf nginx  
 '''.format(**DOCKER)
 #############################################################################
-# Verifica modo produção ou desenvolvimento
-if settings.DEBUG:
-  MAKE_AMBIENT+='''COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}.yml up'''.format(**DOCKER)
-
-  
-  RUNSERVER_SCRIPT+='''
-python manage.py runserver 0.0.0.0:{WEB_PORT}
-  '''.format(**DOCKER)
-  DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
-else:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}.yml up -d'''.format(**DOCKER)
-
-  RUNSERVER_SCRIPT+='''
-python manage.py collectstatic --noinput
-gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
-	'''.format(**DOCKER)
-
-  NGINX='''
+NGINX='''
  nginx:
   container_name: nginx
   restart: always
   image: nginx
+  networks:
+   - {NETWORK_NAME} 
   volumes:
    - ./nginx/nginx.conf:/etc/nginx/nginx.conf
    - ./static:{STATIC_ROOT}:rw 
@@ -207,8 +207,26 @@ gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
   ports:
    - 80:{WEB_PORT}
   '''.format(**DOCKER)
-  DOCKERCOMPOSE+=NGINX
+#############################################################################
+DOCKERCOMPOSE_DEVELOPMENT +=BROWSER_SYNC_DOCKERCOMPOSE+NETWORK
+DOCKERCOMPOSE_PRODUCTION +=NGINX+NETWORK
+#############################################################################
+# Verifica modo produção ou desenvolvimento
+if DEBUG:
+  MAKE_AMBIENT+='''COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}_development.yml up --remove-orphans'''.format(**DOCKER)
 
+  
+  RUNSERVER_SCRIPT+='''
+python manage.py runserver 0.0.0.0:{WEB_PORT}
+  '''.format(**DOCKER)
+  # DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
+else:
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_production.yml up -d --remove-orphans'''.format(**DOCKER)
+
+  RUNSERVER_SCRIPT+='''
+python manage.py collectstatic --noinput
+gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
+	'''.format(**DOCKER)
 
 #########################################################################
 #cria arquivos requirements
@@ -317,8 +335,12 @@ runserver=open('{RUNSERVER_SCRIPT_NAME}.sh'.format(**DOCKER),'w')
 runserver.write(RUNSERVER_SCRIPT)
 runserver.close()
 
-dockercompose = open('{PROJECT_NAME}.yml'.format(**DOCKER),'w')
-dockercompose.write(DOCKERCOMPOSE)
+dockercompose = open('{PROJECT_NAME}_development.yml'.format(**DOCKER),'w')
+dockercompose.write(DOCKERCOMPOSE_DEVELOPMENT)
+dockercompose.close()
+
+dockercompose = open('{PROJECT_NAME}_production.yml'.format(**DOCKER),'w')
+dockercompose.write(DOCKERCOMPOSE_PRODUCTION)
 dockercompose.close()
 
 makeambient=open('make_ambient.sh','w')
