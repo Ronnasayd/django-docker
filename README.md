@@ -18,12 +18,12 @@ Os arguivos (***wait-for-it.sh***, ***config.py***, ***djangodocker.py*** e ***d
 
 Em seu arquivo **settings.py** modifique ou adiciones as seguintes linhas de código pelos valores indicados abaixo:
 
-from decouple import config
-DEBUG = config('DEBUG', default=False, cast=bool)
-STATIC_ROOT = config('STATIC_ROOT', default='/static')
-MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
+- from decouple import config
+- DEBUG = config('DEBUG', default=False, cast=bool)
+- STATIC_ROOT = config('STATIC_ROOT', default='/static')
+- MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
 
-DATABASES = {
+- DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql', ## coloque aqui a engine do banco que você vai utilizar ##
         'HOST': config('DATABASE_HOST'),
