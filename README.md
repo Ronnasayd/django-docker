@@ -31,6 +31,5 @@ Em seu arquivo **settings.py** modifique ou adiciones as seguintes linhas de có
         'NAME': config('DATABASE_NAME'),
         'USER': config('DATABASE_USER'),
         'PASSWORD': config('DATABASE_PASSWORD')
-
     }
 }
