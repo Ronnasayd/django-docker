@@ -10,7 +10,7 @@ projeto para criar de forma semi-automática ambientes de desenvolvimento e prod
  - Docker compose
 
 ## Modo de Usar
-Os arguivos ( ***config.py***, ***djangodocker.py*** e ***djangodocker.sh*** ) devem ficar no mesmo diretório do seu projeto django.
+Os arguivos (***wait-for-it.sh***, ***config.py***, ***djangodocker.py*** e ***djangodocker.sh*** ) devem ficar no mesmo diretório do seu projeto django.
 
  Modifique as configurações do arquivo *config.py* conforme a sua vontade e em seguida execute o script djangodocker.sh. O arquivo djangodocker.py usará as configurações de config.py para montar a infraestrutura desejada no sistema. 
 
