@@ -79,6 +79,6 @@ DOCKER_COMPOSE_VERSION='3'
 
 NETWORK_NAME='network_exemplo'
 
-DEBUG=True
+DEBUG=False
 STATIC_ROOT='/static'
 MEDIA_ROOT='/media'
