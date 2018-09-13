@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from decouple import config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +24,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 't85zw9&88gnle-#mnc7emhy5hs%*&%56q7bpeqm)h7eqzq%m2c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
-STATIC_ROOT = os.environ['STATIC_ROOT']
-MEDIA_ROOT = os.environ['MEDIA_ROOT']
+DEBUG = config('DEBUG', default=False, cast=bool)
+STATIC_ROOT = config('STATIC_ROOT', default='/static')
+MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
+
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'

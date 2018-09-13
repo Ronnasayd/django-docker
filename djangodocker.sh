@@ -9,7 +9,8 @@ Options:
 	--help, -h : Show help
 	--run,	-r : Mode of execution
 	--make, -m : Enviroment creation mode
-	--clear,-c : Delete files
+	--clear,-c : Delete generated files
+	--clear-all,-ca : Delete all files
 	--stop, -s : Stop containers
 	--shell, -sl : Enter container shell
 	--status, -st : Show the status of containers

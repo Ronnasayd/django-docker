@@ -7,7 +7,7 @@ WEB_ENVIROMENT['DEBUG']=str(DEBUG)
 WEB_ENVIROMENT['STATIC_ROOT']=STATIC_ROOT
 WEB_ENVIROMENT['MEDIA_ROOT']=MEDIA_ROOT
 RUNSERVER_SCRIPT_NAME='runserver'
-REQUIREMENTS+=['django','gunicorn'] # adiciona django e gunicorn a requirements
+REQUIREMENTS+=['django','gunicorn','python-decouple'] # adiciona django e gunicorn a requirements
 
 #######################################################################
 # Dicionario base

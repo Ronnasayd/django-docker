@@ -18,6 +18,7 @@ Os arguivos (***wait-for-it.sh***, ***config.py***, ***djangodocker.py*** e ***d
 
 Em seu arquivo **settings.py** modifique ou adiciones as seguintes linhas de código pelos valores indicados abaixo:
 
-- DEBUG = os.environ['DEBUG']
-- STATIC_ROOT = os.environ['STATIC_ROOT']
-- MEDIA_ROOT = os.environ['MEDIA_ROOT']
+- from decouple import config
+- DEBUG = config('DEBUG', default=False, cast=bool)
+- STATIC_ROOT = config('STATIC_ROOT', default='/static')
+- MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
