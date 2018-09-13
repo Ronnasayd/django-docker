@@ -2,7 +2,7 @@
 
 
 # Django-Docker
-projeto para criar de forma semi-automática ambientes de desenvolvimento e produção em django com docker e docker-compose.
+Projeto para criar de forma semi-automática ambientes de desenvolvimento e produção em django com docker e docker-compose.
 
 ## Programas necessários
 
