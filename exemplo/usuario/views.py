@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import FormUsuario
+from .models import Usuario
 
 # Create your views here.
 
@@ -13,6 +14,7 @@ def manage(request):
 		form = FormUsuario(request.POST, request.FILES)
 		if form.is_valid():
 			usuario = form.save()
-			return render(request,'dashboard.html',{'usuario':usuario})
+			usuarios = Usuario.objects.all().exclude(nome=usuario.nome)
+			return render(request,'dashboard.html',{'usuario':usuario,'usuarios':usuarios})
 		else:
 			return render(request,'index.html',{'form':form})

@@ -25,9 +25,12 @@ SECRET_KEY = 't85zw9&88gnle-#mnc7emhy5hs%*&%56q7bpeqm)h7eqzq%m2c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
-STATIC_ROOT = config('STATIC_ROOT', default='/static')
-MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
-
+STATIC_ROOT = config('STATIC_ROOT')
+MEDIA_ROOT = config('MEDIA_ROOT')
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'

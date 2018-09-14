@@ -11,18 +11,24 @@ Options:
 	--make, -m : Enviroment creation mode
 	--clear,-c : Delete generated files
 	--clear-all,-ca : Delete all files
-	--stop, -s : Stop containers
+	--stop, -s : Stop a specific container
+	--stop-all, -sa : Stop containers
+	--stop-net, -sn : Stop all containers off a network
 	--shell, -sl : Enter container shell
 	--status, -st : Show the status of containers
 	--command, -cm : Performs a command inside the container
+	--net-status, -ns: Show all networks
 
 Examples:
 	$0 --run
 	$0 --make
 	$0 --clear
-	$0 --stop
+	$0 --stop web
+	$0 --stop-all
+	$0 --stop-net network_example
 	$0 --shell web
 	$0 --status
+	$0 --net-status
 	$0 --command web 'python manage.py migrate'"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -38,10 +44,12 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	echo "Executing..."
 	bash make_ambient.sh
-elif [ "$1" = "--stop" -o "$1" = "-s" ];then
+elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
 	docker stop $(docker ps -a -q)
-	docker system prune -f
 	echo "Containers stopped"
+elif [ "$1" = "--stop" -o "$1" = "-s" ];then
+	docker stop $2
+	echo "Container stopped"
 elif [ "$1" = "--shell" -o "$1" = "-sl" ];then
 	echo "Use exit to close"
 	docker exec -ti $2 /bin/bash
@@ -56,6 +64,11 @@ elif [ "$1" = "--clear" -o "$1" = "-c" ];then
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
 	sudo rm -r ./databases ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
+elif [ "$1" = "--stop-net" -o "$1" = "-sn" ];then
+	docker stop $(docker network inspect $2 | grep Name | grep -v network | awk '{sub("\",","",$2);sub("\"","",$2);print $2}')
+	echo "Network containers stoped"
+elif [ "$1" = "--net-status" -o "$1" = "-ns" ];then
+	docker network ls
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

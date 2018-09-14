@@ -107,7 +107,6 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
    - {NETWORK_NAME}
   '''.format(**DOCKER)
 ############################################################################
-#############################################################################
 
 RUNSERVER_SCRIPT='''#!/bin/bash
 python manage.py makemigrations
@@ -137,9 +136,14 @@ services:
   networks:
    - {NETWORK_NAME}'''.format(**DOCKER)
 ###################################################################################
-VOLUMES='''
+VOLUMES_DEVELOPMENT='''
   volumes:
    - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw 
+   - ./media:{MEDIA_ROOT}:rw
+'''.format(**DOCKER)
+
+VOLUMES_PRODUCTION='''
+  volumes:
    - ./static:{STATIC_ROOT}:rw
    - ./media:{MEDIA_ROOT}:rw
 '''.format(**DOCKER)
@@ -160,8 +164,8 @@ DATABASE_BASE='''
    - {DATABASE_DB_NAME}={DATABASE_DB_VALUE}
    '''.format(**DOCKER)
 
-DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES + DATABASE_BASE
-DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + DATABASE_BASE
+DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES_DEVELOPMENT + DATABASE_BASE
+DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + VOLUMES_PRODUCTION + DATABASE_BASE
 ##########################################################################
 if len(DATABASE_OTHERS_ENVIROMENTS) >= 1:
   DOE=''

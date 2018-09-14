@@ -6,6 +6,13 @@
 <body>
 	<h1>Olá</h1>
 	<p>Esse é seu nome:{{usuario.nome}}</p>
-	<p>Essa é sua foto:</p><img src="media/{{usuario.foto}} " style="max-width: 500px;">
+	<p>Essa é sua foto:</p><img src="media/{{usuario.foto}} " style="max-width: 100px;">
+
+<h1>Outros usuários</h1>
+<ul>
+{% for u in usuarios%}
+	<li>{{u.nome}}:<img src="media/{{u.foto}} " style="max-width: 50px;"></li>
+{% endfor %}
+</ul>
 </body>
 </html>

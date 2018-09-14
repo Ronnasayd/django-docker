@@ -21,8 +21,8 @@ Em seu arquivo **settings.py** modifique ou adiciones as seguintes linhas de có
 
     from decouple import config
     DEBUG = config('DEBUG', default=False, cast=bool)
-    STATIC_ROOT = config('STATIC_ROOT', default='/static')
-    MEDIA_ROOT = config('MEDIA_ROOT', default='/media')
+    STATIC_ROOT = config('STATIC_ROOT')
+    MEDIA_ROOT = config('MEDIA_ROOT')
     
     DATABASES = {
         'default': {
