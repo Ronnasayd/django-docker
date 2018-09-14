@@ -222,7 +222,11 @@ DOCKERCOMPOSE_PRODUCTION +=NGINX+NETWORK
 #############################################################################
 # Verifica modo produção ou desenvolvimento
 if DEBUG:
-  MAKE_AMBIENT+='''COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}_development.yml up --remove-orphans'''.format(**DOCKER)
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_development.yml stop
+docker-compose -f {PROJECT_NAME}_production.yml stop
+docker-compose -f {PROJECT_NAME}_development.yml down
+docker-compose -f {PROJECT_NAME}_production.yml down
+COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''.format(**DOCKER)
 
   
   RUNSERVER_SCRIPT+='''
@@ -230,7 +234,11 @@ python manage.py runserver 0.0.0.0:{WEB_PORT}
   '''.format(**DOCKER)
   # DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
 else:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_production.yml up -d --remove-orphans'''.format(**DOCKER)
+  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_production.yml stop
+docker-compose -f {PROJECT_NAME}_development.yml stop
+docker-compose -f {PROJECT_NAME}_production.yml down
+docker-compose -f {PROJECT_NAME}_development.yml down
+docker-compose -f {PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''.format(**DOCKER)
 
   RUNSERVER_SCRIPT+='''
 python manage.py collectstatic --noinput
