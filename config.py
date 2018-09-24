@@ -80,3 +80,23 @@ DEBUG=False
 STATIC_ROOT='/static-data'
 MEDIA_ROOT='/media-data'
 LOGS_ROOT='/logs-data'
+
+
+
+# PUT THIS CODE IN YOUR settings.py
+
+# from decouple import config
+# DEBUG = config('DEBUG', default=False, cast=bool)
+# STATIC_ROOT = config('STATIC_ROOT')
+# MEDIA_ROOT = config('MEDIA_ROOT')
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql', ## coloque aqui a engine do banco que você vai utilizar ##
+#         'HOST': config('DATABASE_HOST'),
+#         'PORT': config('DATABASE_PORT'),
+#         'NAME': config('DATABASE_NAME'),
+#         'USER': config('DATABASE_USER'),
+#         'PASSWORD': config('DATABASE_PASSWORD')
+#     }
+# }
