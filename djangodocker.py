@@ -306,6 +306,9 @@ http {{
         # Running port
         listen {WEB_PORT};
 
+        # Max_size
+        client_max_body_size 20M;
+
         # Settings to serve static files 
         location /static/  {{
 
