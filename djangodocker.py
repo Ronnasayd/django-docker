@@ -226,6 +226,8 @@ if DEBUG:
 docker-compose -f {PROJECT_NAME}_production.yml stop
 docker-compose -f {PROJECT_NAME}_development.yml down
 docker-compose -f {PROJECT_NAME}_production.yml down
+docker system prune --force
+docker-compose -f {PROJECT_NAME}_development.yml build
 COMPOSE_HTTP_TIMEOUT=200 docker-compose -f {PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''.format(**DOCKER)
 
   
@@ -238,6 +240,8 @@ else:
 docker-compose -f {PROJECT_NAME}_development.yml stop
 docker-compose -f {PROJECT_NAME}_production.yml down
 docker-compose -f {PROJECT_NAME}_development.yml down
+docker system prune --force
+docker-compose -f {PROJECT_NAME}_production.yml build
 docker-compose -f {PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''.format(**DOCKER)
 
   RUNSERVER_SCRIPT+='''
