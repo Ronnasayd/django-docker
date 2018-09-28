@@ -46,9 +46,11 @@ elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	bash make_ambient.sh
 elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
 	docker stop $(docker ps -a -q)
+	docker system prune --force
 	echo "Containers stopped"
 elif [ "$1" = "--stop" -o "$1" = "-s" ];then
 	docker stop $2
+	docker system prune --force
 	echo "Container stopped"
 elif [ "$1" = "--shell" -o "$1" = "-sl" ];then
 	echo "Use exit to close"
