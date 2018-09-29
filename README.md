@@ -4,7 +4,7 @@
 <p align="center"><img src="django-docker.png" alt="django-docker" width="200"/></p>
 
 # Django-Docker
-Projeto para criar de forma semi-automática ambientes de desenvolvimento e produção em django com docker e docker-compose.
+Sistema para criar de forma automática ambientes de desenvolvimento e produção em django com docker.
 
 ## Programas necessários
 
@@ -22,9 +22,12 @@ Os arguivos (***wait-for-it.sh***, ***config.py***, ***djangodocker.py*** e ***d
 Em seu arquivo **settings.py** modifique ou adiciones as seguintes linhas de código pelos valores indicados abaixo:
 
     from decouple import config
+
     DEBUG = config('DEBUG', default=False, cast=bool)
     STATIC_ROOT = config('STATIC_ROOT')
     MEDIA_ROOT = config('MEDIA_ROOT')
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
     
     DATABASES = {
         'default': {

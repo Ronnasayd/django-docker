@@ -3,6 +3,10 @@ import os, importlib
 
 # settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
 ########################################################################
+STATIC_ROOT='/static-data'
+MEDIA_ROOT='/media-data'
+LOGS_ROOT='/logs-data'
+
 WEB_ENVIROMENT['DEBUG']=str(DEBUG)
 WEB_ENVIROMENT['STATIC_ROOT']=STATIC_ROOT
 WEB_ENVIROMENT['MEDIA_ROOT']=MEDIA_ROOT
@@ -11,12 +15,19 @@ WEB_ENVIROMENT['DATABASE_PORT']=DATABASE_PORT
 WEB_ENVIROMENT['DATABASE_NAME'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_VALUE']
 WEB_ENVIROMENT['DATABASE_USER'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VALUE']
 WEB_ENVIROMENT['DATABASE_PASSWORD'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_VALUE']
+WEB_ENVIROMENT['STATIC_URL']='/static/'
+WEB_ENVIROMENT['MEDIA_URL']='/media/'
+WEB_ENVIROMENT['DJANGO_DOCKER_APPS']="compressor,cssmin,jsmin"
 RUNSERVER_SCRIPT_NAME='runserver'
 
 REQUIREMENTS+=[
 'django',
 'gunicorn',
 'python-decouple',
+'django_compressor',
+'cssmin',
+'jsmin',
+
 ] # adiciona django e gunicorn a requirements
 
 #######################################################################
@@ -256,6 +267,7 @@ docker-compose -f {PROJECT_NAME}_production.yml up  -d --remove-orphans --force-
 
   RUNSERVER_SCRIPT+='''
 python manage.py collectstatic --noinput
+python manage.py compress --force
 gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
 	'''.format(**DOCKER)
 

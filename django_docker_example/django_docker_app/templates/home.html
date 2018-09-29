@@ -1,0 +1,61 @@
+{% load compress %}
+{% load static %}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Django-Docker</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8">
+	
+	
+	<!-- Font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
+	<link href="{% static 'common-css/ionicons.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'home/icons/favicon.ico' %}" />
+	{% compress css %}
+	<link rel="stylesheet" href="{% static 'common-css/jquery.classycountdown.css' %}" />
+	<link href="{% static 'home/css/styles.css' %}" rel="stylesheet">
+	<link href="{% static 'home/css/responsive.css' %}" rel="stylesheet">
+	{% endcompress %}
+	
+</head>
+<body>
+	
+	<div class="main-area-wrapper" style="background-image:url({% static 'images/5.jpg' %});">
+		<div class="main-area center-text" >
+			
+			<div class="display-table">
+				<div class="display-table-cell">
+
+					<img src="{% static 'images/django-docker.png' %}" style="width: 250px">
+					<h1 class="title"><b>Django-Docker</b></h1>
+					<h4 class="desc font-white">System to automatically create development and production environments in django with docker.</h4>
+					
+				<!-- 	<div id="normal-countdown" data-date="2018/01/01"></div> -->
+					
+					<!-- <a class="notify-btn" href="#"><b>NOTIFY US</b></a> -->
+					
+					<ul class="social-btn">
+						<li class="list-heading">Follow the creator and help us</li>
+						<li><a href="https://www.facebook.com/ronnasaydmachado"><i class="ion-social-facebook"></i></a></li>
+						<li><a href="https://twitter.com/ronnasayd"><i class="ion-social-twitter"></i></a></li>
+						<li><a href="https://www.instagram.com/ronnasayd_machado/"><i class="ion-social-instagram-outline"></i></a></li>
+						<li><a href="https://github.com/Ronnasayd"><i class="ion-social-github"></i></a></li>
+					</ul>
+					
+				</div><!-- display-table -->
+			</div><!-- display-table-cell -->
+		</div><!-- main-area -->
+	</div><!-- main-area-wrapper -->
+	
+	
+	<!-- SCIPTS -->
+	{% compress js %}
+	<script src="{% static 'common-js/jquery-3.1.1.min.js' %}"></script>	
+	<script src="{% static 'common-js/jquery.countdown.min.js' %}"></script>
+	<script src="{% static 'common-js/scripts.js' %}"></script>
+	{% endcompress %}
+	
+</body>
+</html>
