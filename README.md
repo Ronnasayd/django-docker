@@ -1,7 +1,7 @@
 ﻿
 
 
-# ![Django-Docker](django-docker.png)
+# Django-Docker<img src="django-docker.png" alt="drawing" width="200"/>
 Projeto para criar de forma semi-automática ambientes de desenvolvimento e produção em django com docker e docker-compose.
 
 ## Programas necessários
