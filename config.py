@@ -1,13 +1,24 @@
+
+DEBUG=True
+
 REQUIREMENTS=[
 	'channels',
 	'channels_redis',
-	'psycopg2',
+	'psycopg2-binary',
 	'Pillow',
+	'django-widget-tweaks',
+	'djangorestframework',
+	'django_compressor',
 ]
 
 PROJECT_NAME='exemplo'
 
 PYTHON_VERSION='3.6'
+
+WEB_COMMANDS_BUILD=[
+	# 'apt-get install wget -y',
+	# 'apt-get install curl -y',
+]
 
 DATABASE='postgres'
 
@@ -34,7 +45,7 @@ DATABASE_DEFAULT_ENVIROMENTS={
 	'DATABASE_USER_VALUE':'exemplouser',
 	'DATABASE_USER_NAME':'POSTGRES_USER',
 
-	'DATABASE_PASSWORD_VALUE':'exemplopass',
+	'DATABASE_PASSWORD_VALUE':'!TB2PGy%{PBd)q>E',
 	'DATABASE_PASSWORD_NAME':'POSTGRES_PASSWORD',
 
 	'DATABASE_DB_VALUE':'exemplodb',
@@ -76,19 +87,20 @@ DOCKER_COMPOSE_VERSION='3.5'
 
 NETWORK_NAME='network_exemplo'
 
-DEBUG=False
+
 STATIC_ROOT='/static-data'
 MEDIA_ROOT='/media-data'
 LOGS_ROOT='/logs-data'
 
 
-
-# PUT THIS CODE IN YOUR settings.py
+### PUT THIS CODE IN YOUR settings.py ###
 
 # from decouple import config
 # DEBUG = config('DEBUG', default=False, cast=bool)
 # STATIC_ROOT = config('STATIC_ROOT')
 # MEDIA_ROOT = config('MEDIA_ROOT')
+# STATIC_URL = /static/
+# MEDIA_URL = /media/
 
 # DATABASES = {
 #     'default': {

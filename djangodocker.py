@@ -12,7 +12,12 @@ WEB_ENVIROMENT['DATABASE_NAME'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_VALU
 WEB_ENVIROMENT['DATABASE_USER'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VALUE']
 WEB_ENVIROMENT['DATABASE_PASSWORD'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_VALUE']
 RUNSERVER_SCRIPT_NAME='runserver'
-REQUIREMENTS+=['django','gunicorn','python-decouple'] # adiciona django e gunicorn a requirements
+
+REQUIREMENTS+=[
+'django',
+'gunicorn',
+'python-decouple',
+] # adiciona django e gunicorn a requirements
 
 #######################################################################
 # Dicionario base
@@ -72,7 +77,12 @@ RUN set -ex && pip install -r requirements.txt
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
 RUN set -ex && chmod +x ./wait-for-it.sh
-CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
+'''.format(**DOCKER)
+if len(WEB_COMMANDS_BUILD) >= 1:
+  for command in WEB_COMMANDS_BUILD:
+    DOCKERFILE+='RUN set -ex && '+command+'\n'
+DOCKERFILE_FINAL_LINE='''CMD chmod +x {RUNSERVER_SCRIPT_NAME}.sh'''.format(**DOCKER)
+DOCKERFILE+=DOCKERFILE_FINAL_LINE
 
 ##########################################################################
 #brosersync dockerfile
