@@ -1,7 +1,8 @@
 ﻿
 
 
-<img src="django-docker.png" alt="django-docker" width="200"/>
+<p align="center"><img src="django-docker.png" alt="django-docker" width="200"/></p>
+
 # Django-Docker
 Projeto para criar de forma semi-automática ambientes de desenvolvimento e produção em django com docker e docker-compose.
 
