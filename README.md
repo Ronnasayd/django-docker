@@ -16,12 +16,12 @@ System to automatically create development and production environments in django
 
 The files  (***wait-for-it.sh***, ***config.py***, ***djangodocker.py*** e ***djangodocker.sh*** ) should be in the directory of your django project.
 
-Modify the ***config.py*** settings as you wish, and then run the djangodocker.sh script. The djangodocker.py file will use config.py settings to mount the desired infrastructure on the system.
+Modify the ***config.py*** settings as you wish, and then run the ***djangodocker.sh*** script. The ***djangodocker.py*** file will use ***config.py*** settings to mount the desired infrastructure on the system.
 
 The choice of environment between development or production is made by the ***DEBUG*** variable located in the file ***config.py***
 
 In your **settings.py** file modify or add the following lines of code to the values ​​indicated below:
-## Put or update this code in your  settings.py ##
+## Put or update this code in your  ***settings.py*** ##
 
     from decouple import config
     
