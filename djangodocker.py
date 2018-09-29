@@ -291,6 +291,9 @@ events {{
 
 http {{
 
+    proxy_cache_path {STATIC_ROOT} levels=1:2 keys_zone=my_cache:10m max_size=10g 
+        inactive=60m use_temp_path=off;
+
     default_type  application/octet-stream;
     include       /etc/nginx/mime.types;
 
@@ -356,6 +359,14 @@ http {{
         # Proxy connections to the application servers
         # app_servers
         location / {{
+
+
+            proxy_cache my_cache;
+            proxy_cache_revalidate on;
+            proxy_cache_min_uses 3;
+            proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+            proxy_cache_background_update on;
+            proxy_cache_lock on;
 
             proxy_pass         http://app_servers;
             proxy_redirect     off;

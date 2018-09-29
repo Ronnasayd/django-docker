@@ -77,11 +77,15 @@ DATABASE_PORT='5432'
 WEB_PORT='8000'
 
 WEB_ENVIROMENT={
+	# all enviroment variables are optional
 	'REDIS_URL':'redis://redis:6379/1',
 }
 
 
-CONTAINERS=['redis']
+CONTAINERS=[
+	# all container are aptional
+	'redis', # redis here is just a example of how to add container in network
+]
 
 
 DOCKER_COMPOSE_VERSION='3.5'
@@ -90,7 +94,7 @@ NETWORK_NAME='network_django_docker_example'
 
 
 
-### PUT OR UPDATE THIS CODE IN YOUR settings.py ###
+# ## PUT OR UPDATE THIS CODE IN YOUR settings.py ###
 
 # from decouple import config
 
@@ -127,7 +131,7 @@ NETWORK_NAME='network_django_docker_example'
 # STATICFILES_FINDERS = (
 #     'django.contrib.staticfiles.finders.FileSystemFinder',
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#	   ...
+# 	   ...
 #     'compressor.finders.CompressorFinder',
 # )
 
@@ -135,7 +139,7 @@ NETWORK_NAME='network_django_docker_example'
 # COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]   
 
 
-### OPTIONAL CODE IF YOU WILL USE REDIS TO CACHE
+# ## OPTIONAL CODE IF YOU WILL USE REDIS TO CACHE
 # CACHES = {
 #     "default": {
 #         "BACKEND": "django_redis.cache.RedisCache",
