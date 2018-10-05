@@ -1,5 +1,5 @@
 
-DEBUG=False
+DEBUG=True
 
 REQUIREMENTS=[
 	'channels',
@@ -64,7 +64,6 @@ DATABASE_OTHERS_ENVIROMENTS={
 # MONGO_DESTINATION = /var/lib/mongodb
 
 DATABASE_ROOT={
-	'SOURCE':'./databases',
 	'DESTINATION':'/var/lib/postgresql/data',
 }
 

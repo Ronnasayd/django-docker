@@ -7,6 +7,7 @@ media/
 nginx/
 
 
+
 *.txt
 *.yml
 *.Dockerfile
