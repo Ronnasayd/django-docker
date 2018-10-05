@@ -117,6 +117,7 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
   restart: always
   ports:
    - 3000:3000
+   - 3001:3001
    - 3002:3002
   volumes:
    - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw
