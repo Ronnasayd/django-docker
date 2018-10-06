@@ -18,6 +18,9 @@ Options:
 	--status, -st : Show the status of containers
 	--command, -cm : Performs a command inside the container
 	--net-status, -ns: Show all networks
+	--create-su, -csu: Create a new admin user
+	--migrate, -mi: Apply migrations in django 
+	--clear-mig, -cmi: Clear all migrations and __pycache__ folders
 
 Examples:
 	$0 --run
@@ -29,7 +32,12 @@ Examples:
 	$0 --shell web
 	$0 --status
 	$0 --net-status
-	$0 --command web 'python manage.py migrate'"
+	$0 --command web 'python manage.py migrate'
+	$0 --create-su
+	$0 --migrate # migrate in all models
+	$0 --migrate django_docker_app # migrate specific model
+	$0 --clear-mig
+	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	unameOut="$(uname -s)"
@@ -40,7 +48,7 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	    MINGW*)     machine=MinGw && python djangodocker.py;;
 	    *)          machine="UNKNOWN:${unameOut}"
 	esac
-	echo "Ambiente: "${machine}
+	echo "Ambiente: "${machine}" Arquivos criados"
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	echo "Executing..."
 	bash make_ambient.sh
@@ -58,14 +66,23 @@ elif [ "$1" = "--shell" -o "$1" = "-sl" ];then
 elif [ "$1" = "--command" -o "$1" = "-c" ];then
 	echo "Use exit to close"
 	docker exec -ti $2 $3
+elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
+	$0 --command web 'python manage.py createsuperuser'
+elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
+	$0 --command web 'python manage.py makemigrations '$2
+	$0 --command web 'python manage.py migrate '$2
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
 	docker ps
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
 	sudo rm -r ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-	sudo rm -r ./databases ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
+	sudo rm -r ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
+elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
+	sudo rm -rf $(find . -name '__pycache__')
+	sudo rm -rf $(find . -name 'migrations')
+	echo "Migrations cleaned"
 elif [ "$1" = "--stop-net" -o "$1" = "-sn" ];then
 	docker stop $(docker network inspect $2 | grep Name | grep -v network | awk '{sub("\",","",$2);sub("\"","",$2);print $2}')
 	echo "Network containers stoped"
@@ -74,4 +91,5 @@ elif [ "$1" = "--net-status" -o "$1" = "-ns" ];then
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi
+
 

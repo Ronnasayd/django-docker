@@ -28,6 +28,14 @@
 			<div class="display-table">
 				<div class="display-table-cell">
 
+						<form style="position: relative;top: -100px;left: 550px;" method="post" action="{% url 'save' %}">
+							{% csrf_token %}
+						  <div class="form-group">
+						    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+						  </div>
+						  <button type="submit" class="btn btn-primary">Subscribe</button>
+						</form>
+
 					<img src="{% static 'images/django-docker.png' %}" style="width: 250px">
 					<h1 class="title"><b>Django-Docker</b></h1>
 					<h4 class="desc font-white">System to automatically create development and production environments in django with docker.</h4>
