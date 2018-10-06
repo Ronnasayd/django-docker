@@ -21,6 +21,8 @@ Options:
 	--create-su, -csu: Create a new admin user
 	--migrate, -mi: Apply migrations in django 
 	--clear-mig, -cmi: Clear all migrations and __pycache__ folders
+	--show-db, -sdb: Show datbases create with django docker
+	--clear-db, -cdb: Clear a specific database create with django docker
 
 Examples:
 	$0 --run
@@ -37,6 +39,8 @@ Examples:
 	$0 --migrate # migrate in all models
 	$0 --migrate django_docker_app # migrate specific model
 	$0 --clear-mig
+	$0 --show-db
+	$0 --clear-db
 	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -73,6 +77,10 @@ elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
 	$0 --command web 'python manage.py migrate '$2
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
 	docker ps
+elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
+	docker volume ls | grep database | awk '{print $2}'
+elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
+	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
 	sudo rm -r ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
