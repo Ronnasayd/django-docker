@@ -82,14 +82,14 @@ elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-	sudo rm -r ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
+	rm -rf ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-	sudo rm -r ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
+	rm -rf ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
-	sudo rm -rf $(find . -name '__pycache__')
-	sudo rm -rf $(find . -name 'migrations')
+	rm -rf $(find . -name '__pycache__')
+	rm -rf $(find . -name 'migrations')
 	echo "Migrations cleaned"
 elif [ "$1" = "--stop-net" -o "$1" = "-sn" ];then
 	docker stop $(docker network inspect $2 | grep Name | grep -v network | awk '{sub("\",","",$2);sub("\"","",$2);print $2}')
