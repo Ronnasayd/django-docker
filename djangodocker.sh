@@ -23,11 +23,15 @@ Options:
 	--clear-mig, -cmi: Clear all migrations and __pycache__ folders
 	--show-db, -sdb: Show datbases create with django docker
 	--clear-db, -cdb: Clear a specific database create with django docker
+	--prune, -p: Prune the system
+	--show-img, -si: Show the docker images
+	--clear-img, -ci: Clear a specific docker image for image_id
 
 Examples:
 	$0 --run
 	$0 --make
 	$0 --clear
+	$0 --clear-all
 	$0 --stop web
 	$0 --stop-all
 	$0 --stop-net network_example
@@ -40,7 +44,10 @@ Examples:
 	$0 --migrate django_docker_app # migrate specific model
 	$0 --clear-mig
 	$0 --show-db
-	$0 --clear-db
+	$0 --clear-db djangodocker_database
+	$0 --prune
+	$0 --show-img
+	$0 --clear-img 627c27fc5060
 	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -96,6 +103,12 @@ elif [ "$1" = "--stop-net" -o "$1" = "-sn" ];then
 	echo "Network containers stoped"
 elif [ "$1" = "--net-status" -o "$1" = "-ns" ];then
 	docker network ls
+elif [ "$1" = "--prune" -o "$1" = "-p" ];then
+	docker system prune --force
+elif [ "$1" = "--show-img" -o "$1" = "-si" ];then
+	docker images
+elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
+	docker rmi $2
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi
