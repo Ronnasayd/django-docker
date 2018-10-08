@@ -78,10 +78,10 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
 	echo "Use exit to close"
 	docker exec -ti $2 $3
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
-	$0 --command web 'python manage.py createsuperuser'
+	docker exec -ti web python manage.py createsuperuser
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
-	$0 --command web 'python manage.py makemigrations '$2
-	$0 --command web 'python manage.py migrate '$2
+	docker exec -ti web python manage.py makemigrations $2
+	docker exec -ti web python manage.py migrate $2
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
 	docker ps
 elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
