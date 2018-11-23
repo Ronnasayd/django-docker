@@ -102,10 +102,21 @@ DOCKERFILE+=DOCKERFILE_FINAL_LINE
 BROWSERSYNC_DOCKERFILE='''
 FROM node
 RUN set -ex && apt-get update
-RUN set -ex && npm install --global browser-sync --save
+RUN set -ex && npm install -g yarn
+RUN set -ex && yarn global add gulp-cli
+RUN set -ex && yarn global add gulp
+RUN set -ex && yarn global add node-sass
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
 '''.format(**DOCKER)
+#################################################################
+GULPSH = '''
+yarn add browser-sync
+yarn add gulp 
+yarn add gulp-sass
+yarn add gulp-rename
+gulp
+'''
 #################################################################
 #browse-sync compose
 BROWSER_SYNC_DOCKERCOMPOSE='''
@@ -124,7 +135,7 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
   depends_on:
    - web
   working_dir: /{PROJECT_NAME}
-  command: browser-sync start --proxy "web:{WEB_PORT}" --files "**/*" --ws "true"
+  command: bash gulp.sh
   stdin_open: true
   tty: true
   networks:
@@ -219,6 +230,8 @@ sed -i "s/\\r$//" ./{RUNSERVER_SCRIPT_NAME}.sh
 sed -i "s/\\r$//" ./wait-for-it.sh
 cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
 cp ./wait-for-it.sh ./{PROJECT_NAME}
+cp ./gulpfile.js ./{PROJECT_NAME}
+cp ./gulp.sh ./{PROJECT_NAME}
 mkdir nginx
 mv nginx.conf nginx  
 '''.format(**DOCKER)
@@ -385,6 +398,50 @@ http {{
 
 '''.format(**DOCKER)
 ###########################################################################
+GULPFILE='''
+var gulp        = require('gulp');
+var browserSync = require('browser-sync').create();
+var sass        = require('gulp-sass');
+var rename      = require('gulp-rename');
+
+// Static Server + watching scss/html files
+gulp.task('serve', ['sass'], function() {{
+
+   
+    browserSync.init({{
+        proxy: {{
+          target: "http://web:{WEB_PORT}",
+          ws: true
+        }}
+    }});
+
+    gulp.watch("**/*.scss", ['sass']);
+    gulp.watch("**/*.html").on('change', browserSync.reload);
+    gulp.watch("**/*.css").on('change', browserSync.reload);
+    gulp.watch("**/*.js").on('change', browserSync.reload);
+}});
+
+// Compile sass into CSS & auto-inject into browsers
+gulp.task('sass', function() {{
+    return gulp.src(["**/*.scss",'!node_modules/**'])
+        .pipe(sass({{
+            errLogToConsole: true,
+            indentedSyntax: false,
+        }}).on('error',function(err){{
+            console.log(err.message);
+            browserSync.notify(err.message, 3000); // Display error in the browser
+            this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
+        }}))
+        .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('scss','css');
+        }}))
+        .pipe(gulp.dest("."))
+        .pipe(browserSync.stream());
+}});
+
+gulp.task('default', ['serve']);
+'''.format(**DOCKER)
+###########################################################################
 #Criando arquivos
 dockerfile=open('{PROJECT_NAME}.Dockerfile'.format(**DOCKER),'w')
 dockerfile.write(DOCKERFILE)
@@ -415,4 +472,12 @@ nginxconf.close()
 brosersync = open('browsersync.Dockerfile','w')
 brosersync.write(BROWSERSYNC_DOCKERFILE)
 brosersync.close()
+
+gulpfile = open('gulpfile.js','w')
+gulpfile.write(GULPFILE)
+gulpfile.close()
+
+gulpfile = open('gulp.sh','w')
+gulpfile.write(GULPSH)
+gulpfile.close()
 
