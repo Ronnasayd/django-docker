@@ -26,6 +26,7 @@ Options:
 	--prune, -p: Prune the system
 	--show-img, -si: Show the docker images
 	--clear-img, -ci: Clear a specific docker image for image_id
+	--attach, -att: Attach to a runing dev ambient
 
 Examples:
 	$0 --run
@@ -48,6 +49,7 @@ Examples:
 	$0 --prune
 	$0 --show-img
 	$0 --clear-img 627c27fc5060
+	$0 --attach
 	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -109,6 +111,8 @@ elif [ "$1" = "--show-img" -o "$1" = "-si" ];then
 	docker images
 elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
 	docker rmi $2
+elif [ "$1" = "--attach" -o "$1" = "-att" ];then
+	COMPOSE_HTTP_TIMEOUT=200 docker-compose -f $(ls *development.yml) up
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

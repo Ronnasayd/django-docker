@@ -1,6 +1,6 @@
-# version Beta 0.0.0.1
+# version Beta 0.0.0.2
 
-DEBUG=False
+DEBUG=True
 
 REQUIREMENTS=[
 	'channels',
