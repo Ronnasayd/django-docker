@@ -1,5 +1,6 @@
 h4 {
-  font-size: 25px; }
+  font-size: 25px;
+  color: white !important; }
 
 .form-subs {
   position: relative;

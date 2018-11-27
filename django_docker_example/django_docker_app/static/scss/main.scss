@@ -1,7 +1,9 @@
 $h4_font_size:25px;
+$color-text:white;
 
 h4{
 	font-size: $h4_font_size;
+	color:$color-text !important;
 }
 
 .form-subs{

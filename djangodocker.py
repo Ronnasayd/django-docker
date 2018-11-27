@@ -1,11 +1,20 @@
 from config import *
-import os, importlib
+import os, importlib,shutil
 
 # settings = importlib.import_module(PROJECT_NAME+'.'+PROJECT_NAME+'.settings')
 ########################################################################
 STATIC_ROOT='/static-data'
 MEDIA_ROOT='/media-data'
 LOGS_ROOT='/logs-data'
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+folder_to_save = 'djd_data/'
+
+if not os.path.exists(folder_to_save):
+  os.makedirs(folder_to_save)
+else:
+  shutil.rmtree(folder_to_save)
+  os.makedirs(folder_to_save)
 
 WEB_ENVIROMENT['DEBUG']=str(DEBUG)
 WEB_ENVIROMENT['STATIC_ROOT']=STATIC_ROOT
@@ -53,7 +62,9 @@ DOCKER={
   'DATABASE_USER_VALUE':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VALUE'],
   'DATABASE_PASSWORD_VALUE':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_VALUE'],
   'DATABASE_PORT':DATABASE_PORT,
-  'NETWORK_NAME':NETWORK_NAME
+  'NETWORK_NAME':NETWORK_NAME,
+  'FOLDER_NAME':folder_to_save,
+  'DIR_PATH':dir_path
 }
 ########################################################################
 DEPENDS_ON='''depends_on:
@@ -82,15 +93,14 @@ networks:
 '''.format(**DOCKER)
 ##########################################################################
 #arquivo dockerfile
-DOCKERFILE='''FROM python:{PYTHON_VERSION}
+DOCKERFILE="""FROM python:{PYTHON_VERSION}
 ENV PYTHONUNBUFFERED 1
 RUN set -ex && apt-get update
-COPY ./requirements.txt ./requirements.txt
+COPY {FOLDER_NAME}requirements.txt ./requirements.txt
 RUN set -ex && pip install -r requirements.txt
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
-RUN set -ex && chmod +x ./wait-for-it.sh
-'''.format(**DOCKER)
+""".format(**DOCKER)
 if len(WEB_COMMANDS_BUILD) >= 1:
   for command in WEB_COMMANDS_BUILD:
     DOCKERFILE+='RUN set -ex && '+command+'\n'
@@ -103,16 +113,15 @@ BROWSERSYNC_DOCKERFILE='''
 FROM node
 RUN set -ex && apt-get update
 RUN set -ex && npm install -g yarn
-RUN set -ex && yarn global add gulp-cli
-RUN set -ex && yarn global add gulp
-RUN set -ex && yarn global add node-sass
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
 '''.format(**DOCKER)
 #################################################################
 GULPSH = '''
+yarn global add gulp-cli
+yarn add gulp
+yarn add node-sass
 yarn add browser-sync
-yarn add gulp 
 yarn add gulp-sass
 yarn add gulp-rename
 gulp
@@ -123,15 +132,15 @@ BROWSER_SYNC_DOCKERCOMPOSE='''
  browsersync:
   container_name: browsersync
   build:
-   context: .
-   dockerfile: browsersync.Dockerfile
+   context: "{DIR_PATH}"
+   dockerfile: {FOLDER_NAME}browsersync.Dockerfile
   restart: always
   ports:
    - 3000:3000
    - 3001:3001
    - 3002:3002
   volumes:
-   - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw
+   - "{DIR_PATH}/{PROJECT_NAME}:/{PROJECT_NAME}:rw"
   depends_on:
    - web
   working_dir: /{PROJECT_NAME}
@@ -155,8 +164,8 @@ services:
  web:
   container_name: web
   build:
-   context: .
-   dockerfile: {PROJECT_NAME}.Dockerfile
+   context: "{DIR_PATH}"
+   dockerfile: {FOLDER_NAME}{PROJECT_NAME}.Dockerfile
   restart: always
   ports:
    - {WEB_PORT}:{WEB_PORT}
@@ -173,14 +182,14 @@ services:
 ###################################################################################
 VOLUMES_DEVELOPMENT='''
   volumes:
-   - ./{PROJECT_NAME}:/{PROJECT_NAME}:rw 
-   - ./media:{MEDIA_ROOT}:rw
+   - "{DIR_PATH}/{PROJECT_NAME}:/{PROJECT_NAME}:rw" 
+   - "{DIR_PATH}/media:{MEDIA_ROOT}:rw"
 '''.format(**DOCKER)
 
 VOLUMES_PRODUCTION='''
   volumes:
-   - ./static:{STATIC_ROOT}:rw
-   - ./media:{MEDIA_ROOT}:rw
+   - "{DIR_PATH}/static:{STATIC_ROOT}:rw"
+   - "{DIR_PATH}/media:{MEDIA_ROOT}:rw"
 '''.format(**DOCKER)
 
 DATABASE_BASE=''' 
@@ -226,14 +235,17 @@ for container in CONTAINERS:
 ###########################################################################
 #script make ambinte
 MAKE_AMBIENT='''
-sed -i "s/\\r$//" ./{RUNSERVER_SCRIPT_NAME}.sh
+sed -i "s/\\r$//" {FOLDER_NAME}{RUNSERVER_SCRIPT_NAME}.sh
 sed -i "s/\\r$//" ./wait-for-it.sh
-cp ./{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
+sed -i "s/\\r$//" {FOLDER_NAME}gulpfile.js
+sed -i "s/\\r$//" {FOLDER_NAME}gulp.sh
+cp {FOLDER_NAME}{RUNSERVER_SCRIPT_NAME}.sh ./{PROJECT_NAME}
 cp ./wait-for-it.sh ./{PROJECT_NAME}
-cp ./gulpfile.js ./{PROJECT_NAME}
-cp ./gulp.sh ./{PROJECT_NAME}
-mkdir nginx
-mv nginx.conf nginx  
+cp {FOLDER_NAME}gulpfile.js ./{PROJECT_NAME}
+cp {FOLDER_NAME}gulp.sh ./{PROJECT_NAME}
+chmod +x ./wait-for-it.sh
+mkdir {FOLDER_NAME}nginx
+mv {FOLDER_NAME}nginx.conf {FOLDER_NAME}nginx  
 '''.format(**DOCKER)
 #############################################################################
 NGINX='''
@@ -244,10 +256,10 @@ NGINX='''
   networks:
    - {NETWORK_NAME} 
   volumes:
-   - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-   - ./static:{STATIC_ROOT}:rw 
-   - ./media:{MEDIA_ROOT}:rw
-   - ./logs:{LOGS_ROOT}:rw
+   - "{DIR_PATH}/{FOLDER_NAME}nginx/nginx.conf:/etc/nginx/nginx.conf"
+   - "{DIR_PATH}/static:{STATIC_ROOT}:rw"
+   - "{DIR_PATH}/media:{MEDIA_ROOT}:rw"
+   - "{DIR_PATH}/logs:{LOGS_ROOT}:rw"
   depends_on:
    - web
   ports:
@@ -259,13 +271,13 @@ DOCKERCOMPOSE_PRODUCTION +=NGINX+NETWORK
 #############################################################################
 # Verifica modo produção ou desenvolvimento
 if DEBUG:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_development.yml stop
-docker-compose -f {PROJECT_NAME}_production.yml stop
-docker-compose -f {PROJECT_NAME}_development.yml down
-docker-compose -f {PROJECT_NAME}_production.yml down
+  MAKE_AMBIENT+='''docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml stop
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml stop
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml down
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml down
 docker system prune --force
-docker-compose -f {PROJECT_NAME}_development.yml build
-COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''.format(**DOCKER)
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml build
+COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''.format(**DOCKER)
 
   
   RUNSERVER_SCRIPT+='''
@@ -273,13 +285,13 @@ python manage.py runserver 0.0.0.0:{WEB_PORT}
   '''.format(**DOCKER)
   # DOCKERCOMPOSE+=BROWSER_SYNC_DOCKERCOMPOSE
 else:
-  MAKE_AMBIENT+='''docker-compose -f {PROJECT_NAME}_production.yml stop
-docker-compose -f {PROJECT_NAME}_development.yml stop
-docker-compose -f {PROJECT_NAME}_production.yml down
-docker-compose -f {PROJECT_NAME}_development.yml down
+  MAKE_AMBIENT+='''docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml stop
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml stop
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml down
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml down
 docker system prune --force
-docker-compose -f {PROJECT_NAME}_production.yml build
-docker-compose -f {PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''.format(**DOCKER)
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml build
+docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''.format(**DOCKER)
 
   RUNSERVER_SCRIPT+='''
 python manage.py collectstatic --noinput
@@ -287,12 +299,6 @@ python manage.py compress --force
 gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
 	'''.format(**DOCKER)
 
-#########################################################################
-#cria arquivos requirements
-requirements=open('requirements.txt','w')
-for requirement in REQUIREMENTS:
-  requirements.write(requirement+'\n')
-requirements.close()
 
 ###########################################################################
 #Arquivo de configuração nginx
@@ -442,42 +448,50 @@ gulp.task('sass', function() {{
 gulp.task('default', ['serve']);
 '''.format(**DOCKER)
 ###########################################################################
+############################################################################
 #Criando arquivos
-dockerfile=open('{PROJECT_NAME}.Dockerfile'.format(**DOCKER),'w')
+dockerfile=open(folder_to_save+'{PROJECT_NAME}.Dockerfile'.format(**DOCKER),'w')
 dockerfile.write(DOCKERFILE)
 dockerfile.close()
 
 
-runserver=open('{RUNSERVER_SCRIPT_NAME}.sh'.format(**DOCKER),'w')
+runserver=open(folder_to_save+'{RUNSERVER_SCRIPT_NAME}.sh'.format(**DOCKER),'w')
 runserver.write(RUNSERVER_SCRIPT)
 runserver.close()
 
-dockercompose = open('{PROJECT_NAME}_development.yml'.format(**DOCKER),'w')
+dockercompose = open(folder_to_save+'{PROJECT_NAME}_development.yml'.format(**DOCKER),'w')
 dockercompose.write(DOCKERCOMPOSE_DEVELOPMENT)
 dockercompose.close()
 
-dockercompose = open('{PROJECT_NAME}_production.yml'.format(**DOCKER),'w')
+dockercompose = open(folder_to_save+'{PROJECT_NAME}_production.yml'.format(**DOCKER),'w')
 dockercompose.write(DOCKERCOMPOSE_PRODUCTION)
 dockercompose.close()
 
-makeambient=open('make_ambient.sh','w')
+makeambient=open(folder_to_save+'make_ambient.sh','w')
 makeambient.write(MAKE_AMBIENT)
 makeambient.close()
 
 
-nginxconf = open('nginx.conf','w')
+nginxconf = open(folder_to_save+'nginx.conf','w')
 nginxconf.write(NGINX_CONF)
 nginxconf.close()
 
-brosersync = open('browsersync.Dockerfile','w')
+brosersync = open(folder_to_save+'browsersync.Dockerfile','w')
 brosersync.write(BROWSERSYNC_DOCKERFILE)
 brosersync.close()
 
-gulpfile = open('gulpfile.js','w')
+gulpfile = open(folder_to_save+'gulpfile.js','w')
 gulpfile.write(GULPFILE)
 gulpfile.close()
 
-gulpfile = open('gulp.sh','w')
+gulpfile = open(folder_to_save+'gulp.sh','w')
 gulpfile.write(GULPSH)
 gulpfile.close()
+
+#########################################################################
+#cria arquivos requirements
+requirements=open(folder_to_save+'requirements.txt','w')
+for requirement in REQUIREMENTS:
+  requirements.write(requirement+'\n')
+requirements.close()
 

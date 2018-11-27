@@ -5,6 +5,7 @@ databases/
 logs/
 media/
 nginx/
+node_modules/
 
 
 

@@ -64,7 +64,7 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	echo "Ambiente: "${machine}" Arquivos criados"
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	echo "Executing..."
-	bash make_ambient.sh
+	bash djd_data/make_ambient.sh
 elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
 	docker stop $(docker ps -a -q)
 	docker system prune --force
@@ -91,10 +91,10 @@ elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-	rm -rf ./__pycache__ ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt gulp*
+	rm -rf ./__pycache__ ./djd_data
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-	rm -rf ./logs ./media ./nginx ./__pycache__ ./static ./*.Dockerfile ./*.yml ./make_ambient.sh ./runserver.sh ./requirements.txt gulp*
+	rm -rf ./logs ./media ./__pycache__ ./static ./djd_data
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
 	rm -rf $(find . -name '__pycache__')
