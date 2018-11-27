@@ -6,15 +6,19 @@ logs/
 media/
 nginx/
 node_modules/
+djd_data/
+static/
 
+django_docker_example/wait-for-it.sh
 
-
+*.lock
+*.json
 *.txt
 *.yml
 *.Dockerfile
 runserver.sh
 make_ambient.sh
-guklp.sh
+gulp.sh
 gulpfile.js
 
 ### Django ###
