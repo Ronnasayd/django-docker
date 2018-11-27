@@ -112,7 +112,7 @@ elif [ "$1" = "--show-img" -o "$1" = "-si" ];then
 elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
 	docker rmi $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
-	COMPOSE_HTTP_TIMEOUT=200 docker-compose -f $(ls *development.yml) up
+	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls *development.yml) up
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi
