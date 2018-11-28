@@ -8,6 +8,7 @@ MEDIA_ROOT='/media-data'
 LOGS_ROOT='/logs-data'
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = dir_path.replace("\\","/")
 folder_to_save = 'djd_data/'
 
 if not os.path.exists(folder_to_save):
@@ -417,7 +418,7 @@ gulp.task('serve', ['sass'], function() {{
     browserSync.init({{
         proxy: {{
           target: "http://web:{WEB_PORT}",
-          ws: true
+          ws: true,
         }}
     }});
 
