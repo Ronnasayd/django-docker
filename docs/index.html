@@ -1,25 +1,24 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
-<head>
+<!-- saved from url=(0017)http://localhost/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Django Docker</title>
 	  <!-- Required meta tags -->
-    <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}" />
-	<link rel="stylesheet" href="{% static 'djdcss/reset.css' %}">
-	<link rel="stylesheet" href="{% static 'djdcss/main.css' %}">
+	<link rel="stylesheet" href="./index_files/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link href="./index_files/css" rel="stylesheet">
+	<link rel="stylesheet" href="./index_files/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link rel="shortcut icon" type="image/x-icon" href="http://localhost/static/images/icons/favicon.ico">
+	<link rel="stylesheet" href="./index_files/reset.css">
+	<link rel="stylesheet" href="./index_files/main.css">
 </head>
 <body>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 background">
-			<div class="painel">
+			<div class="painel" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
 				<div class="row">
 					<div class="col-4">
 						<a href="https://github.com/Ronnasayd/django-docker/archive/master.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
@@ -27,7 +26,7 @@
 				</div>
 				<div class="row logo">
 					<div class="col-12">
-						<img class="logo-img" src="{% static 'images/django-docker.png' %}" alt="django docker logo">
+						<img class="logo-img" src="./index_files/django-docker.png" alt="django docker logo">
 					</div>
 				</div>
 				<div class="row title-description">
@@ -43,51 +42,51 @@
 					<div class="col-12">
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 						  <div class="carousel-inner">
-						    <div class="carousel-item active text-center">
-						      <a href="https://www.docker.com/" target="_blank"><img class="carousel-img" src="{% static 'images/tecnologias/docker.png' %}" alt="First slide"></a>
+						    <div class="carousel-item text-center">
+						      <a href="https://www.docker.com/" target="_blank"><img class="carousel-img" src="./index_files/docker.png" alt="First slide"></a>
 						      <h1 class="carousel-item-element">Docker</h1>
 						    </div>
 						    <div class="carousel-item text-center">
 						    <a href="https://www.djangoproject.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/django.png' %}" alt="Second slide"></a>
+						      <img class="carousel-img" src="./index_files/django.png" alt="Second slide"></a>
 						      <h1 class="carousel-item-element">Django</h1>
 						    </div>
-						    <div class="carousel-item text-center">
+						    <div class="carousel-item text-center active">
 						    <a href="https://gulpjs.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/gulp.png' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/gulp.png" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Gulp</h1>
 						    </div>
 						    <div class="carousel-item text-center">
 						    	<a href="https://browsersync.io/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/browsersync.png' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/browsersync.png" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Browsersync</h1>
 						    </div>
 						     <div class="carousel-item text-center">
 						     	<a href="https://docs.docker.com/compose/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/docker-compose.png' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/docker-compose.png" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Docker Compose</h1>
 						    </div>
 						     <div class="carousel-item text-center">
 						     	<a href="https://sass-lang.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/sass.svg' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/sass.svg" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Sass</h1>
 						    </div>
 						    <div class="carousel-item text-center">
 						    	<a href="https://gunicorn.org/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/gurnicon.png' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/gurnicon.png" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Gurnicon</h1>
 						    </div>
 						    <div class="carousel-item text-center">
 						    	<a href="https://www.nginx.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'images/tecnologias/nginx.png' %}" alt="Third slide"></a>
+						      <img class="carousel-img" src="./index_files/nginx.png" alt="Third slide"></a>
 						      <h1 class="carousel-item-element">Nginx</h1>
 						    </div>
 						  </div>
-						  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+						  <a class="carousel-control-prev" href="http://localhost/#carouselExampleControls" role="button" data-slide="prev">
 						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
 						    <span class="sr-only">Previous</span>
 						  </a>
-						  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+						  <a class="carousel-control-next" href="http://localhost/#carouselExampleControls" role="button" data-slide="next">
 						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 						    <span class="sr-only">Next</span>
 						  </a>
@@ -102,10 +101,10 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
-<script src="{% static 'djdminjs/main.min.js'%}"></script>
-</body>
-</html>
+<script src="./index_files/jquery-3.3.1.min.js"></script>
+<script src="./index_files/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="./index_files/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="./index_files/hammer.min.js"></script>
+<script src="./index_files/main.min.js"></script>
+
+</body></html>

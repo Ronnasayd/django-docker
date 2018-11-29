@@ -1,0 +1,91 @@
+.title, .description {
+  text-align: center;
+  color: white;
+  word-wrap: break-word; }
+
+body {
+  font-family: 'Open Sans', sans-serif; }
+
+.background {
+  height: 100vh;
+  background-image: url("../images/4.jpg");
+  background-repeat: no-repeat;
+  background-position: right top;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-right: 0px;
+  padding-left: 0px; }
+
+.painel {
+  width: 97vw;
+  height: 95vh;
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+  margin-left: 1.5vw;
+  margin-right: 1.5vw;
+  background-color: rgba(0, 0, 0, 0.55); }
+
+.logo-img {
+  max-width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 4%; }
+  @media (max-width: 720px) {
+    .logo-img {
+      padding-top: 10%; } }
+
+.title {
+  font-weight: bold;
+  font-size: 40px; }
+
+.description {
+  font-weight: bold;
+  font-size: 19.2px;
+  padding-top: 7.5px; }
+
+.tecnologias {
+  font-weight: bold;
+  font-size: 32px;
+  padding-top: 10vh;
+  color: rgba(255, 255, 255, 0.5); }
+  @media (max-width: 720px) {
+    .tecnologias {
+      padding-top: 4vh;
+      padding-right: 15vw;
+      padding-left: 15vw;
+      font-size: 22.4px; } }
+
+.carousel-img {
+  max-height: 27vh; }
+
+.slide {
+  padding-top: 20px; }
+  @media (max-width: 720px) {
+    .slide {
+      padding-top: 5px; } }
+
+.carousel-item-title {
+  color: white; }
+
+.carousel-item-description {
+  color: white; }
+
+.download-button {
+  background-color: #039bc6;
+  border-color: #039bc6;
+  position: relative;
+  top: 7px;
+  left: 7px;
+  font-weight: bold; }
+  .download-button:hover {
+    background-color: #0387ad;
+    border-color: #0387ad; }
+
+.carousel-item-element {
+  color: white;
+  font-weight: bold;
+  font-size: 20.8px;
+  height: 4vh; }

@@ -453,7 +453,11 @@ gulp.task('serve', ['sass','js'], function() {{
 
 gulp.task('js',function(){{
     return gulp.src(["**/**/static/{JS_FOLDERS}/*.js","!gulpfile.js",'!node_modules/**'])
-    .pipe(uglify())
+    .pipe(uglify()).on('error',function(err){{
+            console.log(err.message);
+            browserSync.notify(err.message, 3000); // Display error in the browser
+            this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
+     }})
     .pipe(rename(function(file){{
             file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
             file.extname = ".min.js"
