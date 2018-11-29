@@ -17,10 +17,14 @@ else:
   shutil.rmtree(folder_to_save)
   os.makedirs(folder_to_save)
 
+if DATABASE_EXTERNAL:
+  WEB_ENVIROMENT['DATABASE_HOST']=DATABASE_HOST_EXTERNAL
+else:
+  WEB_ENVIROMENT['DATABASE_HOST']=DATABASE_IMAGE
+
 WEB_ENVIROMENT['DEBUG']=str(DEBUG)
 WEB_ENVIROMENT['STATIC_ROOT']=STATIC_ROOT
 WEB_ENVIROMENT['MEDIA_ROOT']=MEDIA_ROOT
-WEB_ENVIROMENT['DATABASE_HOST']=DATABASE
 WEB_ENVIROMENT['DATABASE_PORT']=DATABASE_PORT
 WEB_ENVIROMENT['DATABASE_NAME'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_VALUE']
 WEB_ENVIROMENT['DATABASE_USER'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VALUE']
@@ -44,13 +48,14 @@ DOCKER={
 	'STATIC_ROOT':STATIC_ROOT,
   'MEDIA_ROOT':MEDIA_ROOT,
 	'WEB_PORT':WEB_PORT,
-	'DATABASE':DATABASE,
+	'DATABASE':DATABASE_IMAGE,
 	'WEB_ENVIROMENT':WEB_ENVIROMENT,
 #	'DATABASE_ROOT_SOURCE':DATABASE_ROOT['SOURCE'],
 	'DATABASE_ROOT_DESTINATION':DATABASE_ROOT['DESTINATION'],
 	'LOGS_ROOT':LOGS_ROOT,
   'DOCKER_COMPOSE_VERSION':DOCKER_COMPOSE_VERSION,
   'PYTHON_VERSION':PYTHON_VERSION,
+  'DATABASE_HOST':WEB_ENVIROMENT['DATABASE_HOST'],
   'DATABASE_DB_NAME':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],
   'DATABASE_USER_NAME':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_NAME'],
   'DATABASE_PASSWORD_NAME':DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_NAME'],
@@ -67,12 +72,17 @@ DOCKER={
   'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1]
 }
 ########################################################################
-DEPENDS_ON='''depends_on:
-   - {DATABASE}
- '''.format(**DOCKER)
+# DEPENDS_ON='''depends_on:
+#    - {DATABASE}
+#  '''.format(**DOCKER)
+DEPENDS_ON='''depends_on:'''
+if not DATABASE_EXTERNAL:
+  DEPENDS_ON+='''
+   - {DATABASE}'''.format(**DOCKER) 
 if len(CONTAINERS) >= 1:
   for container in CONTAINERS:
-    DEPENDS_ON+='''  - {}'''.format(container)
+    DEPENDS_ON+='''
+   - {}'''.format(container)
 
 DOCKER['DEPENDS_ON']=DEPENDS_ON
 ##########################################################################
@@ -174,7 +184,7 @@ services:
   expose:
    - {WEB_PORT}
   working_dir: /{PROJECT_NAME}
-  command: ./wait-for-it.sh {DATABASE}:{DATABASE_PORT} --timeout=15 --strict -- /bin/bash {RUNSERVER_SCRIPT_NAME}.sh
+  command: ./wait-for-it.sh {DATABASE_HOST}:{DATABASE_PORT} --timeout=15 --strict -- /bin/bash {RUNSERVER_SCRIPT_NAME}.sh
   {DEPENDS_ON}
   {ENVIROMENT}
   stdin_open: true
@@ -210,15 +220,20 @@ DATABASE_BASE='''
    - {DATABASE_DB_NAME}={DATABASE_DB_VALUE}
    '''.format(**DOCKER)
 
-DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES_DEVELOPMENT + DATABASE_BASE
-DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + VOLUMES_PRODUCTION + DATABASE_BASE
+if not DATABASE_EXTERNAL:
+  DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES_DEVELOPMENT + DATABASE_BASE
+  DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + VOLUMES_PRODUCTION + DATABASE_BASE
+else:
+  DOCKERCOMPOSE_DEVELOPMENT = DOCKERCOMPOSE_BASE + VOLUMES_DEVELOPMENT 
+  DOCKERCOMPOSE_PRODUCTION = DOCKERCOMPOSE_BASE + VOLUMES_PRODUCTION 
 ##########################################################################
-if len(DATABASE_OTHERS_ENVIROMENTS) >= 1:
-  DOE=''
-  for key in DATABASE_OTHERS_ENVIROMENTS:
-    DOE+='''- {}={}'''.format(key,DATABASE_OTHERS_ENVIROMENTS[key])
-  DOCKERCOMPOSE_DEVELOPMENT+=DOE
-  DOCKERCOMPOSE_PRODUCTION+=DOE
+if not DATABASE_EXTERNAL:
+  if len(DATABASE_OTHERS_ENVIROMENTS) >= 1:
+    DOE=''
+    for key in DATABASE_OTHERS_ENVIROMENTS:
+      DOE+='''- {}={}'''.format(key,DATABASE_OTHERS_ENVIROMENTS[key])
+    DOCKERCOMPOSE_DEVELOPMENT+=DOE
+    DOCKERCOMPOSE_PRODUCTION+=DOE
 
 ###########################################################################
 # adiciona containers
@@ -500,17 +515,18 @@ nginxconf = open(folder_to_save+'nginx.conf','w')
 nginxconf.write(NGINX_CONF)
 nginxconf.close()
 
-brosersync = open(folder_to_save+'browsersync.Dockerfile','w')
-brosersync.write(BROWSERSYNC_DOCKERFILE)
-brosersync.close()
+if BROWSERSYNC_GULP_DEV_TOOLS:
+  brosersync = open(folder_to_save+'browsersync.Dockerfile','w')
+  brosersync.write(BROWSERSYNC_DOCKERFILE)
+  brosersync.close()
 
-gulpfile = open(folder_to_save+'gulpfile.js','w')
-gulpfile.write(GULPFILE)
-gulpfile.close()
+  gulpfile = open(folder_to_save+'gulpfile.js','w')
+  gulpfile.write(GULPFILE)
+  gulpfile.close()
 
-gulpfile = open(folder_to_save+'gulp.sh','w')
-gulpfile.write(GULPSH)
-gulpfile.close()
+  gulpfile = open(folder_to_save+'gulp.sh','w')
+  gulpfile.write(GULPSH)
+  gulpfile.close()
 
 #########################################################################
 #cria arquivos requirements
