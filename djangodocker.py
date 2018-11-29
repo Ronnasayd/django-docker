@@ -123,20 +123,30 @@ BROWSERSYNC_DOCKERFILE='''
 FROM node
 RUN set -ex && apt-get update
 RUN set -ex && npm install -g yarn
+RUN set -ex && yarn global add gulp-cli
+RUN set -ex && yarn global add browser-sync
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
 '''.format(**DOCKER)
 #################################################################
 GULPSH = '''
-yarn global add gulp-cli
-yarn add gulp
-yarn add node-sass
-yarn add browser-sync
-yarn add gulp-sass
-yarn add gulp-rename
-yarn add gulp-autoprefixer
-yarn add gulp-uglify
-gulp
+#!/bin/bash
+file="./package.json"
+if [ ! -f "$file" ]
+then
+  yarn add gulp
+  yarn add node-sass
+  yarn add browser-sync
+  yarn add gulp-sass
+  yarn add gulp-rename
+  yarn add gulp-autoprefixer
+  yarn add gulp-uglify
+  yarn add gulp-sourcemaps
+  gulp
+else
+  yarn
+  gulp
+fi
 '''
 #################################################################
 #browse-sync compose
@@ -431,6 +441,7 @@ var sass        = require('gulp-sass');
 var rename      = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass','js'], function() {{
@@ -444,31 +455,33 @@ gulp.task('serve', ['sass','js'], function() {{
         }}
     }});
 
-    gulp.watch("**/**/static/{SCSS_FOLDERS}/*.scss", ['sass']);
-    gulp.watch("**/**/static/{JS_FOLDERS}/*.js", ['js']);
+    gulp.watch("**/**/static/{SCSS_FOLDERS}/**/*.scss", ['sass']);
+    gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("**/*.css").on('change', browserSync.reload);
     gulp.watch("**/*.js").on('change', browserSync.reload);
 }});
 
 gulp.task('js',function(){{
-    return gulp.src(["**/**/static/{JS_FOLDERS}/*.js","!gulpfile.js",'!node_modules/**'])
+    return gulp.src(["**/**/static/{JS_FOLDERS}/**/*.js","!gulpfile.js",'!node_modules/**'])
+    .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
+            file.extname = ".min.js"
+    }}))
+    .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
             browserSync.notify(err.message, 3000); // Display error in the browser
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
      }})
-    .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
-            file.extname = ".min.js"
-    }}))
+    .pipe(sourcemaps.write())
     .pipe(gulp.dest("."))
 }});
 
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {{
-    return gulp.src(["**/**/static/{SCSS_FOLDERS}/*.scss",'!node_modules/**'])
+    return gulp.src(["**/**/static/{SCSS_FOLDERS}/**/*.scss",'!node_modules/**'])
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
