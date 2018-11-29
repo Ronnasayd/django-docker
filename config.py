@@ -1,6 +1,6 @@
 # version Beta 0.0.0.3
 
-DEBUG=False
+DEBUG=True
 
 BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
 
