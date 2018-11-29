@@ -27,19 +27,14 @@ WEB_ENVIROMENT['DATABASE_USER'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_VA
 WEB_ENVIROMENT['DATABASE_PASSWORD'] = DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_VALUE']
 WEB_ENVIROMENT['STATIC_URL']='/static/'
 WEB_ENVIROMENT['MEDIA_URL']='/media/'
-WEB_ENVIROMENT['DJANGO_DOCKER_APPS']="compressor,cssmin,jsmin"
+
 RUNSERVER_SCRIPT_NAME='runserver'
 
 REQUIREMENTS+=[
 'django',
 'gunicorn',
 'python-decouple',
-'django_compressor',
-'cssmin',
-'jsmin',
-
 ] # adiciona django e gunicorn a requirements
-
 #######################################################################
 # Dicionario base
 DOCKER={
@@ -65,7 +60,11 @@ DOCKER={
   'DATABASE_PORT':DATABASE_PORT,
   'NETWORK_NAME':NETWORK_NAME,
   'FOLDER_NAME':folder_to_save,
-  'DIR_PATH':dir_path
+  'DIR_PATH':dir_path,
+  'SCSS_FOLDERS':SCSS_TO_CSS_FOLDERS[0],
+  'CSS_FOLDERS':SCSS_TO_CSS_FOLDERS[1],
+  'JS_FOLDERS':JS_TO_JSMIN_FOLDERS[0],
+  'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1]
 }
 ########################################################################
 DEPENDS_ON='''depends_on:
@@ -125,6 +124,8 @@ yarn add node-sass
 yarn add browser-sync
 yarn add gulp-sass
 yarn add gulp-rename
+yarn add gulp-autoprefixer
+yarn add gulp-uglify
 gulp
 '''
 #################################################################
@@ -267,7 +268,10 @@ NGINX='''
    - 80:{WEB_PORT}
   '''.format(**DOCKER)
 #############################################################################
-DOCKERCOMPOSE_DEVELOPMENT +=BROWSER_SYNC_DOCKERCOMPOSE+NETWORK
+if BROWSERSYNC_GULP_DEV_TOOLS:
+  DOCKERCOMPOSE_DEVELOPMENT +=BROWSER_SYNC_DOCKERCOMPOSE+NETWORK
+else:
+  DOCKERCOMPOSE_DEVELOPMENT +=NETWORK
 DOCKERCOMPOSE_PRODUCTION +=NGINX+NETWORK
 #############################################################################
 # Verifica modo produção ou desenvolvimento
@@ -410,27 +414,42 @@ var gulp        = require('gulp');
 var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
 var rename      = require('gulp-rename');
+var autoprefixer = require('gulp-autoprefixer');
+var uglify = require('gulp-uglify');
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass'], function() {{
+gulp.task('serve', ['sass','js'], function() {{
 
    
     browserSync.init({{
+        open: false,
         proxy: {{
           target: "http://web:{WEB_PORT}",
           ws: true,
         }}
     }});
 
-    gulp.watch("**/*.scss", ['sass']);
+    gulp.watch("**/**/static/{SCSS_FOLDERS}/*.scss", ['sass']);
+    gulp.watch("**/**/static/{JS_FOLDERS}/*.js", ['js']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("**/*.css").on('change', browserSync.reload);
     gulp.watch("**/*.js").on('change', browserSync.reload);
 }});
 
+gulp.task('js',function(){{
+    return gulp.src(["**/**/static/{JS_FOLDERS}/*.js","!gulpfile.js",'!node_modules/**'])
+    .pipe(uglify())
+    .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
+            file.extname = ".min.js"
+    }}))
+    .pipe(gulp.dest("."))
+}});
+
+
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {{
-    return gulp.src(["**/*.scss",'!node_modules/**'])
+    return gulp.src(["**/**/static/{SCSS_FOLDERS}/*.scss",'!node_modules/**'])
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
@@ -440,7 +459,11 @@ gulp.task('sass', function() {{
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
         }}))
         .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('scss','css');
+            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
+        }}))
+        .pipe(autoprefixer({{
+            browsers: ['last 100 versions'],
+            cascade: false
         }}))
         .pipe(gulp.dest("."))
         .pipe(browserSync.stream());

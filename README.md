@@ -42,29 +42,7 @@ In your **settings.py** file modify or add the following lines of code to the va
             'PASSWORD': config('DATABASE_PASSWORD')
         }
     }
-    
-    INSTALLED_APPS = [
-        'django.contrib.admin',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        ...
         
-    ]+config('DJANGO_DOCKER_APPS', cast=lambda v: [s.strip() for s in v.split(',')])
-    
-    
-    STATICFILES_FINDERS = (
-        'django.contrib.staticfiles.finders.FileSystemFinder',
-        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-        ...
-        'compressor.finders.CompressorFinder',
-    )
-    
-    COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
-    COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]   
-    
     
     ## OPTIONAL CODE IF YOU WILL USE REDIS TO CACHE
     CACHES = {

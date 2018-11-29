@@ -65,21 +65,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_docker_app',
 
-]+config('DJANGO_DOCKER_APPS', cast=lambda v: [s.strip() for s in v.split(',')])
-
-ALLOWED_HOSTS = ['*']
-
-
-
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
 ]
 
-COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
-COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]     
-
+ALLOWED_HOSTS = ['*']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

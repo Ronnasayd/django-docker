@@ -1,6 +1,13 @@
-# version Beta 0.0.0.2
+# version Beta 0.0.0.3
 
 DEBUG=True
+
+BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
+
+# folder to use in developer mode
+SCSS_TO_CSS_FOLDERS=["djdscss","djdcss"]
+JS_TO_JSMIN_FOLDERS=["djdjs","djdminjs"]
+
 
 REQUIREMENTS=[
 	'channels',
@@ -115,28 +122,6 @@ NETWORK_NAME='network_django_docker_example'
 #         'PASSWORD': config('DATABASE_PASSWORD')
 #     }
 # }
-
-# INSTALLED_APPS = [
-#     'django.contrib.admin',
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     ...
-    
-# ]+config('DJANGO_DOCKER_APPS', cast=lambda v: [s.strip() for s in v.split(',')])
-
-
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-# 	   ...
-#     'compressor.finders.CompressorFinder',
-# )
-
-# COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
-# COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]   
 
 
 # ## OPTIONAL CODE IF YOU WILL USE REDIS TO CACHE
