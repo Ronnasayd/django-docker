@@ -456,11 +456,20 @@ gulp.task('serve', ['sass','js'], function() {{
     }});
 
     gulp.watch("**/**/static/{SCSS_FOLDERS}/**/*.scss", ['sass']);
-    gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js']);
+    gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js-watch']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("**/*.css").on('change', browserSync.reload);
-    gulp.watch("**/*.js").on('change', browserSync.reload);
+    gulp.watch(["**/*.js","!**/**/static/{JS_FOLDERS}/**/*.js","!**/**/static/{JSMIN_FOLDERS}/**/*.js"]).on('change', browserSync.reload);
 }});
+
+
+// create a task that ensures the `js` task is complete before
+// reloading browsers
+gulp.task('js-watch', ['js'], function (done) {{
+    browserSync.reload();
+    done();
+}});
+
 
 gulp.task('js',function(){{
     return gulp.src(["**/**/static/{JS_FOLDERS}/**/*.js","!gulpfile.js",'!node_modules/**'])
