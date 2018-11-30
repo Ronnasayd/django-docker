@@ -1,0 +1,141 @@
+$painel-width:97vw;
+$painel-height:95vh;
+$logo-max-width:250px;
+$text-color:#fff0f0;
+$default-color:#039bc6;
+
+
+
+%align-color{
+	text-align: center;
+	color:$text-color;
+	word-wrap: break-word;
+}
+
+body{
+	font-family: 'Open Sans', sans-serif;
+}
+
+.background{
+	height: 100vh;
+	background-image: url('../dd_images/4.jpg');
+	background-repeat: no-repeat;
+	background-position: right top;
+	background-size: cover;
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.painel{
+	$painel-color:black;
+	width: $painel-width;
+	height: $painel-height;
+	margin-top: (100-$painel-height)/2;
+	margin-bottom: (100-$painel-height)/2;
+	margin-left: (100-$painel-width)/2;
+	margin-right: (100-$painel-width)/2;
+	background-color: rgba($painel-color,0.55);
+}
+.logo-img{
+	max-width: $logo-max-width;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4%;
+    @media(max-width: 720px){
+    	padding-top: 10%;
+    	@media (orientation:landscape){
+    		padding-top: 0vh;
+    		max-width: $logo-max-width*0.85;
+    	}
+    }
+ 
+}
+.title{
+	text-shadow: 3px 3px rgba(0,0,0,0.5);
+	@extend %align-color;
+	font-weight: bold;
+	font-size: 2.5*16px;
+}
+.description{
+	text-shadow: 3px 3px rgba(0,0,0,0.5);
+	@extend %align-color;
+	font-weight: bold;
+	font-size: 2*16px;
+	padding-top: 7.5px;
+	padding-left: 5vw;
+	padding-right: 5vw;
+	@media(max-width: 750px){
+		font-size: 1.2*16px;
+	}
+
+}
+.tecnologias{
+	font-weight: bold;
+	font-size: 2*16px;
+	padding-top: 5vh;
+	color: rgba(white,0.5);
+	text-shadow: 3px 3px rgba(0,0,0,0.5);
+	@media (max-width: 720px){
+		padding-top: 4vh;
+		padding-right: 15vw;
+		padding-left: 15vw;
+		font-size: 1.4*16px;
+		@media (orientation:landscape){
+			display: none;
+			}
+	}
+
+}
+.carousel-img{
+	max-height: 27vh;	
+}
+
+
+.slide{
+	padding-top: 15px;
+	@media (max-width: 720px){
+		padding-top: 5px;
+	}
+}
+
+
+
+.download-button{
+	border-radius: 5px;
+	background-color: $default-color;
+	border-color: $default-color;
+	position: relative;
+	top:7px;
+	left:7px;
+	font-weight: bold;
+	box-shadow: 2.5px 2.5px rgba(0,0,0,0.3);
+	text-shadow: 2px 2px rgba(0,0,0,0.3);
+	&:hover{
+		background-color: darken($default-color, 5%);
+		border-color: darken($default-color,5%);
+
+	}
+	&:active{
+		background-color: darken($default-color, 5%) !important;
+		border-color: darken($default-color,5%) !important;
+	}
+	&:focus{
+		box-shadow: 2.5px 2.5px rgba(0,0,0,0.3);
+	}
+}
+
+.carousel-item-element{
+	color:$text-color;
+	font-weight: bold;
+	font-size: 1.3*16px;
+	height: 4vh;
+	text-shadow: 3px 3px rgba(0,0,0,0.5);
+	@media (max-width: 750px){
+		@media (orientation:landscape){
+			display: none;
+		}
+	}
+
+}
+
+
