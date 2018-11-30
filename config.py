@@ -7,6 +7,7 @@ BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev to
 # folder to use in developer mode
 SCSS_TO_CSS_FOLDERS=["djdscss","djdcss"]
 JS_TO_JSMIN_FOLDERS=["djdjs","djdminjs"]
+IMAGE_TO_IMAGEMIN_FOLDERS=["djdimages","djdimagesmin"]
 
 
 REQUIREMENTS=[

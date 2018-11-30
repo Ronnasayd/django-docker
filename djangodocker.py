@@ -69,7 +69,9 @@ DOCKER={
   'SCSS_FOLDERS':SCSS_TO_CSS_FOLDERS[0],
   'CSS_FOLDERS':SCSS_TO_CSS_FOLDERS[1],
   'JS_FOLDERS':JS_TO_JSMIN_FOLDERS[0],
-  'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1]
+  'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1],
+  'IMAGE_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[0],
+  'IMAGEMIN_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[1],
 }
 ########################################################################
 # DEPENDS_ON='''depends_on:
@@ -142,6 +144,7 @@ then
   yarn add gulp-autoprefixer
   yarn add gulp-uglify
   yarn add gulp-sourcemaps
+  yarn add gulp-imagemin
   gulp
 else
   yarn
@@ -442,9 +445,10 @@ var rename      = require('gulp-rename');
 var autoprefixer = require('gulp-autoprefixer');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
+var imagemin = require('gulp-imagemin');
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass','js'], function() {{
+gulp.task('serve', ['sass','js','imagemin'], function() {{
 
    
     browserSync.init({{
@@ -457,6 +461,7 @@ gulp.task('serve', ['sass','js'], function() {{
 
     gulp.watch("**/**/static/{SCSS_FOLDERS}/**/*.scss", ['sass']);
     gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js-watch']);
+    gulp.watch("**/**/static/{IMAGE_FOLDERS}/**/*", ['image-watch']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("**/*.css").on('change', browserSync.reload);
     gulp.watch(["**/*.js","!**/**/static/{JS_FOLDERS}/**/*.js","!**/**/static/{JSMIN_FOLDERS}/**/*.js"]).on('change', browserSync.reload);
@@ -469,6 +474,12 @@ gulp.task('js-watch', ['js'], function (done) {{
     browserSync.reload();
     done();
 }});
+
+gulp.task('image-watch', ['imagemin'], function (done) {{
+    browserSync.reload();
+    done();
+}});
+
 
 
 gulp.task('js',function(){{
@@ -485,6 +496,15 @@ gulp.task('js',function(){{
      }})
     .pipe(sourcemaps.write())
     .pipe(gulp.dest("."))
+}});
+
+gulp.task('imagemin',function(){{
+  return gulp.src(["**/**/static/{IMAGE_FOLDERS}/**/*"])
+  .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{IMAGE_FOLDERS}','{IMAGEMIN_FOLDERS}');
+  }}))
+  .pipe(imagemin())
+  .pipe(gulp.dest("."))
 }});
 
 
