@@ -71,7 +71,7 @@ DOCKER={
   'JS_FOLDERS':JS_TO_JSMIN_FOLDERS[0],
   'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1],
   'IMAGE_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[0],
-  'IMAGEMIN_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[1],
+  'IMAGEMIN_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[1]
 }
 ########################################################################
 # DEPENDS_ON='''depends_on:
@@ -493,6 +493,7 @@ gulp.task('js',function(){{
     .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
+            console.log(err.cause);
             browserSync.notify(err.message, 3000); // Display error in the browser
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
      }})
@@ -504,8 +505,8 @@ gulp.task('imagemin',function(){{
   return gulp.src(["**/**/static/{IMAGE_FOLDERS}/**/*"])
   .pipe(rename(function(file){{
             file.dirname = file.dirname.replace('{IMAGE_FOLDERS}','{IMAGEMIN_FOLDERS}');
-  }}))
-  .pipe(imagemin())
+   }}))
+  .pipe(imagemin({{verbose:true}}))
   .pipe(gulp.dest("."))
 }});
 
@@ -513,21 +514,24 @@ gulp.task('imagemin',function(){{
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {{
     return gulp.src(["**/**/static/{SCSS_FOLDERS}/**/*.scss",'!node_modules/**'])
+        .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
+        }}))
+        .pipe(sourcemaps.init())
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
+            outputStyle: 'compressed'
         }}).on('error',function(err){{
             console.log(err.message);
             browserSync.notify(err.message, 3000); // Display error in the browser
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
         }}))
-        .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
-        }}))
         .pipe(autoprefixer({{
             browsers: ['last 100 versions'],
             cascade: false
         }}))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest("."))
         .pipe(browserSync.stream());
 }});

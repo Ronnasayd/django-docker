@@ -27,6 +27,7 @@ Options:
 	--show-img, -si: Show the docker images
 	--clear-img, -ci: Clear a specific docker image for image_id
 	--attach, -att: Attach to a runing dev ambient
+	--restart, -res: Restart a container
 
 Examples:
 	$0 --run
@@ -50,15 +51,16 @@ Examples:
 	$0 --show-img
 	$0 --clear-img 627c27fc5060
 	$0 --attach
+	$0 --restart web
 	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	unameOut="$(uname -s)"
 	case "${unameOut}" in
-	    Linux*)     machine=Linux && python3 djangodocker.py;;
-	    Darwin*)    machine=Mac && python3 djangodocker.py;;
-	    CYGWIN*)    machine=Cygwin && python djangodocker.py;;
-	    MINGW*)     machine=MinGw && python djangodocker.py;;
+	    Linux*)     machine=Linux && python3 pydd.py;;
+	    Darwin*)    machine=Mac && python3 pydd.py;;
+	    CYGWIN*)    machine=Cygwin && python pydd.py;;
+	    MINGW*)     machine=MinGw && python pydd.py;;
 	    *)          machine="UNKNOWN:${unameOut}"
 	esac
 	echo "Ambiente: "${machine}" Arquivos criados"
@@ -111,6 +113,8 @@ elif [ "$1" = "--show-img" -o "$1" = "-si" ];then
 	docker images
 elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
 	docker rmi $2
+elif [ "$1" = "--restart" -o "$1" = "-res" ];then
+	docker container restart $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
 	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls djd_data/*development.yml) up
 else 
