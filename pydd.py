@@ -70,8 +70,7 @@ DOCKER={
   'CSS_FOLDERS':SCSS_TO_CSS_FOLDERS[1],
   'JS_FOLDERS':JS_TO_JSMIN_FOLDERS[0],
   'JSMIN_FOLDERS':JS_TO_JSMIN_FOLDERS[1],
-  'IMAGE_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[0],
-  'IMAGEMIN_FOLDERS':IMAGE_TO_IMAGEMIN_FOLDERS[1]
+  'IMAGE_FOLDERS':IMAGEMIN_FOLDERS[0],
 }
 ########################################################################
 # DEPENDS_ON='''depends_on:
@@ -368,7 +367,7 @@ http {{
     gzip_http_version 1.0;
     gzip_proxied      any;
     gzip_min_length   500;
-    gzip_disable      "MSIE [1-6]\.";
+    gzip_disable      "MSIE [1-6]\\.";
     gzip_types        text/plain text/xml text/css
                       text/comma-separated-values
                       text/javascript
@@ -450,7 +449,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var imagemin = require('gulp-imagemin');
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['sass','js','imagemin'], function() {{
+gulp.task('serve', ['sass','js'], function() {{
 
    
     browserSync.init({{
@@ -463,7 +462,6 @@ gulp.task('serve', ['sass','js','imagemin'], function() {{
 
     gulp.watch("**/**/static/{SCSS_FOLDERS}/**/*.scss", ['sass']);
     gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js-watch']);
-    gulp.watch("**/**/static/{IMAGE_FOLDERS}/**/*", ['image-watch']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("**/*.css").on('change', browserSync.reload);
     gulp.watch(["**/*.js","!**/**/static/{JS_FOLDERS}/**/*.js","!**/**/static/{JSMIN_FOLDERS}/**/*.js"]).on('change', browserSync.reload);
@@ -476,12 +474,6 @@ gulp.task('js-watch', ['js'], function (done) {{
     browserSync.reload();
     done();
 }});
-
-gulp.task('image-watch', ['imagemin'], function (done) {{
-    browserSync.reload();
-    done();
-}});
-
 
 
 gulp.task('js',function(){{
@@ -503,9 +495,6 @@ gulp.task('js',function(){{
 
 gulp.task('imagemin',function(){{
   return gulp.src(["**/**/static/{IMAGE_FOLDERS}/**/*"])
-  .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{IMAGE_FOLDERS}','{IMAGEMIN_FOLDERS}');
-   }}))
   .pipe(imagemin({{verbose:true}}))
   .pipe(gulp.dest("."))
 }});

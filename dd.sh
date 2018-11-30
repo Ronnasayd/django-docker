@@ -28,6 +28,7 @@ Options:
 	--clear-img, -ci: Clear a specific docker image for image_id
 	--attach, -att: Attach to a runing dev ambient
 	--restart, -res: Restart a container
+	--minify-img, -mimg: Minify images in selected folder
 
 Examples:
 	$0 --run
@@ -52,6 +53,7 @@ Examples:
 	$0 --clear-img 627c27fc5060
 	$0 --attach
 	$0 --restart web
+	$0 --minify-img
 	"
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -83,6 +85,8 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
 	docker exec -ti $2 $3
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
 	docker exec -ti web python manage.py createsuperuser
+elif [ "$1" = "--minify-img" -o "$1" = "-mimg" ];then
+	docker exec -ti browsersync gulp imagemin
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
 	docker exec -ti web python manage.py makemigrations $2
 	docker exec -ti web python manage.py migrate $2
