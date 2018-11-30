@@ -129,6 +129,7 @@ RUN set -ex && yarn global add gulp-cli
 RUN set -ex && yarn global add browser-sync
 ADD ./{PROJECT_NAME} /{PROJECT_NAME}
 WORKDIR /{PROJECT_NAME}
+USER node
 '''.format(**DOCKER)
 #################################################################
 GULPSH = '''
@@ -275,6 +276,7 @@ cp {FOLDER_NAME}gulpfile.js ./{PROJECT_NAME}
 cp {FOLDER_NAME}gulp.sh ./{PROJECT_NAME}
 chmod +x ./wait-for-it.sh
 mkdir {FOLDER_NAME}nginx
+mkdir static/ media/ logs/
 mv {FOLDER_NAME}nginx.conf {FOLDER_NAME}nginx  
 '''.format(**DOCKER)
 #############################################################################
