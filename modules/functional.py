@@ -20,7 +20,10 @@ def path_join(list_of_paths):
 	for term in terms[:-1]:
 		new_path += term + '/'
 	new_path += terms[-1]
-	return new_path.replace('/..','..').replace('/.','.')
+	new_path = new_path.replace('/..','..').replace('/.','.')
+	for i in range(0,26):
+		new_path = new_path.replace('/'+chr(ord('A')+i)+':',chr(ord('A')+i)+':')
+	return new_path
 
 
 def save(path_to_save,filename,content):
