@@ -109,7 +109,6 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
 	rm -rf $(find . -name 'gulpfile.js')
 	rm -rf $(find . -name 'package.json')
 	rm -rf $(find . -name 'yarn.lock')
-	rm -rf $(find . -name 'wait-for-it.sh')
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
 	rm -rf $(find . -name '__pycache__')

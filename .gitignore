@@ -9,7 +9,6 @@ node_modules/
 djd_data/
 
 
-django_docker_example/wait-for-it.sh
 
 *.lock
 *.json
