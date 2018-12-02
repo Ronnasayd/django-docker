@@ -59,16 +59,16 @@ Examples:
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	unameOut="$(uname -s)"
 	case "${unameOut}" in
-	    Linux*)     machine=Linux && python3 pydd.py;;
-	    Darwin*)    machine=Mac && python3 pydd.py;;
-	    CYGWIN*)    machine=Cygwin && python pydd.py;;
-	    MINGW*)     machine=MinGw && python pydd.py;;
+	    Linux*)     machine=Linux && python3 ./pydd.py;;
+	    Darwin*)    machine=Mac && python3 ./pydd.py;;
+	    CYGWIN*)    machine=Cygwin && python ./pydd.py;;
+	    MINGW*)     machine=MinGw && python ./pydd.py;;
 	    *)          machine="UNKNOWN:${unameOut}"
 	esac
 	echo "Ambiente: "${machine}" Arquivos criados"
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	echo "Executing..."
-	bash djd_data/make_ambient.sh
+	bash dd_generated_files/make_ambient.sh
 elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
 	docker stop $(docker ps -a -q)
 	docker system prune --force
@@ -86,7 +86,7 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
 	docker exec -ti web python manage.py createsuperuser
 elif [ "$1" = "--minify-img" -o "$1" = "-mimg" ];then
-	docker exec -ti browsersync gulp imagemin
+	docker exec -ti node gulp imagemin
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
 	docker exec -ti web python manage.py makemigrations $2
 	docker exec -ti web python manage.py migrate $2
@@ -97,10 +97,10 @@ elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-	rm -rf ./__pycache__ ./djd_data
+	rm -rf ./__pycache__ ./dd_generated_files
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-	rm -rf ./logs ./media ./__pycache__ ./static ./djd_data
+	rm -rf ./logs ./media ./__pycache__ ./static ./dd_generated_files
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
 	rm -rf $(find . -name '__pycache__')
@@ -120,7 +120,7 @@ elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
 elif [ "$1" = "--restart" -o "$1" = "-res" ];then
 	docker container restart $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
-	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls djd_data/*development.yml) up
+	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls dd_generated_files/*development.yml) up
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

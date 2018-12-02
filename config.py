@@ -1,4 +1,7 @@
-# version Beta 0.0.0.3
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# version Beta 0.0.0.5
 
 DEBUG=True
 
@@ -30,8 +33,7 @@ WEB_COMMANDS_BUILD=[
 ]
 
 DATABASE_EXTERNAL=False
-DATABASE_HOST_EXTERNAL='put here your host (http://0.0.0.0:1234)'
-
+DATABASE_HOST_EXTERNAL= None #put here your host (http://0.0.0.0:1234) in string
 
 DATABASE_IMAGE='postgres'
 
@@ -42,7 +44,6 @@ DATABASE_IMAGE='postgres'
 # 		PASSWORD_NAME = POSTGRES_PASSWORD
 # 		DB_NAME = POSTGRES_DB
 
-# 		PGDATA = /tmp
 # 	MYSQL:
 # 		USER_NAME = MYSQL_USER
 # 		PASSWORD_NAME = MYSQL_PASSWORD
@@ -53,16 +54,19 @@ DATABASE_IMAGE='postgres'
 # 		USER_NAME = MONGO_INITDB_ROOT_USERNAME
 # 		PASSWORD_NAME = MONGO_INITDB_ROOT_PASSWORD
 # 		DB_NAME = ''
-
 DATABASE_DEFAULT_ENVIROMENTS={
-	'DATABASE_USER_VALUE':'django_docker_example_user',
+
+	'DATABASE_USER':'django_docker_example_user',
 	'DATABASE_USER_NAME':'POSTGRES_USER',
 
-	'DATABASE_PASSWORD_VALUE':'!TB2PGy%{PBd)q>E',
+	'DATABASE_PASSWORD':'!TB2PGy%{PBd)q>E',
 	'DATABASE_PASSWORD_NAME':'POSTGRES_PASSWORD',
 
-	'DATABASE_DB_VALUE':'django_docker_example_db',
+	'DATABASE_DB':'django_docker_example_db',
 	'DATABASE_DB_NAME':'POSTGRES_DB',
+
+	'DATABASE_PORT':'5432',
+	'DATABASE_HOST': (DATABASE_HOST_EXTERNAL or DATABASE_IMAGE),
 }
 
 
@@ -84,8 +88,6 @@ DATABASE_ROOT={
 # POSTGRES_PORT=5432
 # MYSQL_PORT=3306
 # MONGO_PORT=8081
-
-DATABASE_PORT='5432'
 WEB_PORT='8000'
 
 WEB_ENVIROMENT={
@@ -103,6 +105,13 @@ CONTAINERS=[
 DOCKER_COMPOSE_VERSION='3.5'
 
 NETWORK_NAME='network_django_docker_example'
+
+STATIC_ROOT='/static-data'
+MEDIA_ROOT='/media-data'
+LOGS_ROOT='/logs-data'
+
+FOLDER_TO_SAVE="dd_generated_files/"
+RUNSERVER_SCRIPT_NAME='runserver.sh'
 
 
 
