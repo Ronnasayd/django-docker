@@ -148,10 +148,6 @@ gulp.task('js-watch', ['js'], function (done) {{
 
 gulp.task('js',function(){{
     return gulp.src(["**/**/static/{JS_FOLDERS}/**/*.js","!gulpfile.js",'!node_modules/**'])
-    .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
-            file.extname = ".min.js"
-    }}))
     .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
@@ -159,6 +155,10 @@ gulp.task('js',function(){{
             browserSync.notify(err.message, 3000); // Display error in the browser
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
      }})
+    .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
+            file.extname = ".min.js"
+     }}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest("."))
 }});
@@ -173,9 +173,6 @@ gulp.task('imagemin',function(){{
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {{
     return gulp.src(["**/**/static/{SCSS_FOLDERS}/**/*.scss",'!node_modules/**'])
-        .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
-        }}))
         .pipe(sourcemaps.init())
         .pipe(sass({{
             errLogToConsole: true,
@@ -189,6 +186,9 @@ gulp.task('sass', function() {{
         .pipe(autoprefixer({{
             browsers: ['last 100 versions'],
             cascade: false
+        }}))
+        .pipe(rename(function(file){{
+            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
         }}))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("."))
