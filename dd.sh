@@ -97,10 +97,19 @@ elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-	rm -rf ./__pycache__ ./dd_generated_files
+	rm -rf ./logs ./media ./__pycache__ ./static ./dd_generated_files
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
 	rm -rf ./logs ./media ./__pycache__ ./static ./dd_generated_files
+	rm -rf $(find . -name '__pycache__')
+	rm -rf $(find . -name 'migrations')
+	rm -rf $(find . -name 'node_modules')
+	rm -rf $(find . -name 'runserver.sh')
+	rm -rf $(find . -name 'gulp.sh')
+	rm -rf $(find . -name 'gulpfile.js')
+	rm -rf $(find . -name 'package.json')
+	rm -rf $(find . -name 'yarn.lock')
+	rm -rf $(find . -name 'wait-for-it.sh')
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
 	rm -rf $(find . -name '__pycache__')
