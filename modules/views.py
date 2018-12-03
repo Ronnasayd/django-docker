@@ -220,33 +220,33 @@ fi
 ####################################################################
 MAKE_AMBIENT_BASE='''
 chmod +x modules/wait-for-it.sh
-sed -i "s/\\r$//" {FOLDER_NAME}{RUNSERVER_SCRIPT_NAME}
+sed -i "s/\\r$//" {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME}
 sed -i "s/\\r$//" modules/wait-for-it.sh
-sed -i "s/\\r$//" {FOLDER_NAME}gulpfile.js
-sed -i "s/\\r$//" {FOLDER_NAME}gulp.sh
-cp {FOLDER_NAME}{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
+sed -i "s/\\r$//" {FOLDER_NAME}/gulpfile.js
+sed -i "s/\\r$//" {FOLDER_NAME}/gulp.sh
+cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp modules/wait-for-it.sh ./{PROJECT_NAME}
-cp {FOLDER_NAME}gulpfile.js ./{PROJECT_NAME}
-cp {FOLDER_NAME}gulp.sh ./{PROJECT_NAME}
+cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
+cp {FOLDER_NAME}/gulp.sh ./{PROJECT_NAME}
 mkdir static/ media/ logs/
 '''
 
-MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml stop
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml stop
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml down
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml down
+MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
 docker system prune --force
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml build
-COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml build
+COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''
 
 
-MAKE_AMBIENT_PRODUCTION='''docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml stop
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml stop
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml down
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_development.yml down
+MAKE_AMBIENT_PRODUCTION='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
 docker system prune --force
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml build
-docker-compose -f {FOLDER_NAME}{PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml build
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''
 
 ######################################################################
                     ## RUNSERVER SCRIPT ##

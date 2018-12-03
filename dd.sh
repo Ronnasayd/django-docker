@@ -1,4 +1,8 @@
 #! /bin/bash
+
+FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
+PROJECT_NAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
+
 if [ "$#" -lt 1 ] ; then
 	echo "Number of arguments insufficient. Use <$0 --help> to see options"
 	exit
@@ -68,9 +72,10 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
 	echo "Ambiente: "${machine}" Arquivos criados"
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
 	echo "Executing..."
-	bash dd_generated_files/make_ambient.sh
+	bash $FOLDER_TO_SAVE/make_ambient.sh
 elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
-	docker stop $(docker ps -a -q)
+	docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) stop
+	docker-compose -f $(ls $FOLDER_TO_SAVE/*production.yml) stop
 	docker system prune --force
 	echo "Containers stopped"
 elif [ "$1" = "--stop" -o "$1" = "-s" ];then
@@ -97,10 +102,10 @@ elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 	docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-	rm -rf ./logs ./media ./__pycache__ ./static ./dd_generated_files
+	rm -rf ./logs ./media ./__pycache__ ./static ./$FOLDER_TO_SAVE
 	echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-	rm -rf ./logs ./media ./__pycache__ ./static ./dd_generated_files
+	rm -rf ./logs ./media ./__pycache__ ./static ./$FOLDER_TO_SAVE
 	rm -rf $(find . -name '__pycache__')
 	rm -rf $(find . -name 'migrations')
 	rm -rf $(find . -name 'node_modules')
@@ -128,7 +133,7 @@ elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
 elif [ "$1" = "--restart" -o "$1" = "-res" ];then
 	docker container restart $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
-	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls dd_generated_files/*development.yml) up
+	COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) up
 else 
 	echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

@@ -33,9 +33,10 @@ WEB_COMMANDS_BUILD=[
 ]
 
 DATABASE_EXTERNAL=False
-DATABASE_HOST_EXTERNAL= None #put here your host (http://0.0.0.0:1234) in string
+DATABASE_HOST_EXTERNAL= None # Put here your host ("http://10.0.0.1") in string or None
 
 DATABASE_IMAGE='postgres'
+
 
 
 ### DATABASE_ENVIROMENTS FOR DATABASE_IMAGE
@@ -54,6 +55,14 @@ DATABASE_IMAGE='postgres'
 # 		USER_NAME = MONGO_INITDB_ROOT_USERNAME
 # 		PASSWORD_NAME = MONGO_INITDB_ROOT_PASSWORD
 # 		DB_NAME = ''
+
+
+### DATABASES DEFAULT PORTS
+# POSTGRES_PORT=5432
+# MYSQL_PORT=3306
+# MONGO_PORT=8081
+
+
 DATABASE_DEFAULT_ENVIROMENTS={
 
 	'DATABASE_USER':'django_docker_example_user',
@@ -84,10 +93,6 @@ DATABASE_ROOT={
 	'DESTINATION':'/var/lib/postgresql/data',
 }
 
-### DATABASES DEFAULT PORTS
-# POSTGRES_PORT=5432
-# MYSQL_PORT=3306
-# MONGO_PORT=8081
 WEB_PORT='8000'
 
 WEB_ENVIROMENT={
@@ -110,7 +115,7 @@ STATIC_ROOT='/static-data'
 MEDIA_ROOT='/media-data'
 LOGS_ROOT='/logs-data'
 
-FOLDER_TO_SAVE="dd_generated_files/"
+FOLDER_TO_SAVE="dd_generated_files"
 RUNSERVER_SCRIPT_NAME='runserver.sh'
 
 

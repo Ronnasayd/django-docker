@@ -8,21 +8,14 @@ def json2list(json_data):
 	return data
 
 def path_join(list_of_paths):
-	terms = []
-	new_path = '/'
-	for path in list_of_paths:
-		path = path.split('/')
-		try:
-			path.remove('')
-		except:
-			pass
-		terms += path
-	for term in terms[:-1]:
-		new_path += term + '/'
-	new_path += terms[-1]
-	new_path = new_path.replace('/..','..').replace('/.','.')
-	for i in range(0,26):
-		new_path = new_path.replace('/'+chr(ord('A')+i)+':',chr(ord('A')+i)+':')
+	new_path=''
+	for path in list_of_paths[:-1]:
+		new_path += path + '/'
+	if '.' in  list_of_paths[-1]:
+		new_path += list_of_paths[-1]
+	else:
+		new_path += '/' + list_of_paths[-1] + '/'
+	new_path = new_path.replace('//','/')
 	return new_path
 
 
