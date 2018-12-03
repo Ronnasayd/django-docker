@@ -159,7 +159,7 @@ gulp.task('js',function(){{
             file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
             file.extname = ".min.js"
      }}))
-    .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest("."))
 }});
 
@@ -190,7 +190,7 @@ gulp.task('sass', function() {{
         .pipe(rename(function(file){{
             file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
         }}))
-        .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest("."))
         .pipe(browserSync.stream());
 }});
