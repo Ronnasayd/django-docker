@@ -12,10 +12,12 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'dd_images/icons/favicon.ico' %}" />
+
 	<link rel="stylesheet" href="{% static 'dd_css/reset.css' %}">
 	<link rel="stylesheet" href="{% static 'dd_css/main.css' %}">
 </head>
 <body>
+
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 background">
@@ -43,45 +45,15 @@
 					<div class="col-12">
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 						  <div class="carousel-inner">
-						    <div class="carousel-item active text-center">
-						      <a href="https://www.docker.com/" target="_blank"><img class="carousel-img" src="{% static 'dd_images/tecnologias/docker.png' %}" alt="First slide"></a>
-						      <h1 class="carousel-item-element">Docker</h1>
+
+							{% for tec in tecnologias %}
+						  	 <div class="carousel-item  text-center">
+						      <a href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
+						      <h1 class="carousel-item-element">{{tec.name}}</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    <a href="https://www.djangoproject.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/django.png' %}" alt="Second slide"></a>
-						      <h1 class="carousel-item-element">Django</h1>
-						    </div>
-						    <div class="carousel-item text-center">
-						    <a href="https://gulpjs.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/gulp.png' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Gulp</h1>
-						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://browsersync.io/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/browsersync.png' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Browsersync</h1>
-						    </div>
-						     <div class="carousel-item text-center">
-						     	<a href="https://docs.docker.com/compose/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/docker-compose.png' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Docker Compose</h1>
-						    </div>
-						     <div class="carousel-item text-center">
-						     	<a href="https://sass-lang.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/sass.svg' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Sass</h1>
-						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://nodejs.org/en/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/nodejs.png' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Nodejs</h1>
-						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://www.nginx.com/" target="_blank">
-						      <img class="carousel-img" src="{% static 'dd_images/tecnologias/nginx.png' %}" alt="Third slide"></a>
-						      <h1 class="carousel-item-element">Nginx</h1>
-						    </div>
+						    {% endfor %}
+							
+						    
 						  </div>
 						  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -101,6 +73,9 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+var tecnologias = '{{tecnologias}}';
+</script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
