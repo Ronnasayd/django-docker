@@ -1,7 +1,7 @@
 if [ ! -d "tmp/" ]; then
   mkdir tmp/
 fi
-wget -q https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version -O tmp/version
+wget -q --no-cache https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version -O tmp/version
 
 if ! diff -q tmp/version modules/version > /dev/null 2>&1;
 then
@@ -12,7 +12,7 @@ then
 
   if [ "$answer" = "y" ];then
   	echo "updating..."
-  	wget -q https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
+  	wget -q --no-cache https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
   	unzip -q tmp/source_code.zip -d tmp/
   	rm tmp/source_code.zip
   	cp tmp/pydd.py pydd$(cat tmp/version).py
