@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# version Beta 0.0.0.5
+### VERSION: 0.1.0-beta ###
 
 DEBUG=True
 

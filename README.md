@@ -16,7 +16,7 @@ System to automatically create development and production environments in django
 
 ## How to use
 
-The files  (***config.py***, ***pydd.py*** e ***dd.sh*** ) and the folder (***modules***) should be in the directory of your django project.
+The files  (***config.py***, ***pydd.py*** e ***ddo.sh*** ) and the folder (***modules***) should be in the directory of your django project.
 
 Modify the ***config.py*** settings as you wish, and then run the ***dd.sh*** script. The ***pydd.py*** file will use ***config.py*** settings to mount the desired infrastructure on the system.
 
