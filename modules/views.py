@@ -228,7 +228,6 @@ cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp modules/wait-for-it.sh ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulp.sh ./{PROJECT_NAME}
-mkdir static/ media/ logs/
 '''
 
 MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop

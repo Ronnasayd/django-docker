@@ -34,6 +34,8 @@ Options:
   --restart, -res: Restart a container
   --minify-img, -mimg: Minify images in selected folder
   --update, -up: Update django docker
+  --show-vol, sv: Show all volumes
+  --clear-vol, cv: Clear a volume
 
 Examples:
   $0 --run
@@ -60,6 +62,7 @@ Examples:
   $0 --restart web
   $0 --minify-img
   $0 --update
+  $0 --show-volumes
   "
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -100,8 +103,12 @@ elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
   docker ps
 elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
-  docker volume ls | grep database | awk '{print $2}'
+  docker volume ls | grep database_$PROJECT_NAME | awk '{print $2}'
+elif [ "$1" = "--show-vol" -o "$1" = "-sv" ];then
+  docker volume ls | grep _$PROJECT_NAME | awk '{print $2}'
 elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
+  docker volume rm $(docker volume ls | grep database_$PROJECT_NAME | awk '{print $2}')
+elif [ "$1" = "--clear-vol" -o "$1" = "-cv" ];then
   docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
   rm -rf ./logs ./media ./__pycache__ ./static ./$FOLDER_TO_SAVE
@@ -116,6 +123,9 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
   rm -rf $(find . -name 'gulpfile.js')
   rm -rf $(find . -name 'package.json')
   rm -rf $(find . -name 'yarn.lock')
+  docker volume rm $(docker volume ls | grep static_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep media_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep logs_$PROJECT_NAME | awk '{print $2}')
   echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
   rm -rf $(find . -name '__pycache__')

@@ -16,6 +16,10 @@ if __name__ == '__main__':
 	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\','/')
 	ROOT_DIRECTORY="."
 	PARENT_DIRECTORY=".."
+	DATABASE_VOLUME = 'database_'+PROJECT_NAME
+	STATIC_VOLUME = 'static_'+PROJECT_NAME
+	MEDIA_VOLUME = 'media_'+PROJECT_NAME
+	LOGS_VOLUME='logs_'+PROJECT_NAME
 
 
 #############################################################################	
@@ -96,16 +100,16 @@ if __name__ == '__main__':
 			path_join([PROJECT_NAME])
 		), 
         (
-        	path_join([CURRENT_DIRECTORY,'media']),
+        	MEDIA_VOLUME,
         	path_join([MEDIA_ROOT])
         )
     ] if DEBUG else [
     	(
-    		path_join([CURRENT_DIRECTORY,'media']),
+    		MEDIA_VOLUME,
     		path_join([MEDIA_ROOT])
     	),
     	(
-    		path_join([CURRENT_DIRECTORY,'static']),
+    		STATIC_VOLUME,
     		path_join([STATIC_ROOT])
     	)
     ])
@@ -118,7 +122,7 @@ if __name__ == '__main__':
 	.image(image_base=DATABASE_IMAGE)\
 	.restart(restart_option='always')\
 	.volumes(list_volumes=[
-		('database',DATABASE_ROOT['DESTINATION'])
+		(DATABASE_VOLUME,DATABASE_ROOT['DESTINATION'])
 	])\
 	.environ([
 		(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_NAME'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
@@ -160,9 +164,9 @@ nginx_compose.name(container_name='nginx')\
 .restart(restart_option='always')\
 .volumes(list_volumes=[
 	(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
-	(path_join([CURRENT_DIRECTORY,'static']),STATIC_ROOT),
-	(path_join([CURRENT_DIRECTORY,'media']),MEDIA_ROOT),
-	(path_join([CURRENT_DIRECTORY,'logs']),LOGS_ROOT)
+	(STATIC_VOLUME,STATIC_ROOT),
+	(MEDIA_VOLUME,MEDIA_ROOT),
+	(LOGS_VOLUME,LOGS_ROOT)
 ])\
 .depends(list_depends=[web_compose.container_name])\
 .ports(list_ports=[
@@ -198,7 +202,7 @@ if not DATABASE_EXTERNAL:
 
 service = Service()\
 .version(service_version=DOCKER_COMPOSE_VERSION)\
-.volumes(list_of_volumes=['database'])\
+.volumes(list_of_volumes=[DATABASE_VOLUME,MEDIA_VOLUME,STATIC_VOLUME,LOGS_VOLUME])\
 .networks(list_of_networks=[NETWORK_NAME])
 
 service_development = deepcopy(service)
