@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+### VERSION: 1.1.2-beta ###
+
 import os
 from copy import deepcopy
 from config import *

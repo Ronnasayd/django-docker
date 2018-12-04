@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+### VERSION: 1.1.2-beta ###
+
 import os
 def json2list(json_data):
 	data = list()

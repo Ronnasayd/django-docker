@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+### VERSION: 1.1.2-beta ###
+
 from modules.views import *
 from modules.models import *
 
