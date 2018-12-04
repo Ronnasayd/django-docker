@@ -13,7 +13,7 @@ then
   if [ "$answer" = "y" ];then
   	echo "updating..."
   	wget -q https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
-  	unzip tmp/source_code.zip -d tmp/
+  	unzip -q tmp/source_code.zip -d tmp/
   	rm tmp/source_code.zip
   	cp tmp/pydd.py .
   	cp tmp/ddo.sh .
