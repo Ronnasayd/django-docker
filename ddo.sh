@@ -1,6 +1,6 @@
 #! /bin/bash
 
-### VERSION: 2.1.2-beta ###
+### VERSION: 2.1.3-beta ###
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
@@ -20,8 +20,9 @@ Options:
   --clear,-c : Delete generated files
   --clear-all,-ca : Delete all files
   --stop, -s : Stop a specific container
-  --stop-all, -sa : Stop containers
+  --stop-app, -sap : Stop containers in app network
   --stop-net, -sn : Stop all containers off a network
+  --stop-all, -sal: Stop all containers running on docker
   --shell, -sl : Enter container shell
   --status, -st : Show the status of containers
   --command, -cm : Performs a command inside the container
@@ -47,7 +48,7 @@ Examples:
   $0 --clear
   $0 --clear-all
   $0 --stop web
-  $0 --stop-all
+  $0 --stop-app
   $0 --stop-net network_example
   $0 --shell web
   $0 --status
@@ -67,6 +68,7 @@ Examples:
   $0 --minify-img
   $0 --update
   $0 --show-volumes
+  $0 --stop-all
   "
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -82,7 +84,7 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
   echo "Executing..."
   bash $FOLDER_TO_SAVE/make_ambient.sh
-elif [ "$1" = "--stop-all" -o "$1" = "-sa" ];then
+elif [ "$1" = "--stop-app" -o "$1" = "-sap" ];then
   docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) stop
   docker-compose -f $(ls $FOLDER_TO_SAVE/*production.yml) stop
   docker system prune --force
@@ -91,6 +93,10 @@ elif [ "$1" = "--stop" -o "$1" = "-s" ];then
   docker stop $2
   docker system prune --force
   echo "Container stopped"
+elif [ "$1" = "--stop-all" -o "$1" = "-sal" ];then
+  docker stop $(docker ps -aq)
+  docker system prune --force
+  echo "Containers stopped"
 elif [ "$1" = "--shell" -o "$1" = "-sl" ];then
   echo "Use exit to close"
   docker exec -ti $2 /bin/bash
