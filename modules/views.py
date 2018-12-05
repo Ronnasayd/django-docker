@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.2.2-beta ###
+### VERSION: 2.1.1-beta ###
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -47,7 +47,7 @@ http {{
     # Configuration containing list of application servers
     upstream app_servers {{
         ip_hash;
-        server web:{WEB_PORT};
+        server {WEB_CONTAINER_NAME}:{WEB_PORT};
 
     }}
 
@@ -127,7 +127,7 @@ gulp.task('serve', ['sass','js'], function() {{
     browserSync.init({{
         open: false,
         proxy: {{
-          target: "http://web:{WEB_PORT}",
+          target: "http://{WEB_CONTAINER_NAME}:{WEB_PORT}",
           ws: true,
         }}
     }});
@@ -238,7 +238,7 @@ docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
 docker system prune --force
 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml build
-COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml up --remove-orphans --force-recreate'''
+COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml up  --force-recreate'''
 
 
 MAKE_AMBIENT_PRODUCTION='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
@@ -247,7 +247,7 @@ docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
 docker system prune --force
 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml build
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d --remove-orphans --force-recreate'''
+docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d  --force-recreate'''
 
 ######################################################################
                     ## RUNSERVER SCRIPT ##

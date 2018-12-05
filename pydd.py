@@ -1,27 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.2.2-beta ###
+### VERSION: 2.1.1-beta ###
 
 import os
-from copy import deepcopy
+from copy import deepcopy,copy
 from config import *
 from modules.dockerfile import Dockerfile
 from modules.compose import Container,Service
 from modules.controller import Controller
 from modules.functional import *
+from modules.constants import *
+
+
 
 if __name__ == '__main__':
+
 
 	
 	CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\','/')
-	ROOT_DIRECTORY="."
-	PARENT_DIRECTORY=".."
-	DATABASE_VOLUME = 'database_'+PROJECT_NAME
-	STATIC_VOLUME = 'static_'+PROJECT_NAME
-	MEDIA_VOLUME = 'media_'+PROJECT_NAME
-	LOGS_VOLUME='logs_'+PROJECT_NAME
+	
 
 
 
@@ -72,7 +71,7 @@ if __name__ == '__main__':
 						## WEB CONTAINER OBJECT ##
 ###########################################################################
 	web_compose = Container()
-	web_compose.name(container_name='web')\
+	web_compose.name(container_name=WEB_CONTAINER_NAME)\
 	.build(
 		context=CURRENT_DIRECTORY,
 	 	dockerfile=path_join([FOLDER_TO_SAVE,web_dockerfile.filename])
@@ -83,8 +82,8 @@ if __name__ == '__main__':
 	])\
 	.expose(list_expose_ports=[WEB_PORT])\
 	.workdir(work_directory=path_join([PROJECT_NAME]))\
-	.command(command='./wait-for-it.sh '+DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST']+':'+DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')\
-	.depends(list_depends=CONTAINERS if DATABASE_EXTERNAL else [DATABASE_IMAGE]+CONTAINERS)\
+	.command(command='./wait-for-it.sh '+(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if DATABASE_EXTERNAL else DATABASE_CONTAINER_NAME)+':'+DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')\
+	.depends(list_depends=OTHERS_CONTAINER_NAME if DATABASE_EXTERNAL else [DATABASE_CONTAINER_NAME]+OTHERS_CONTAINER_NAME)\
 	.environ(list_enviroments=[
      ('DEBUG',str(DEBUG)),
      ('STATIC_ROOT',STATIC_ROOT),
@@ -93,7 +92,7 @@ if __name__ == '__main__':
      ('MEDIA_URL','/media/'),
      ('DATABASE_USER',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
      ('DATABASE_NAME',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
-     ('DATABASE_HOST',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST']),
+     ('DATABASE_HOST',(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if DATABASE_EXTERNAL else DATABASE_CONTAINER_NAME)),
      ('DATABASE_PORT',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']),
      ('DATABASE_PASSWORD',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
 	]+json2list(WEB_ENVIROMENT))\
@@ -121,7 +120,7 @@ if __name__ == '__main__':
 					## DATABASE CONTAINER OBJECT ##
 ###########################################################################
 	database_compose = Container()
-	database_compose.name(container_name=DATABASE_IMAGE)\
+	database_compose.name(container_name=DATABASE_CONTAINER_NAME)\
 	.image(image_base=DATABASE_IMAGE)\
 	.restart(restart_option='always')\
 	.volumes(list_volumes=[
@@ -137,7 +136,7 @@ if __name__ == '__main__':
 					## NODE CONTAINER OBJECT ##
 ###########################################################################
 	node_compose = Container()
-	node_compose.name(container_name="node")\
+	node_compose.name(container_name=NODE_CONTAINER_NAME)\
 	.build(
 		context=CURRENT_DIRECTORY,
 	 	dockerfile=path_join([FOLDER_TO_SAVE,node_dockerfile.filename])
@@ -154,7 +153,7 @@ if __name__ == '__main__':
 			path_join([PROJECT_NAME])
 		)
 	])\
-	.depends(list_depends=[web_compose.container_name])\
+	.depends(list_depends=[WEB_CONTAINER_NAME])\
 	.workdir(work_directory=path_join([PROJECT_NAME]))\
 	.command(command="bash gulp.sh")
 	# print(node_compose)
@@ -162,7 +161,7 @@ if __name__ == '__main__':
 					## NGINX CONTAINER OBJECT ##
 ############################################################################
 nginx_compose = Container()
-nginx_compose.name(container_name='nginx')\
+nginx_compose.name(container_name=NGINX_CONTAINER_NAME)\
 .image(image_base='nginx')\
 .restart(restart_option='always')\
 .volumes(list_volumes=[
@@ -171,7 +170,7 @@ nginx_compose.name(container_name='nginx')\
 	(MEDIA_VOLUME,MEDIA_ROOT),
 	(LOGS_VOLUME,LOGS_ROOT)
 ])\
-.depends(list_depends=[web_compose.container_name])\
+.depends(list_depends=[WEB_CONTAINER_NAME])\
 .ports(list_ports=[
 	(NGINX_PORT,WEB_PORT)
 ])
@@ -180,27 +179,27 @@ nginx_compose.name(container_name='nginx')\
 						## USER CONTAINERS OBJECTS##
 ###########################################################################
 user_containers = []
-for container_image in CONTAINERS:
+for index,container_image in enumerate(CONTAINERS):
 	temporary_container = Container()\
-	.name(container_image)\
+	.name(OTHERS_CONTAINER_NAME[index])\
 	.image(container_image)\
 	.restart('always')
 	user_containers.append(temporary_container)
 ###########################################################################
 						## FINAL COMPOSE FILES ##
 ###########################################################################
-containers_base = [web_compose]+user_containers
+
 filename_development=PROJECT_NAME+'_development'
 filename_production=PROJECT_NAME+'_production'
 
-containers_production = containers_base + [nginx_compose]
-containers_development = containers_base
+containers_production = [deepcopy(web_compose)]+deepcopy(user_containers) + [nginx_compose]
+containers_development = [deepcopy(web_compose)]+deepcopy(user_containers)
 
 if BROWSERSYNC_GULP_DEV_TOOLS:
 	containers_development += [node_compose]
 if not DATABASE_EXTERNAL:
-	containers_development += [database_compose]
-	containers_production += [database_compose]
+	containers_development += [deepcopy(database_compose)]
+	containers_production += [deepcopy(database_compose)]
 
 
 service = Service()\
@@ -208,21 +207,28 @@ service = Service()\
 .volumes(list_of_volumes=[DATABASE_VOLUME,MEDIA_VOLUME,STATIC_VOLUME,LOGS_VOLUME])\
 .networks(list_of_networks=[NETWORK_NAME])
 
+
 service_development = deepcopy(service)
+service_production = deepcopy(service)
+
+
+del service
+
 service_development.containers(list_of_containers=containers_development)\
 .build()\
 .save(
 	path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
 	filename=filename_development
 )
+# print(service_development)
 
-service_production = deepcopy(service)
 service_production.containers(list_of_containers=containers_production)\
 .build()\
 .save(
 	path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
 	filename=filename_production
 )
+# print(service_production)
 ########################################################################
 					## MVC GENERATED FILES ##
 ########################################################################

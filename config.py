@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.2.2-beta ###
+### VERSION: 2.1.1-beta ###
 
-DEBUG=False
+DEBUG=True
 
-BROWSERSYNC_GULP_DEV_TOOLS=False # turn to True or False to enable disable dev tools like browsersync sass etc
+BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
 
 # folder to use in developer mode
 SCSS_TO_CSS_FOLDERS=["dd_scss","dd_css"]
@@ -32,12 +32,11 @@ WEB_COMMANDS_BUILD=[
 	# 'apt-get install curl -y',
 ]
 
-DATABASE_EXTERNAL=False
-DATABASE_HOST_EXTERNAL= None # Put here your host ("http://10.0.0.1") in string or None
+
 
 DATABASE_IMAGE='postgres'
 
-
+DATABASE_EXTERNAL=False
 
 ### DATABASE_ENVIROMENTS FOR DATABASE_IMAGE
 # 	POSTGRESS:
@@ -75,7 +74,7 @@ DATABASE_DEFAULT_ENVIROMENTS={
 	'DATABASE_DB_NAME':'POSTGRES_DB',
 
 	'DATABASE_PORT':'5432',
-	'DATABASE_HOST': (DATABASE_HOST_EXTERNAL or DATABASE_IMAGE),
+	'DATABASE_HOST':'http://10.0.0.1', # just use in external database connection
 }
 
 
@@ -94,7 +93,7 @@ DATABASE_ROOT={
 }
 
 WEB_PORT='8000'
-NGINX_PORT='8080'
+NGINX_PORT='80'
 
 WEB_ENVIROMENT={
 	# all enviroment variables are optional
@@ -110,14 +109,12 @@ CONTAINERS=[
 
 DOCKER_COMPOSE_VERSION='3.5'
 
-NETWORK_NAME='network_django_docker_example'
+NETWORK_NAME='network_dd'
 
-STATIC_ROOT='/static-data'
-MEDIA_ROOT='/media-data'
-LOGS_ROOT='/logs-data'
+
 
 FOLDER_TO_SAVE="dd_generated_files"
-RUNSERVER_SCRIPT_NAME='runserver.sh'
+
 
 
 

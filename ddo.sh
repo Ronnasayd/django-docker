@@ -1,9 +1,11 @@
 #! /bin/bash
 
-### VERSION: 1.2.2-beta ###
+### VERSION: 2.1.1-beta ###
 
+PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
 PROJECT_NAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
+
 
 if [ "$#" -lt 1 ] ; then
   echo "Number of arguments insufficient. Use <$0 --help> to see options"
@@ -96,12 +98,12 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
   echo "Use exit to close"
   docker exec -ti $2 $3
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
-  docker exec -ti web python manage.py createsuperuser
+  docker exec -ti web.$PROJECT_RENAME python manage.py createsuperuser
 elif [ "$1" = "--minify-img" -o "$1" = "-mimg" ];then
-  docker exec -ti node gulp imagemin
+  docker exec -ti node.$PROJECT_RENAME gulp imagemin
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
-  docker exec -ti web python manage.py makemigrations $2
-  docker exec -ti web python manage.py migrate $2
+  docker exec -ti web.$PROJECT_RENAME python manage.py makemigrations $2
+  docker exec -ti web.$PROJECT_RENAME python manage.py migrate $2
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
   docker ps
 elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
@@ -145,7 +147,7 @@ elif [ "$1" = "--show-img" -o "$1" = "-si" ];then
 elif [ "$1" = "--update" -o "$1" = "-up" ];then
   bash modules/update.sh
 elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
-  docker rmi $2
+  docker rmi -f $2
 elif [ "$1" = "--restart" -o "$1" = "-res" ];then
   docker container restart $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then

@@ -1,20 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.2.2-beta ###
+### VERSION: 2.1.1-beta ###
 
 
 from config import *
+from modules.constants import *
 
 
 NGINX_MODEL={
+	'WEB_CONTAINER_NAME':WEB_CONTAINER_NAME,
 	'STATIC_ROOT':STATIC_ROOT,
 	'WEB_PORT':WEB_PORT,
 	'LOGS_ROOT':LOGS_ROOT,
-	'MEDIA_ROOT':MEDIA_ROOT
+	'MEDIA_ROOT':MEDIA_ROOT,
 }
 
 GULPFILE_MODEL={
+	'WEB_CONTAINER_NAME':WEB_CONTAINER_NAME,
 	'WEB_PORT':WEB_PORT,
 	'SCSS_FOLDERS':SCSS_TO_CSS_FOLDERS[0],
 	'CSS_FOLDERS':SCSS_TO_CSS_FOLDERS[1],
@@ -34,20 +37,3 @@ RUNSERVER_SCRIPT_MODEL={
 	'PROJECT_NAME':PROJECT_NAME
 }
 
-REQUIREMENTS+=[
-'django',
-'gunicorn',
-'python-decouple',
-]
-
-GULP_MODULES=[
- 'gulp',
- 'node-sass',
- 'browser-sync',
- 'gulp-sass',
- 'gulp-rename',
- 'gulp-autoprefixer',
- 'gulp-uglify',
- 'gulp-sourcemaps',
- 'gulp-imagemin',
- ]
