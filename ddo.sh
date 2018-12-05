@@ -1,6 +1,6 @@
 #! /bin/bash
 
-### VERSION: 1.1.2-beta ###
+### VERSION: 1.2.2-beta ###
 
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
 PROJECT_NAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")

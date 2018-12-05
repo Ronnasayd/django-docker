@@ -1,6 +1,6 @@
 #! /bin/bash
 
-### VERSION: 1.1.2-beta ###
+### VERSION: 1.2.2-beta ###
 
 if [ ! -d "tmp/" ]; then
   mkdir tmp/

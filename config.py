@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.1.2-beta ###
+### VERSION: 1.2.2-beta ###
 
-DEBUG=True
+DEBUG=False
 
-BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
+BROWSERSYNC_GULP_DEV_TOOLS=False # turn to True or False to enable disable dev tools like browsersync sass etc
 
 # folder to use in developer mode
 SCSS_TO_CSS_FOLDERS=["dd_scss","dd_css"]
@@ -94,6 +94,7 @@ DATABASE_ROOT={
 }
 
 WEB_PORT='8000'
+NGINX_PORT='8080'
 
 WEB_ENVIROMENT={
 	# all enviroment variables are optional

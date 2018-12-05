@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 1.1.2-beta ###
+### VERSION: 1.2.2-beta ###
 
 import os
 from copy import deepcopy
@@ -22,6 +22,7 @@ if __name__ == '__main__':
 	STATIC_VOLUME = 'static_'+PROJECT_NAME
 	MEDIA_VOLUME = 'media_'+PROJECT_NAME
 	LOGS_VOLUME='logs_'+PROJECT_NAME
+
 
 
 #############################################################################	
@@ -172,7 +173,7 @@ nginx_compose.name(container_name='nginx')\
 ])\
 .depends(list_depends=[web_compose.container_name])\
 .ports(list_ports=[
-	('80',WEB_PORT)
+	(NGINX_PORT,WEB_PORT)
 ])
 # print(node_compose)
 ##########################################################################
