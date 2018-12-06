@@ -1,12 +1,12 @@
 #! /bin/bash
 
-### VERSION: 2.1.3-beta ###
+### VERSION: 2.1.4-beta ###
 
 if [ ! -d "tmp/" ]; then
   mkdir tmp/
 fi
-wget -q --no-cache https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version -O tmp/version
-
+# wget -q --no-cache https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version -O tmp/version
+curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version --output tmp/version
 if ! diff -q tmp/version modules/version > /dev/null 2>&1;
 then
 
@@ -16,8 +16,9 @@ then
 
   if [ "$answer" = "y" ];then
   	echo "updating..."
-  	wget -q --no-cache https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
-  	unzip -q tmp/source_code.zip -d tmp/
+  	# wget -q --no-cache https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
+  	curl -H 'Cache-Control: no-cache' -s -L https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true --output tmp/source_code.zip
+    unzip -q tmp/source_code.zip -d tmp/
   	rm tmp/source_code.zip
   	cp tmp/pydd.py pydd$(cat tmp/version | awk '{print $3}').py
   	cp tmp/ddo.sh  ddo$(cat tmp/version | awk '{print $3}').sh

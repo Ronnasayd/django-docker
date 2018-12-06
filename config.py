@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.1.3-beta ###
+### VERSION: 2.1.4-beta ###
 
 DEBUG=True
 
@@ -123,7 +123,6 @@ FOLDER_TO_SAVE="dd_generated_files"
 # from decouple import config
 
 # DEBUG = config('DEBUG', default=False, cast=bool)
-# COMPRESS_OFFLINE = config('DEBUG')
 # STATIC_ROOT = config('STATIC_ROOT')
 # MEDIA_ROOT = config('MEDIA_ROOT')
 # STATIC_URL = config('STATIC_URL')

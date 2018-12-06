@@ -28,7 +28,6 @@ In your **settings.py** file modify or add the following lines of code to the va
     from decouple import config
     
     DEBUG = config('DEBUG', default=False, cast=bool)
-    COMPRESS_OFFLINE = config('DEBUG')
     STATIC_ROOT = config('STATIC_ROOT')
     MEDIA_ROOT = config('MEDIA_ROOT')
     STATIC_URL = config('STATIC_URL')
