@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.1.4-beta ###
+### VERSION: 2.2.4-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -54,6 +54,8 @@ if __name__ == '__main__':
 		container_path=path_join([ROOT_DIRECTORY,'requirements.txt'])
 	)\
 	.run(list_of_commands=[
+		'echo "root:{}" | chpasswd'.format(ROOT_PASSWD),
+		'useradd -m web && echo "web:web" | chpasswd && adduser web web',
 		'apt-get update',
 		'pip install -r requirements.txt'
 	])\
@@ -62,6 +64,7 @@ if __name__ == '__main__':
 		container_path=path_join([PROJECT_NAME])
 	)\
 	.workdir(work_directory=path_join([PROJECT_NAME]))\
+	.user(container_user='web')\
 	.cmd(last_command='chmod +x '+RUNSERVER_SCRIPT_NAME)\
 	.save(
 		path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),

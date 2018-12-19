@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.1.4-beta ###
+### VERSION: 2.2.4-beta ###
 
 from config import *
 
@@ -29,7 +29,7 @@ REQUIREMENTS+=[
 ]
 
 GULP_MODULES=[
- 'gulp',
+ 'gulp@3',
  'node-sass',
  'browser-sync',
  'gulp-sass',
@@ -40,9 +40,9 @@ GULP_MODULES=[
  'gulp-imagemin',
  ]
 
-STATIC_ROOT='/static-data'
-MEDIA_ROOT='/media-data'
-LOGS_ROOT='/logs-data'
+STATIC_ROOT='/tmp/static-data'
+MEDIA_ROOT='/tmp/media-data'
+LOGS_ROOT='/tmp/logs-data'
 
 
 RUNSERVER_SCRIPT_NAME='runserver.sh'

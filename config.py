@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.1.4-beta ###
+### VERSION: 2.2.4-beta ###
 
 DEBUG=True
 
@@ -114,6 +114,8 @@ NETWORK_NAME='network_dd'
 
 
 FOLDER_TO_SAVE="dd_generated_files"
+
+ROOT_PASSWD="toor"
 
 
 
