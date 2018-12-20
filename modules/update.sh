@@ -20,10 +20,10 @@ then
   	curl -H 'Cache-Control: no-cache' -s -L https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true --output tmp/source_code.zip
     unzip -q tmp/source_code.zip -d tmp/
   	rm tmp/source_code.zip
-  	cp tmp/pydd.py pydd.py
-  	cp tmp/ddo.sh  ddo.sh
-  	cp -r tmp/modules modules
-    cp tmp/config.py config$(cat tmp/version | awk '{print $3}').py
+  	cp -f tmp/pydd.py pydd.py
+  	cp -f tmp/ddo.sh  ddo.sh
+  	cp -f -r tmp/modules modules
+    cp -f tmp/config.py config$(cat tmp/version | awk '{print $3}').py
   fi
 
 
