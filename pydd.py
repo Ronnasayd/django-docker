@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.2.4-beta ###
+### VERSION: 2.2.1-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 		'useradd -m web && echo "web:web" | chpasswd && adduser web web',
 		'apt-get update',
 		'pip install -r requirements.txt'
-	])\
+	]+WEB_COMMANDS_BUILD)\
 	.add(
 		local_path=path_join([ROOT_DIRECTORY,PROJECT_NAME]),
 		container_path=path_join([PROJECT_NAME])
