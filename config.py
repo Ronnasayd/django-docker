@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.2.1-beta ###
+### VERSION: 2.2.2-beta ###
 
-DEBUG=True
+DEBUG=False
 
 BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
 
