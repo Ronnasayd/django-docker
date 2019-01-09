@@ -115,8 +115,6 @@ NETWORK_NAME='network_dd'
 
 FOLDER_TO_SAVE="dd_generated_files"
 
-ROOT_PASSWD="toor"
-
 
 
 
