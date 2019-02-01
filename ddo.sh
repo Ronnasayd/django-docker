@@ -1,6 +1,6 @@
 #! /bin/bash
 
-### VERSION: 2.2.2-beta ###
+### VERSION: 2.3.0-beta ###
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
@@ -13,34 +13,38 @@ if [ "$#" -lt 1 ] ; then
 fi
 if [ "$1" = "--help" -o "$1" = "-h" ];then
   echo -e "Use: $0 <options> <complements>
+
 Options:
-  --help, -h : Show help
-  --run,  -r : Mode of execution
-  --make, -m : Enviroment creation mode
-  --clear,-c : Delete generated files
-  --clear-all,-ca : Delete all files
-  --stop, -s : Stop a specific container
-  --stop-app, -sap : Stop containers in app network
-  --stop-net, -sn : Stop all containers off a network
-  --stop-all, -sal: Stop all containers running on docker
-  --shell, -sl : Enter container shell
-  --status, -st : Show the status of containers
-  --command, -cm : Performs a command inside the container
-  --net-status, -ns: Show all networks
-  --create-su, -csu: Create a new admin user
-  --migrate, -mi: Apply migrations in django 
-  --clear-mig, -cmi: Clear all migrations and __pycache__ folders
-  --show-db, -sdb: Show datbases create with django docker
-  --clear-db, -cdb: Clear a specific database create with django docker
-  --prune, -p: Prune the system
-  --show-img, -si: Show the docker images
-  --clear-img, -ci: Clear a specific docker image for image_id
-  --attach, -att: Attach to a runing dev ambient
-  --restart, -res: Restart a container
-  --minify-img, -mimg: Minify images in selected folder
-  --update, -up: Update django docker
-  --show-vol, sv: Show all volumes
-  --clear-vol, cv: Clear a volume
+  --help                      or    -h       : Show help
+  --run                       or    -r       : Mode of execution
+  --make                      or    -m       : Enviroment creation mode
+  --clear                     or    -c       : Delete generated files
+  --clear-all                 or    -ca      : Delete all files
+  --stop                      or    -s       : Stop a specific container
+  --stop-app                  or    -sap     : Stop containers in app network
+  --stop-net                  or    -sn      : Stop all containers off a network
+  --stop-all                  or    -sal     : Stop all containers running on docker
+  --shell                     or    -sl      : Enter container shell
+  --status                    or    -st      : Show the status of containers
+  --command                   or    -cm      : Performs a command inside the container
+  --net-status                or    -ns      : Show all networks
+  --create-su                 or    -csu     : Create a new admin user
+  --migrate                   or    -mi      : Apply migrations in django 
+  --clear-mig                 or    -cmi     : Clear all migrations and __pycache__ folders
+  --show-db                   or    -sdb     : Show datbases create with django docker
+  --clear-db                  or    -cdb     : Clear a specific database create with django docker
+  --prune                     or    -p       : Prune the system
+  --show-img                  or    -si      : Show the docker images
+  --clear-img                 or    -ci      : Clear a specific docker image for image_id
+  --attach                    or    -att     : Attach to a runing dev ambient
+  --restart                   or    -res     : Restart a container
+  --minify-img                or    -mimg    : Minify images in selected folder
+  --update                    or    -up      : Update django docker
+  --show-vol                  or    -sv      : Show all volumes
+  --clear-vol                 or    -cv      : Clear a volume
+  --django-create-project     or    -dcp     : Create a django project 
+  --django-create-app         or    -dca     : Create a django app in a django project
+
 
 Examples:
   $0 --run
@@ -69,6 +73,9 @@ Examples:
   $0 --update
   $0 --show-vol
   $0 --stop-all
+  $0 --django-create-project django_docker_example
+  $0 --django-create app api 
+
   "
 
 elif [ "$1" = "--make" -o "$1" = "-m" ];then
@@ -156,6 +163,19 @@ elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
   docker rmi -f $2
 elif [ "$1" = "--restart" -o "$1" = "-res" ];then
   docker container restart $2
+elif [ "$1" = "--django-create-project" -o "$1" = "-dcp" ];then
+  django-admin startproject $2
+elif [ "$1" = "--django-create-app" -o "$1" = "-dca" ];then
+  cd ./$2
+  unameOut="$(uname -s)"
+  case "${unameOut}" in
+      Linux*)     machine=Linux && python3 manage.py startapp $3;;
+      Darwin*)    machine=Mac && python3 manage.py startapp $3;;
+      CYGWIN*)    machine=Cygwin && python manage.py startapp $3;;
+      MINGW*)     machine=MinGw && python manage.py startapp $3;;
+      *)          machine="UNKNOWN:${unameOut}"
+  esac
+  cd ..
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
   COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) up
 else 
