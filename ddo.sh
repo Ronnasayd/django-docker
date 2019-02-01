@@ -74,7 +74,7 @@ Examples:
   $0 --show-vol
   $0 --stop-all
   $0 --django-create-project django_docker_example
-  $0 --django-create app api 
+  $0 --django-create-app django_docker_example api 
 
   "
 
