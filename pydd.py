@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.3.0-beta ###
+### VERSION: 2.3.1-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -48,13 +48,14 @@ if __name__ == '__main__':
 						## WEB DOCKERFILE OBJECT ##
 #############################################################################
 	web_dockerfile = Dockerfile()
-	(web_dockerfile._from(container_base='python:3.6')
+	(web_dockerfile._from(container_base='python:'+PYTHON_VERSION)
 	.add(
 		local_path=path_join([FOLDER_TO_SAVE,'requirements.txt']),
 		container_path=path_join([ROOT_DIRECTORY,'requirements.txt'])
 	)
 	.run(list_of_commands=[
 		'apt-get update',
+		'pip install --upgrade pip',
 		'pip install -r requirements.txt'
 	]+WEB_COMMANDS_BUILD)
 	.add(

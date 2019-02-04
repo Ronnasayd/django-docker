@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.3.0-beta ###
+### VERSION: 2.3.1-beta ###
 
 from config import *
 
@@ -23,9 +23,10 @@ OTHERS_CONTAINER_NAME=[container+'.'+PROJECT_RENAME for container in  CONTAINERS
 
 
 REQUIREMENTS+=[
-'django',
-'gunicorn',
-'python-decouple',
+'django>='+DJANGO_VERSION,
+'gunicorn>=19.9.0',
+'python-decouple>=3.1',
+'psycopg2-binary>=2.7.7'
 ]
 
 GULP_MODULES=[

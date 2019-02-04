@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-### VERSION: 2.3.0-beta ###
+### VERSION: 2.3.1-beta ###
 
 import os
 class Dockerfile(object):

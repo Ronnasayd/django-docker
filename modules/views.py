@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.3.0-beta ###
+### VERSION: 2.3.1-beta ###
 
 ################################################################
                     ## NGIX TEMPLATE ##

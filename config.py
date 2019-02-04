@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.3.0-beta ###
+### VERSION: 2.3.1-beta ###
 
 DEBUG=False
 
@@ -17,7 +17,6 @@ REQUIREMENTS=[
 	'channels',
 	'channels_redis',
 	'django-redis',
-	'psycopg2-binary',
 	'Pillow',
 	'django-widget-tweaks',
 	'djangorestframework',
@@ -26,6 +25,7 @@ REQUIREMENTS=[
 PROJECT_NAME='django_docker_example'
 
 PYTHON_VERSION='3.6'
+DJANGO_VERSION='2.1.5'
 
 WEB_COMMANDS_BUILD=[
 	# 'apt-get install wget -y',
