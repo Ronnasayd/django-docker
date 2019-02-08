@@ -18,7 +18,7 @@ System to automatically create development and production environments in django
 
 The files  (***config.py***, ***pydd.py*** e ***ddo.sh*** ) and the folder (***modules***) should be in the directory of your django project.
 
-Modify the ***config.py*** settings as you wish, and then run the ***dd.sh*** script. The ***pydd.py*** file will use ***config.py*** settings to mount the desired infrastructure on the system.
+Modify the ***config.py*** settings as you wish, and then run the ***ddo.sh*** script. The ***pydd.py*** file will use ***config.py*** settings to mount the desired infrastructure on the system.
 
 The choice of environment between development or production is made by the ***DEBUG*** variable located in the file ***config.py***
 
