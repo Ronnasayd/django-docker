@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-### VERSION: 2.3.1-beta ###
+### VERSION: 2.3.2-beta ###
 
 import os
 from copy import deepcopy,copy
