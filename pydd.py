@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.2-beta ###
+### VERSION: 2.3.3-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -264,6 +264,7 @@ make_ambient_content = controller.build_make_ambiente(debug_mode=DEBUG)
 runserver_content = controller.build_runserver(debug_mode=DEBUG)
 requirements_content = controller.build_requirements()
 gulp_script_content = controller.build_gulp_script()
+wait_for_it_content = controller.build_wait_for_it()
 
 
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
@@ -272,4 +273,5 @@ save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'make_ambient.sh',make_ambien
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),RUNSERVER_SCRIPT_NAME,runserver_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content)
+save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
 ########################################################################

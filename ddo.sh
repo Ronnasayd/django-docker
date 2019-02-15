@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.2-beta ###
+### VERSION: 2.3.3-beta ###
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
@@ -162,6 +162,8 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
   rm -rf $(find . -name 'gulpfile.js')
   rm -rf $(find . -name 'package.json')
   rm -rf $(find . -name 'yarn.lock')
+  rm -rf $(find . -name 'yarn-error.log')
+  rm -rf $(find . -name 'wait-for-it.sh')
   docker volume rm $(docker volume ls | grep static_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep media_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep logs_$PROJECT_NAME | awk '{print $2}')

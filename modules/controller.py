@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.2-beta ###
+### VERSION: 2.3.3-beta ###
 
 from modules.views import *
 from modules.models import *
@@ -60,5 +60,8 @@ class Controller(object):
 		for module in GULP_MODULES:
 			modules += GULP_ADD.format(module)
 		return GULP_SCRIPT_BEGIN + modules + GULP_SCRIPT_END
+
+	def build_wait_for_it(self):
+		return WAIT_FOR_IT
 
 
