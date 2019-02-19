@@ -22,8 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.1.0-beta ###
+### VERSION: 3.1.1-beta ###
 
 script_directory=$(dirname "$0")
 docker build -t dbeaver -f "$script_directory/dbeaver.Dockerfile"  .
-docker run --network="host" -ti -e DISPLAY=$DISPLAY  -e USER=$USER  -v /tmp/.X11-unix:/tmp/.X11-unix dbeaver
+docker run --network="host" -ti -e DISPLAY=$DISPLAY  -e USER=$USER  -v /tmp/.X11-unix:/tmp/.X11-unix -v "/home:/home/dbeaver/shared_folder" dbeaver
