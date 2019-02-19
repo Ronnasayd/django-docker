@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.0.0-beta ###
+### VERSION: 3.1.0-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -156,6 +156,8 @@ if __name__ == '__main__':
 		(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
 	]+json2list(DATABASE_OTHERS_ENVIROMENTS))
 	)
+	if DEBUG:
+		database_compose.ports(list_ports=[(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
 	# print(database_compose)
 ###########################################################################
 					## NODE CONTAINER OBJECT ##

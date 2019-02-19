@@ -39,6 +39,10 @@ class Home(View):
 		 {"name":"Nginx",
 		 "image":"dd_images/tecnologias/nginx.png",
 		 "url":"https://www.nginx.com/"},
+		 {"name":"Dbeaver",
+		 "image":"dd_images/tecnologias/dbeaver.png",
+		 "url":"https://dbeaver.io/"
+		 },
 		]
 		
 		if request.method == 'GET':
