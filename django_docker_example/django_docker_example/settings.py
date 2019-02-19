@@ -20,6 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'td%a*i54$3k9v1&35&r4u%5_6*+n%4+$6lxctm0--8(@a&kk=c'
 
+DATABASES = {
+    'local': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'local.db'),
+    }
+}
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # Application definition
 

@@ -27,7 +27,7 @@
 
 DEBUG=True
 
-BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
+BROWSERSYNC_GULP_DEV_TOOLS=False # turn to True or False to enable disable dev tools like browsersync sass etc
 
 # folder to use in developer mode
 SCSS_TO_CSS_FOLDERS=["dd_scss","dd_css"]
