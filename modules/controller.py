@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.3-beta ###
+### VERSION: 3.0.0-beta ###
 
 from modules.views import *
 from modules.models import *
@@ -63,5 +63,11 @@ class Controller(object):
 
 	def build_wait_for_it(self):
 		return WAIT_FOR_IT
+
+	def build_settings(self):
+		return SETTINGS
+
+	def build_manage(self):
+		return MANAGE.format(**MANAGE_MODEL)
 
 

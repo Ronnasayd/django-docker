@@ -11,11 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-from decouple import config
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+#Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -24,36 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'td%a*i54$3k9v1&35&r4u%5_6*+n%4+$6lxctm0--8(@a&kk=c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
-DEBUG = config('DEBUG', default=False, cast=bool)
-COMPRESS_OFFLINE = config('DEBUG')
-STATIC_ROOT = config('STATIC_ROOT')
-MEDIA_ROOT = config('MEDIA_ROOT')
-STATIC_URL = config('STATIC_URL')
-MEDIA_URL = config('MEDIA_URL')
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql', ## coloque aqui a engine do banco que você vai utilizar ##
-        'HOST': config('DATABASE_HOST'),
-        'PORT': config('DATABASE_PORT'),
-        'NAME': config('DATABASE_NAME'),
-        'USER': config('DATABASE_USER'),
-        'PASSWORD': config('DATABASE_PASSWORD')
-    }
-}
-
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": config('REDIS_URL'),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -99,18 +66,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_docker_example.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
 
@@ -146,5 +101,3 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
-
-# STATIC_URL = '/static/'

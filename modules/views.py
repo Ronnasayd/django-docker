@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.3-beta ###
+### VERSION: 3.0.0-beta ###
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -248,10 +248,14 @@ sed -i "s/\\r$//" {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME}
 sed -i "s/\\r$//" {FOLDER_NAME}/wait-for-it.sh
 sed -i "s/\\r$//" {FOLDER_NAME}/gulpfile.js
 sed -i "s/\\r$//" {FOLDER_NAME}/gulp.sh
+sed -i "s/\\r$//" {FOLDER_NAME}/ddsettings.py
+sed -i "s/\\r$//" {FOLDER_NAME}/manage.py
 cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp {FOLDER_NAME}/wait-for-it.sh ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulp.sh ./{PROJECT_NAME}
+cp {FOLDER_NAME}/manage.py ./{PROJECT_NAME}
+cp {FOLDER_NAME}/ddsettings.py ./{PROJECT_NAME}/{PROJECT_NAME}
 '''
 
 MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
@@ -285,7 +289,7 @@ python manage.py runserver 0.0.0.0:{WEB_PORT}
 
 RUNSERVER_SCRIPT_PRODUCTION='''
 python manage.py collectstatic --noinput
-gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
+DJANGO_SETTINGS_MODULE={PROJECT_NAME}.{SETTINGS_FILE_NAME} gunicorn --bind=0.0.0.0:{WEB_PORT} --workers=3 {PROJECT_NAME}.wsgi
 '''
 
 ######################################################################
@@ -469,3 +473,64 @@ if [[ $WAITFORIT_CLI != "" ]]; then
 else
     exit $WAITFORIT_RESULT
 fi'''
+######################################################################
+                    ## SETTINGS FILE ##
+######################################################################
+SETTINGS='''from .settings import *
+from decouple import config
+
+DEBUG = config('DEBUG', default=False, cast=bool)
+STATIC_ROOT = config('STATIC_ROOT')
+MEDIA_ROOT = config('MEDIA_ROOT')
+STATIC_URL = config('STATIC_URL')
+MEDIA_URL = config('MEDIA_URL')
+
+try:
+    DATABASES['default']['ENGINE']=config('DATABASE_ENGINE'),
+    DATABASES['default']['HOST']=config('DATABASE_HOST'),
+    DATABASES['default']['PORT']=config('DATABASE_PORT'),
+    DATABASES['default']['NAME']=config('DATABASE_NAME'),
+    DATABASES['default']['USER']=config('DATABASE_USER'),
+    DATABASES['default']['PASSWORD']=config('DATABASE_PASSWORD'),
+except:
+    DATABASES = {
+        'default': {
+            'ENGINE':config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD')
+        }
+    }
+
+## CODE IF YOU WILL USE REDIS TO CACHE
+if config('REDIS_URL',default=None) != None:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": config('REDIS_URL'),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        }
+    }'''
+######################################################################
+                    ## MANAGE FILE ##
+######################################################################
+MANAGE='''#!/usr/bin/env python
+import os
+import sys
+
+if __name__ == "__main__":
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "{PROJECT_NAME}.{SETTINGS_FILE_NAME}")
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+'''

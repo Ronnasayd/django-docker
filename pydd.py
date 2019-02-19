@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.3-beta ###
+### VERSION: 3.0.0-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -113,6 +113,7 @@ if __name__ == '__main__':
      ('STATIC_URL','/static/'),
      ('MEDIA_ROOT',MEDIA_ROOT),
      ('MEDIA_URL','/media/'),
+     ('DATABASE_ENGINE',DATABASE_ENGINE),
      ('DATABASE_USER',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
      ('DATABASE_NAME',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
      ('DATABASE_HOST',(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if DATABASE_EXTERNAL else DATABASE_CONTAINER_NAME)),
@@ -265,6 +266,8 @@ runserver_content = controller.build_runserver(debug_mode=DEBUG)
 requirements_content = controller.build_requirements()
 gulp_script_content = controller.build_gulp_script()
 wait_for_it_content = controller.build_wait_for_it()
+settings = controller.build_settings()
+manage = controller.build_manage()
 
 
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
@@ -274,4 +277,6 @@ save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),RUNSERVER_SCRIPT_NAME,runserv
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
+save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),SETTINGS_FILE_NAME+'.py',settings)
+save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'manage.py',manage)
 ########################################################################

@@ -23,11 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 2.3.3-beta ###
+### VERSION: 3.0.0-beta ###
 
 DEBUG=True
 
-BROWSERSYNC_GULP_DEV_TOOLS=False # turn to True or False to enable disable dev tools like browsersync sass etc
+BROWSERSYNC_GULP_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
 
 # folder to use in developer mode
 SCSS_TO_CSS_FOLDERS=["dd_scss","dd_css"]
@@ -54,10 +54,7 @@ WEB_COMMANDS_BUILD=[
 	# 'apt-get install curl -y',
 ]
 
-
-
 DATABASE_IMAGE='postgres'
-
 DATABASE_EXTERNAL=False
 
 ### DATABASE_ENVIROMENTS FOR DATABASE_IMAGE
@@ -113,6 +110,14 @@ DATABASE_OTHERS_ENVIROMENTS={
 DATABASE_ROOT={
 	'DESTINATION':'/var/lib/postgresql/data',
 }
+### USE ONE OF DEFAULT DJANGO DATABASES ENGINES ###
+## Database							Django ENGINE value
+#------------------------------------------------------------------------#
+## MySQL							django.db.backends.mysql
+## Oracle							django.db.backends.oracle
+## PostgreSQL						django.db.backends.postgresql_psycopg2
+## SQLite							django.db.backends.sqlite3
+DATABASE_ENGINE='django.db.backends.postgresql_psycopg2'
 
 WEB_PORT='8000'
 NGINX_PORT='80'
@@ -133,42 +138,4 @@ DOCKER_COMPOSE_VERSION='3.5'
 
 NETWORK_NAME='network_dd'
 
-
-
 FOLDER_TO_SAVE="dd_generated_files"
-
-
-
-
-# ## PUT OR UPDATE THIS CODE IN YOUR settings.py ###
-
-# from decouple import config
-
-# DEBUG = config('DEBUG', default=False, cast=bool)
-# STATIC_ROOT = config('STATIC_ROOT')
-# MEDIA_ROOT = config('MEDIA_ROOT')
-# STATIC_URL = config('STATIC_URL')
-# MEDIA_URL = config('MEDIA_URL')
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql', ## coloque aqui a engine do banco que você vai utilizar ##
-#         'HOST': config('DATABASE_HOST'),
-#         'PORT': config('DATABASE_PORT'),
-#         'NAME': config('DATABASE_NAME'),
-#         'USER': config('DATABASE_USER'),
-#         'PASSWORD': config('DATABASE_PASSWORD')
-#     }
-# }
-
-
-# ## OPTIONAL CODE IF YOU WILL USE REDIS TO CACHE
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": config('REDIS_URL'),
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
