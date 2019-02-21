@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.1.1-beta ###
+### VERSION: 3.2.0-beta ###
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g")
@@ -66,7 +66,8 @@ Options:
   --clear-vol                 or    -cv      : Clear a volume
   --django-create-project     or    -dcp     : Create a django project 
   --django-create-app         or    -dca     : Create a django app in a django project
-  --dbeaver                   or    -dbv      : Run a container with Dbeaver database manager (Just in LINUX)
+  --dbeaver                   or    -dbv     : Run a container with Dbeaver database manager (Just in LINUX yet)
+  --portainer                 or    -ptn     : Run a container with portainer gui manager for docker 
 
 
 Examples:
@@ -98,7 +99,8 @@ Examples:
   $0 --stop-all
   $0 --django-create-project django_docker_example
   $0 --django-create-app django_docker_example api
-  $0 --dbeaver 
+  $0 --dbeaver
+  $0 --portainer 
 
   "
 
@@ -206,6 +208,8 @@ elif [ "$1" = "--attach" -o "$1" = "-att" ];then
   COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) up
 elif [ "$1" = "--dbeaver" -o "$1" = "-dbv" ];then
   bash modules/dbeaver/dbeaver.sh
+elif [ "$1" = "--portainer" -o "$1" = "-ptn" ];then
+  bash modules/portainer/portainer.sh
 else 
   echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

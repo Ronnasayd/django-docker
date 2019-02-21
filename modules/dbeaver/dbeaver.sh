@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.1.1-beta ###
+### VERSION: 3.2.0-beta ###
 
 script_directory=$(dirname "$0")
 docker build -t dbeaver -f "$script_directory/dbeaver.Dockerfile"  .

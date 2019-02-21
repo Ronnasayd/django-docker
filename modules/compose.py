@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.1.1-beta ###
+### VERSION: 3.2.0-beta ###
 
 import os
 class Service(object):

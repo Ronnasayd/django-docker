@@ -24,35 +24,13 @@
 
 ### VERSION: 3.2.0-beta ###
 
-if [ ! -d "tmp/" ]; then
-  mkdir tmp/
-fi
-# wget -q --no-cache https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version -O tmp/version
-curl -H 'Cache-Control: no-cache' -s https://raw.githubusercontent.com/Ronnasayd/django-docker/master/modules/version --output tmp/version
-if ! diff -q tmp/version modules/version > /dev/null 2>&1;
-then
 
-  echo -e "you have a update"
-  echo -e "do you want update ? (y/n):"
-  read -s answer
-
-  if [ "$answer" = "y" ];then
-  	echo "updating..."
-  	# wget -q --no-cache https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
-  	curl -H 'Cache-Control: no-cache' -s -L https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true --output tmp/source_code.zip
-    unzip -q tmp/source_code.zip -d tmp/
-  	rm tmp/source_code.zip
-  	cp tmp/pydd.py pydd.py
-  	cp tmp/ddo.sh  ddo.sh
-  	cp -r tmp/modules "$(pwd)"
-    cp tmp/config.py config$(cat tmp/version | awk '{print $3}').py
-  fi
-
-
-else
-
-  echo "You already update !"
-
-fi
-
-rm -rf tmp/
+unameOut="$(uname -s)"
+case "${unameOut}" in
+      Linux*)     machine=Linux && docker volume create portainer_data && docker run  -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer;;
+      Darwin*)    machine=Mac && docker volume create portainer_data && docker run  -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer;;
+      CYGWIN*)    machine=Cygwin && docker volume create portainer_data && docker run  -p 9000:9000 --name portainer --restart always -v \\.\pipe\docker_engine:\\.\pipe\docker_engine -v portainer_data:C:\data portainer/portainer;;
+      MINGW*)     machine=MinGw && docker volume create portainer_data && docker run  -p 9000:9000 --name portainer --restart always -v \\.\pipe\docker_engine:\\.\pipe\docker_engine -v portainer_data:C:\data portainer/portainer;;
+      *)          machine="UNKNOWN:${unameOut}"
+esac
+echo "Ambiente: "${machine}" portainer fechado"
