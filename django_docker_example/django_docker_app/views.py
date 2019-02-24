@@ -6,42 +6,59 @@ from .models import *
 
 
 class Home(View):
-	def get(self,request):
+	"""
+	Return the list of technologies utilized
+	"""
+	def get(self,request,*args, **kwargs):
+		"""
+			This method return a render instance with template and context
+			Args:
+				self: self instace of the classe Home
+				request: the request instance
+				*args:
+				**kwargs:
+			return:
+				a render instance
+		"""
 		tecnologias=[
 		{"name":"Docker",
-		 "image":"dd_images/tecnologias/docker.png",
+		 "image":"images/tecnologias/docker.png",
 		 "url":"https://www.docker.com/"},
 		
 		{"name":"Django",
-		 "image":"dd_images/tecnologias/django.png",
+		 "image":"images/tecnologias/django.png",
 		 "url":"https://www.djangoproject.com/"},
 
 		 {"name":"Gulp",
-		 "image":"dd_images/tecnologias/gulp.png",
+		 "image":"images/tecnologias/gulp.png",
 		 "url":"https://gulpjs.com/"},
 
 		  {"name":"Browsersync",
-		 "image":"dd_images/tecnologias/browsersync.png",
+		 "image":"images/tecnologias/browsersync.png",
 		 "url":"https://browsersync.io/"},
 
 		 {"name":"Docker Compose",
-		 "image":"dd_images/tecnologias/docker-compose.png",
+		 "image":"images/tecnologias/docker-compose.png",
 		 "url":"https://docs.docker.com/compose/"},
 
 		 {"name":"Sass",
-		 "image":"dd_images/tecnologias/sass.svg",
+		 "image":"images/tecnologias/sass.svg",
 		 "url":"https://sass-lang.com/"},
 
 		 {"name":"Nodejs",
-		 "image":"dd_images/tecnologias/nodejs.png",
+		 "image":"images/tecnologias/nodejs.png",
 		 "url":"https://nodejs.org/en/"},
 
 		 {"name":"Nginx",
-		 "image":"dd_images/tecnologias/nginx.png",
+		 "image":"images/tecnologias/nginx.png",
 		 "url":"https://www.nginx.com/"},
 		 {"name":"Dbeaver",
-		 "image":"dd_images/tecnologias/dbeaver.png",
+		 "image":"images/tecnologias/dbeaver.png",
 		 "url":"https://dbeaver.io/"
+		 },
+		  {"name":"Portainer",
+		 "image":"images/tecnologias/portainer.png",
+		 "url":"https://www.portainer.io"
 		 },
 		]
 		
@@ -49,6 +66,9 @@ class Home(View):
 			return render(request,'home.html',{"tecnologias":tecnologias})
 
 class Save(View):
+	"""
+	Save a DDuser on the database
+	"""
 	def post(self,request):
 		if request.method == 'POST':
 			dduser = DDUser.objects.create(email=request.POST['email'])

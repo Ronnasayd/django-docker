@@ -7,6 +7,7 @@ media/
 nginx/
 node_modules/
 djd_data/
+dd_auxiliary_files/
 
 
 *.lock

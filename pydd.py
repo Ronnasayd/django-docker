@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.0-beta ###
+### VERSION: 3.2.1-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -222,7 +222,7 @@ filename_production=PROJECT_NAME+'_production'
 containers_production = [deepcopy(web_compose)]+deepcopy(user_containers) + [nginx_compose]
 containers_development = [deepcopy(web_compose)]+deepcopy(user_containers)
 
-if BROWSERSYNC_GULP_DEV_TOOLS:
+if FRONT_DEV_TOOLS:
 	containers_development += [node_compose]
 if not DATABASE_EXTERNAL:
 	containers_development += [deepcopy(database_compose)]

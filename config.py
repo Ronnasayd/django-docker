@@ -23,17 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.0-beta ###
+### VERSION: 3.2.1-beta ###
 
 DEBUG=True
 
-BROWSERSYNC_GULP_DEV_TOOLS=False # turn to True or False to enable disable dev tools like browsersync sass etc
-
-# folder to use in developer mode
-SCSS_TO_CSS_FOLDERS=["dd_scss","dd_css"]
-JS_TO_JSMIN_FOLDERS=["dd_js","dd_jsmin"]
-IMAGEMIN_FOLDERS=["dd_images"]
-
+FRONT_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
 
 REQUIREMENTS=[
 	'channels',
@@ -42,6 +36,7 @@ REQUIREMENTS=[
 	'Pillow',
 	'django-widget-tweaks',
 	'djangorestframework',
+	'docutils',
 ]
 
 PROJECT_NAME='django_docker_example'
@@ -136,6 +131,6 @@ CONTAINERS=[
 
 DOCKER_COMPOSE_VERSION='3.5'
 
-NETWORK_NAME='network_dd'
+NETWORK_NAME = "dd_net"
 
-FOLDER_TO_SAVE="dd_generated_files"
+FOLDER_TO_SAVE = "dd_auxiliary_files"

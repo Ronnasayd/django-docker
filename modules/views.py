@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.0-beta ###
+### VERSION: 3.2.1-beta ###
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -133,14 +133,14 @@ http {{
                         ## GULPFILE TEMPLATE ##
 ####################################################################
 GULPFILE_BASE='''
-var gulp        = require('gulp');
-var browserSync = require('browser-sync').create();
-var sass        = require('gulp-sass');
-var rename      = require('gulp-rename');
-var autoprefixer = require('gulp-autoprefixer');
-var uglify = require('gulp-uglify');
-var sourcemaps = require('gulp-sourcemaps');
-var imagemin = require('gulp-imagemin');
+var gulp                = require('gulp');
+var browserSync         = require('browser-sync').create();
+var sass                = require('gulp-sass');
+var rename              = require('gulp-rename');
+var autoprefixer        = require('gulp-autoprefixer');
+var uglify              = require('gulp-uglify');
+var sourcemaps          = require('gulp-sourcemaps');
+var imagemin            = require('gulp-imagemin');
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass','js'], function() {{
@@ -154,24 +154,17 @@ gulp.task('serve', ['sass','js'], function() {{
         }}
     }});
 
-    gulp.watch("**/**/static/{SCSS_FOLDERS}/**/*.scss", ['sass']);
-    gulp.watch("**/**/static/{JS_FOLDERS}/**/*.js", ['js-watch']);
+ 
+    gulp.watch("static/scss/*.scss", ['sass']);
+    gulp.watch("static/js/*.js", ['js']);
     gulp.watch("**/*.html").on('change', browserSync.reload);
-    gulp.watch("**/*.css").on('change', browserSync.reload);
-    gulp.watch(["**/*.js","!**/**/static/{JS_FOLDERS}/**/*.js","!**/**/static/{JSMIN_FOLDERS}/**/*.js"]).on('change', browserSync.reload);
-}});
-
-
-// create a task that ensures the `js` task is complete before
-// reloading browsers
-gulp.task('js-watch', ['js'], function (done) {{
-    browserSync.reload();
-    done();
+    gulp.watch("static/css/*.css").on('change', browserSync.reload);
+    gulp.watch(["static/jsmin/*.js"]).on('change', browserSync.reload);
 }});
 
 
 gulp.task('js',function(){{
-    return gulp.src(["**/**/static/{JS_FOLDERS}/**/*.js","!gulpfile.js",'!node_modules/**'])
+    return gulp.src(["static/js/*.js"])
     .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
@@ -180,15 +173,14 @@ gulp.task('js',function(){{
             this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
      }})
     .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{JS_FOLDERS}','{JSMIN_FOLDERS}');
             file.extname = ".min.js"
      }}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("."))
+    .pipe(gulp.dest("static/jsmin"))
 }});
 
 gulp.task('imagemin',function(){{
-  return gulp.src(["**/**/static/{IMAGE_FOLDERS}/**/*"])
+  return gulp.src(["static/images"])
   .pipe(imagemin({{verbose:true}}))
   .pipe(gulp.dest("."))
 }});
@@ -196,7 +188,7 @@ gulp.task('imagemin',function(){{
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {{
-    return gulp.src(["**/**/static/{SCSS_FOLDERS}/**/*.scss",'!node_modules/**'])
+    return gulp.src(["static/scss/*.scss"])
         .pipe(sourcemaps.init())
         .pipe(sass({{
             errLogToConsole: true,
@@ -211,15 +203,13 @@ gulp.task('sass', function() {{
             browsers: ['last 100 versions'],
             cascade: false
         }}))
-        .pipe(rename(function(file){{
-            file.dirname = file.dirname.replace('{SCSS_FOLDERS}','{CSS_FOLDERS}');
-        }}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest("."))
+        .pipe(gulp.dest("static/css"))
         .pipe(browserSync.stream());
 }});
 
 gulp.task('default', ['serve']);
+
 '''
 ########################################################################
                         ## GULP SCRIPT ##
@@ -514,7 +504,16 @@ if config('REDIS_URL',default=None) != None:
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         }
-    }'''
+    }
+
+try:
+    STATICFILES_DIRS += [
+        os.path.join(BASE_DIR,"static"),
+    ]
+except:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR,"static"),
+    ]'''
 ######################################################################
                     ## MANAGE FILE ##
 ######################################################################

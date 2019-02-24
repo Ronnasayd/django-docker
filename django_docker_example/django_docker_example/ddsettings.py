@@ -37,3 +37,12 @@ if config('REDIS_URL',default=None) != None:
             }
         }
     }
+
+try:
+    STATICFILES_DIRS += [
+        os.path.join(BASE_DIR,"static"),
+    ]
+except:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR,"static"),
+    ]
