@@ -1,36 +1,35 @@
+
 <!DOCTYPE html>
-<!-- saved from url=(0022)http://localhost:3000/ -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
 	<title>Django Docker</title>
 	  <!-- Required meta tags -->
-    
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+	<link rel="stylesheet" href="static/css/reset.css">
+	<link rel="stylesheet" href="static/css/bootstrap.min.css">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="stylesheet" href="./index_files/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<link href="./index_files/css" rel="stylesheet">
-	<link rel="stylesheet" href="./index_files/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="shortcut icon" type="image/x-icon" href="http://localhost:3000/static/dd_images/icons/favicon.ico">
-	<link rel="stylesheet" href="./index_files/reset.css">
-	<link rel="stylesheet" href="./index_files/main.css">
+	<link rel="shortcut icon" type="image/x-icon" href="static/images/icons/favicon.ico" />
+
+
+	<link rel="stylesheet" href="static/css/main.css">
 </head>
-<body><script id="__bs_script__">//<![CDATA[
-    document.write("<script async src='/browser-sync/browser-sync-client.js?v=2.26.3'><\/script>".replace("HOST", location.hostname));
-//]]></script><script async="" src="./index_files/browser-sync-client.js"></script>
+<body>
 
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 background">
-			<div class="painel" style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+			<div class="painel">
 				<div class="row">
 					<div class="col-8">
-						<a href="https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Source Code</button></a>
+						<a href="https://github.com/Ronnasayd/django-docker/raw/master/source_code.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
 					</div>			
 				</div>
 				<div class="row logo">
 					<div class="col-12">
-						<img class="logo-img" src="./index_files/django-docker.png" alt="django docker logo">
+						<img class="logo-img" src="static/images/django-docker.png" alt="django docker logo">
 					</div>
 				</div>
 				<div class="row title-description">
@@ -46,45 +45,60 @@
 					<div class="col-12">
 						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
 						  <div class="carousel-inner">
-						    <div class="carousel-item text-center">
-						      <a href="https://www.docker.com/" target="_blank"><img class="carousel-img" src="./index_files/docker.png" alt="First slide"></a>
+
+							
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://www.docker.com/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/docker.png" alt="1-slide"></a>
 						      <h1 class="carousel-item-element">Docker</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    <a href="https://www.djangoproject.com/" target="_blank">
-						      <img class="carousel-img" src="./index_files/django.png" alt="Second slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://www.djangoproject.com/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/django.png" alt="2-slide"></a>
 						      <h1 class="carousel-item-element">Django</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    <a href="https://gulpjs.com/" target="_blank">
-						      <img class="carousel-img" src="./index_files/gulp.png" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://gulpjs.com/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/gulp.png" alt="3-slide"></a>
 						      <h1 class="carousel-item-element">Gulp</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://browsersync.io/" target="_blank">
-						      <img class="carousel-img" src="./index_files/browsersync.png" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://browsersync.io/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/browsersync.png" alt="4-slide"></a>
 						      <h1 class="carousel-item-element">Browsersync</h1>
 						    </div>
-						     <div class="carousel-item text-center">
-						     	<a href="https://docs.docker.com/compose/" target="_blank">
-						      <img class="carousel-img" src="./index_files/docker-compose.png" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://docs.docker.com/compose/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/docker-compose.png" alt="5-slide"></a>
 						      <h1 class="carousel-item-element">Docker Compose</h1>
 						    </div>
-						     <div class="carousel-item text-center active">
-						     	<a href="https://sass-lang.com/" target="_blank">
-						      <img class="carousel-img" src="./index_files/sass.svg" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://sass-lang.com/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/sass.svg" alt="6-slide"></a>
 						      <h1 class="carousel-item-element">Sass</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://nodejs.org/en/" target="_blank">
-						      <img class="carousel-img" src="./index_files/nodejs.png" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://nodejs.org/en/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/nodejs.png" alt="7-slide"></a>
 						      <h1 class="carousel-item-element">Nodejs</h1>
 						    </div>
-						    <div class="carousel-item text-center">
-						    	<a href="https://www.nginx.com/" target="_blank">
-						      <img class="carousel-img" src="./index_files/nginx.png" alt="Third slide"></a>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://www.nginx.com/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/nginx.png" alt="8-slide"></a>
 						      <h1 class="carousel-item-element">Nginx</h1>
 						    </div>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://dbeaver.io/" target="_blank"><img class="carousel-img" src="static/images/tecnologias/dbeaver.png" alt="9-slide"></a>
+						      <h1 class="carousel-item-element">Dbeaver</h1>
+						    </div>
+						    
+						  	 <div class="carousel-item  text-center">
+						      <a href="https://www.portainer.io" target="_blank"><img class="carousel-img" src="static/images/tecnologias/portainer.png" alt="10-slide"></a>
+						      <h1 class="carousel-item-element">Portainer</h1>
+						    </div>
+						    
+							
+						    
 						  </div>
 						  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
 						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -104,11 +118,14 @@
 	</div>
 </div>
 
+<script type="text/javascript">
+var tecnologias = '[{&#39;name&#39;: &#39;Docker&#39;, &#39;image&#39;: &#39;images/tecnologias/docker.png&#39;, &#39;url&#39;: &#39;https://www.docker.com/&#39;}, {&#39;name&#39;: &#39;Django&#39;, &#39;image&#39;: &#39;images/tecnologias/django.png&#39;, &#39;url&#39;: &#39;https://www.djangoproject.com/&#39;}, {&#39;name&#39;: &#39;Gulp&#39;, &#39;image&#39;: &#39;images/tecnologias/gulp.png&#39;, &#39;url&#39;: &#39;https://gulpjs.com/&#39;}, {&#39;name&#39;: &#39;Browsersync&#39;, &#39;image&#39;: &#39;images/tecnologias/browsersync.png&#39;, &#39;url&#39;: &#39;https://browsersync.io/&#39;}, {&#39;name&#39;: &#39;Docker Compose&#39;, &#39;image&#39;: &#39;images/tecnologias/docker-compose.png&#39;, &#39;url&#39;: &#39;https://docs.docker.com/compose/&#39;}, {&#39;name&#39;: &#39;Sass&#39;, &#39;image&#39;: &#39;images/tecnologias/sass.svg&#39;, &#39;url&#39;: &#39;https://sass-lang.com/&#39;}, {&#39;name&#39;: &#39;Nodejs&#39;, &#39;image&#39;: &#39;images/tecnologias/nodejs.png&#39;, &#39;url&#39;: &#39;https://nodejs.org/en/&#39;}, {&#39;name&#39;: &#39;Nginx&#39;, &#39;image&#39;: &#39;images/tecnologias/nginx.png&#39;, &#39;url&#39;: &#39;https://www.nginx.com/&#39;}, {&#39;name&#39;: &#39;Dbeaver&#39;, &#39;image&#39;: &#39;images/tecnologias/dbeaver.png&#39;, &#39;url&#39;: &#39;https://dbeaver.io/&#39;}, {&#39;name&#39;: &#39;Portainer&#39;, &#39;image&#39;: &#39;images/tecnologias/portainer.png&#39;, &#39;url&#39;: &#39;https://www.portainer.io&#39;}]';
+</script>
 
-<script src="./index_files/jquery-3.3.1.min.js"></script>
-<script src="./index_files/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="./index_files/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-<script src="./index_files/hammer.min.js"></script>
-<script src="./index_files/main.min.js"></script>
-
-</body></html>
+<script src="static/jsmin/jquery-3.3.1.min.js"></script>
+<script src="static/jsmin/popper.min.js" ></script>
+<script src="static/jsmin/bootstrap.min.js"></script>
+<script src="static/jsmin/hammer.min.js"></script>
+<script src="static/jsmin/main.min.js"></script>
+</body>
+</html>

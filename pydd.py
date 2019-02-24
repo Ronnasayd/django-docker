@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.1-beta ###
+### VERSION: 3.2.2-beta ###
 
 import os
 from copy import deepcopy,copy
