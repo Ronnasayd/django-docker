@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.5-beta #
+# VERSION: 3.2.6-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -234,12 +234,12 @@ file="./package.json"
 if [ ! -f "$file" ]
 then
 '''
-GULP_ADD='''  yarn add {}
+GULP_ADD='''  yarn add --no-bin-links {}
 '''
 
 GULP_SCRIPT_END='''  gulp
 else
-  yarn
+  yarn --no-bin-links
   gulp
 fi
 '''

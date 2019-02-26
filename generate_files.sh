@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# VERSION: 3.2.5-beta #
+# VERSION: 3.2.6-beta #
 
 zip source_code -r modules/ pydd.py ddo.sh config.py
 wget -m -p -E -k http://localhost:8000/

@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.5-beta #
+# VERSION: 3.2.6-beta #
 
 import os
 from copy import deepcopy, copy
@@ -45,8 +45,8 @@ if __name__ == '__main__':
 	(node_dockerfile._from(container_base='node')
 	.run(list_of_commands=[
 	'apt-get update',
-	'yarn global add gulp-cli',
-	'yarn global add browser-sync',
+	'yarn global add --no-bin-links gulp-cli',
+	'yarn global add --no-bin-links browser-sync',
 	'mkdir '+PROJECT_NAME,
 	])
 	.workdir(work_directory=path_join([PROJECT_NAME]))
