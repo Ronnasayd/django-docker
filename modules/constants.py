@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.2-beta ###
+### VERSION: 3.2.3-beta ###
 
 from config import *
 
@@ -47,13 +47,13 @@ OTHERS_CONTAINER_NAME=[container+'.'+PROJECT_RENAME for container in  CONTAINERS
 
 REQUIREMENTS+=[
 'django>='+DJANGO_VERSION,
-'gunicorn>=19.9.0',
-'python-decouple>=3.1',
-'psycopg2-binary>=2.7.7'
+'gunicorn',
+'python-decouple',
+'psycopg2-binary'
 ]
 
 GULP_MODULES=[
- 'gulp@3',
+ 'gulp',
  'node-sass',
  'browser-sync',
  'gulp-sass',

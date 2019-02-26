@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.2-beta ###
+### VERSION: 3.2.3-beta ###
 
 import os
 from copy import deepcopy,copy
@@ -54,12 +54,9 @@ if __name__ == '__main__':
 	.run(list_of_commands=[
 	'apt-get update',
 	'yarn global add gulp-cli',
-	'yarn global add browser-sync'
+	'yarn global add browser-sync',
+	'mkdir '+PROJECT_NAME,
 	])
-	.add(
-		local_path=path_join([ROOT_DIRECTORY,PROJECT_NAME]),
-		container_path=path_join([PROJECT_NAME])
-	)
 	.workdir(work_directory=path_join([PROJECT_NAME]))
 	.user(container_user='node')
 	.save(
@@ -78,14 +75,10 @@ if __name__ == '__main__':
 	.run(list_of_commands=[
 		'apt-get update',
 		'pip install --upgrade pip',
-		'pip install -r requirements.txt'
+		'pip install -r requirements.txt',
+		'mkdir '+PROJECT_NAME,
 	]+WEB_COMMANDS_BUILD)
-	.add(
-		local_path=path_join([ROOT_DIRECTORY,PROJECT_NAME]),
-		container_path=path_join([PROJECT_NAME])
-	)
 	.workdir(work_directory=path_join([PROJECT_NAME]))
-	.cmd(last_command='chmod +x '+RUNSERVER_SCRIPT_NAME)
 	.save(
 		path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
 		filename='web'

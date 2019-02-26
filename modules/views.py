@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.2-beta ###
+### VERSION: 3.2.3-beta ###
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -133,38 +133,18 @@ http {{
                         ## GULPFILE TEMPLATE ##
 ####################################################################
 GULPFILE_BASE='''
-var gulp                = require('gulp');
-var browserSync         = require('browser-sync').create();
-var sass                = require('gulp-sass');
-var rename              = require('gulp-rename');
-var autoprefixer        = require('gulp-autoprefixer');
-var uglify              = require('gulp-uglify');
-var sourcemaps          = require('gulp-sourcemaps');
-var imagemin            = require('gulp-imagemin');
 
-// Static Server + watching scss/html files
-gulp.task('serve', ['sass','js'], function() {{
+var gulp            = require('gulp');
+var browserSync     = require('browser-sync').create();
+var sass            = require('gulp-sass');
+var rename          = require('gulp-rename');
+var autoprefixer    = require('gulp-autoprefixer');
+var uglify          = require('gulp-uglify');
+var sourcemaps      = require('gulp-sourcemaps');
+var imagemin        = require('gulp-imagemin');
 
-   
-    browserSync.init({{
-        open: false,
-        proxy: {{
-          target: "http://{WEB_CONTAINER_NAME}:{WEB_PORT}",
-          ws: true,
-        }}
-    }});
-
- 
-    gulp.watch("static/scss/*.scss", ['sass']);
-    gulp.watch("static/js/*.js", ['js']);
-    gulp.watch("**/*.html").on('change', browserSync.reload);
-    gulp.watch("static/css/*.css").on('change', browserSync.reload);
-    gulp.watch(["static/jsmin/*.js"]).on('change', browserSync.reload);
-}});
-
-
-gulp.task('js',function(){{
-    return gulp.src(["static/js/*.js"])
+const minifiedJavascript = ()=>{{
+    return gulp.src(["static/src/js/*.js"])
     .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
@@ -176,19 +156,28 @@ gulp.task('js',function(){{
             file.extname = ".min.js"
      }}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("static/jsmin"))
-}});
+    .pipe(gulp.dest("static/dist/js"))
 
-gulp.task('imagemin',function(){{
-  return gulp.src(["static/images"])
-  .pipe(imagemin({{verbose:true}}))
-  .pipe(gulp.dest("."))
-}});
+}}
 
+const minifiedImages =()=>{{
+    return gulp.src(["static/images/**"],{{allowEmpty: true}})
+    .pipe(imagemin([
+        imagemin.gifsicle({{interlaced: true}}),
+        imagemin.jpegtran({{progressive: true}}),
+        imagemin.optipng({{optimizationLevel: 5}}),
+        imagemin.svgo({{
+            plugins: [
+                {{removeViewBox: true}},
+                {{cleanupIDs: false}}
+            ]
+        }})
+    ]))
+    .pipe(gulp.dest("static/images"))
+}}
 
-// Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function() {{
-    return gulp.src(["static/scss/*.scss"])
+const minifiedCss = ()=>{{
+    return gulp.src(["static/src/scss/*.scss"])
         .pipe(sourcemaps.init())
         .pipe(sass({{
             errLogToConsole: true,
@@ -204,11 +193,33 @@ gulp.task('sass', function() {{
             cascade: false
         }}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest("static/css"))
+        .pipe(gulp.dest("static/dist/css"))
         .pipe(browserSync.stream());
-}});
 
-gulp.task('default', ['serve']);
+}}
+
+const browserSyncServer = ()=>{{
+    browserSync.init({{
+        open: false,
+        proxy: {{
+          target: "http://{WEB_CONTAINER_NAME}:{WEB_PORT}",
+          ws: true,
+        }}
+    }});
+
+    gulp.watch("static/src/scss/*.scss", gulp.series(minifiedCss));
+    gulp.watch("static/src/js/*.js", gulp.series(minifiedJavascript));
+    gulp.watch("app/*.html").on('change', browserSync.reload);
+    gulp.watch("static/dist/css/*.css").on('change', browserSync.reload);
+    gulp.watch("static/dist/js/*.js").on('change', browserSync.reload);
+
+}}
+
+const minifiedAssets = gulp.parallel(minifiedCss,minifiedJavascript)
+const server = gulp.series(minifiedAssets,browserSyncServer)
+
+exports.imagemin = minifiedImages
+exports.default  = server
 
 '''
 ########################################################################
