@@ -1,30 +1,27 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Django Docker</title>
-	  <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Django Docker</title>
+	
+	<!-- meta tags begin -->
+  <meta charset="utf-8">
+	<meta name="Description" content="Author: Ronnasayd de Sousa Machado">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- meta tags end -->
 
-	<link rel="stylesheet" href="{% static 'dist/css/reset.css' %}">
-	<link rel="stylesheet" href="{% static 'dist/css/bootstrap.min.css' %}">
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700%7CPoppins:400,500" rel="stylesheet">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/icons/favicon.ico' %}" />
-
-
-	<link rel="stylesheet" href="{% static 'dist/css/main.css' %}">
+    {% include 'styles.html' %}
 </head>
 <body>
 
+<!-- Container begin -->
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12 background">
 			<div class="painel">
 				<div class="row">
 					<div class="col-8">
-						<a href="https://github.com/Ronnasayd/django-docker/raw/master/source_code.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
+						<a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/source_code.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
 					</div>			
 				</div>
 				<div class="row logo">
@@ -48,7 +45,7 @@
 
 							{% for tec in tecnologias %}
 						  	 <div class="carousel-item  text-center">
-						      <a href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
+						      <a rel="noreferrer" href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
 						      <h1 class="carousel-item-element">{{tec.name}}</h1>
 						    </div>
 						    {% endfor %}
@@ -72,15 +69,13 @@
 		</div>
 	</div>
 </div>
+<!-- Container end -->
 
 <script type="text/javascript">
 var tecnologias = '{{tecnologias}}';
 </script>
 
-<script src="{% static 'dist/js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'dist/js/popper.min.js' %}" ></script>
-<script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'dist/js/hammer.min.js' %}"></script>
-<script src="{% static 'dist/js/main.min.js'%}"></script>
+{% include 'scripts.html' %}
+
 </body>
 </html>

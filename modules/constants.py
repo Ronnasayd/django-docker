@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.4-beta #
+# VERSION: 3.2.5-beta #
 
 from config import *
 
@@ -62,6 +62,7 @@ GULP_MODULES=[
  'gulp-uglify',
  'gulp-sourcemaps',
  'gulp-imagemin',
+ 'gulp-purgecss',
  ]
 
 STATIC_ROOT='/tmp/static-data'

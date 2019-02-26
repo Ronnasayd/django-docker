@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.4-beta #
+# VERSION: 3.2.5-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -133,15 +133,15 @@ http {{
                         ## GULPFILE TEMPLATE ##
 ####################################################################
 GULPFILE_BASE='''
-
-var gulp            = require('gulp');
-var browserSync     = require('browser-sync').create();
-var sass            = require('gulp-sass');
-var rename          = require('gulp-rename');
-var autoprefixer    = require('gulp-autoprefixer');
-var uglify          = require('gulp-uglify');
-var sourcemaps      = require('gulp-sourcemaps');
-var imagemin        = require('gulp-imagemin');
+const gulp            = require('gulp');
+const browserSync     = require('browser-sync').create();
+const sass            = require('gulp-sass');
+const rename          = require('gulp-rename');
+const autoprefixer    = require('gulp-autoprefixer');
+const uglify          = require('gulp-uglify');
+const sourcemaps      = require('gulp-sourcemaps');
+const imagemin        = require('gulp-imagemin');
+const purgecss        = require('gulp-purgecss')
 
 const minifiedJavascript = ()=>{{
     return gulp.src(["static/src/js/*.js"])
@@ -192,6 +192,9 @@ const minifiedCss = ()=>{{
             browsers: ['last 100 versions'],
             cascade: false
         }}))
+        .pipe(purgecss({{
+            content: ["**/*.html"]
+        }}))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest("static/dist/css"))
         .pipe(browserSync.stream());
@@ -209,7 +212,7 @@ const browserSyncServer = ()=>{{
 
     gulp.watch("static/src/scss/*.scss", gulp.series(minifiedCss));
     gulp.watch("static/src/js/*.js", gulp.series(minifiedJavascript));
-    gulp.watch("app/*.html").on('change', browserSync.reload);
+    gulp.watch("**/*.html").on('change', browserSync.reload);
     gulp.watch("static/dist/css/*.css").on('change', browserSync.reload);
     gulp.watch("static/dist/js/*.js").on('change', browserSync.reload);
 
