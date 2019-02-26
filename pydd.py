@@ -23,28 +23,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.3-beta ###
+# VERSION: 3.2.4-beta #
 
 import os
-from copy import deepcopy,copy
+from copy import deepcopy, copy
 from config import *
 from modules.dockerfile import Dockerfile
-from modules.compose import Container,Service
+from modules.compose import Container, Service
 from modules.controller import Controller
 from modules.functional import *
 from modules.constants import *
 
-
-
 if __name__ == '__main__':
-
-
-	
 	CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
-	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\','/')
-	
-
-
+	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\', '/')
 
 #############################################################################	
 						## NODE DOCKERFILE OBJECT ##
@@ -69,15 +61,18 @@ if __name__ == '__main__':
 	web_dockerfile = Dockerfile()
 	(web_dockerfile._from(container_base='python:'+PYTHON_VERSION)
 	.add(
-		local_path=path_join([FOLDER_TO_SAVE,'requirements.txt']),
-		container_path=path_join([ROOT_DIRECTORY,'requirements.txt'])
+		local_path=path_join([FOLDER_TO_SAVE, 'requirements.txt']),
+		container_path=path_join([ROOT_DIRECTORY, 'requirements.txt'])
 	)
 	.run(list_of_commands=[
 		'apt-get update',
 		'pip install --upgrade pip',
 		'pip install -r requirements.txt',
-		'mkdir '+PROJECT_NAME,
 	]+WEB_COMMANDS_BUILD)
+	.add(
+		local_path=path_join([ROOT_DIRECTORY, PROJECT_NAME]),
+		container_path=path_join([PROJECT_NAME])
+	)
 	.workdir(work_directory=path_join([PROJECT_NAME]))
 	.save(
 		path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),

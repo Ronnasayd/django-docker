@@ -23,36 +23,37 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-### VERSION: 3.2.3-beta ###
+# VERSION: 3.2.4-beta #
 
-DEBUG=True
+DEBUG = True
 
-FRONT_DEV_TOOLS=True # turn to True or False to enable disable dev tools like browsersync sass etc
+FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+#  like browsersync sass etc
 
-REQUIREMENTS=[
-	'channels',
-	'channels_redis',
-	'django-redis',
-	'Pillow',
-	'django-widget-tweaks',
-	'djangorestframework',
-	'docutils',
+REQUIREMENTS = [
+  'channels',
+  'channels_redis',
+  'django-redis',
+  'Pillow',
+  'django-widget-tweaks',
+  'djangorestframework',
+  'docutils',
 ]
 
-PROJECT_NAME='django_docker_example'
+PROJECT_NAME = 'django_docker_example'
 
-PYTHON_VERSION='3.6'
-DJANGO_VERSION='2.1.5'
+PYTHON_VERSION = '3.6'
+DJANGO_VERSION = '2.1.5'
 
-WEB_COMMANDS_BUILD=[
-	# 'apt-get install wget -y',
-	# 'apt-get install curl -y',
+WEB_COMMANDS_BUILD = [
+  # 'apt-get install wget -y',
+  # # 'apt-get install curl -y',
 ]
 
-DATABASE_IMAGE='postgres'
-DATABASE_EXTERNAL=False
+DATABASE_IMAGE = 'postgres'
+DATABASE_EXTERNAL = False
 
-### DATABASE_ENVIROMENTS FOR DATABASE_IMAGE
+# DATABASE_ENVIROMENTS FOR DATABASE_IMAGE
 # 	POSTGRESS:
 # 		USER_NAME = POSTGRES_USER
 # 		PASSWORD_NAME = POSTGRES_PASSWORD
@@ -62,7 +63,7 @@ DATABASE_EXTERNAL=False
 # 		USER_NAME = MYSQL_USER
 # 		PASSWORD_NAME = MYSQL_PASSWORD
 # 		DB_NAME = MYSQL_DATABASE
-		
+
 # 		ROOT_PASSWORD_NAME = MYSQL_ROOT_PASSWORD
 # 	MONGO:
 # 		USER_NAME = MONGO_INITDB_ROOT_USERNAME
@@ -70,66 +71,63 @@ DATABASE_EXTERNAL=False
 # 		DB_NAME = ''
 
 
-### DATABASES DEFAULT PORTS
+# DATABASES DEFAULT PORTS
 # POSTGRES_PORT=5432
 # MYSQL_PORT=3306
 # MONGO_PORT=8081
 
 
-DATABASE_DEFAULT_ENVIROMENTS={
-
-	'DATABASE_USER':'django_docker_example_user',
-	'DATABASE_USER_NAME':'POSTGRES_USER',
-
-	'DATABASE_PASSWORD':'!TB2PGy%{PBd)q>E',
-	'DATABASE_PASSWORD_NAME':'POSTGRES_PASSWORD',
-
-	'DATABASE_DB':'django_docker_example_db',
-	'DATABASE_DB_NAME':'POSTGRES_DB',
-
-	'DATABASE_PORT':'5432',
-	'DATABASE_HOST':'http://10.0.0.1', # just use in external database connection
+DATABASE_DEFAULT_ENVIROMENTS = {
+  'DATABASE_USER': 'django_docker_example_user',
+  'DATABASE_USER_NAME': 'POSTGRES_USER',
+  'DATABASE_PASSWORD': '!TB2PGy%{PBd)q>E',
+  'DATABASE_PASSWORD_NAME': 'POSTGRES_PASSWORD',
+  'DATABASE_DB': 'django_docker_example_db',
+  'DATABASE_DB_NAME': 'POSTGRES_DB',
+  'DATABASE_PORT': '5432',
+  'DATABASE_HOST': 'http://10.0.0.1',  # just use in external database
+  # connection
 }
 
 
-DATABASE_OTHERS_ENVIROMENTS={
-	'ANY_ENV':'/tmp',
+DATABASE_OTHERS_ENVIROMENTS = {
+  'ANY_ENV': '/tmp',
 }
 
 
-### LOCATION OF DATABASE IN CONTAINER
+# LOCATION OF DATABASE IN CONTAINER
 # POSTGRES_DESTINATION = /var/lib/postgresql/data'
 # MYSQL_DESTINATION = /var/lib/mysql/
 # MONGO_DESTINATION = /var/lib/mongodb
 
-DATABASE_ROOT={
-	'DESTINATION':'/var/lib/postgresql/data',
+DATABASE_ROOT = {
+  'DESTINATION': '/var/lib/postgresql/data',
 }
-### USE ONE OF DEFAULT DJANGO DATABASES ENGINES ###
-## Database							Django ENGINE value
-#------------------------------------------------------------------------#
-## MySQL							django.db.backends.mysql
-## Oracle							django.db.backends.oracle
-## PostgreSQL						django.db.backends.postgresql_psycopg2
-## SQLite							django.db.backends.sqlite3
-DATABASE_ENGINE='django.db.backends.postgresql_psycopg2'
+# USE ONE OF DEFAULT DJANGO DATABASES ENGINES ###
+# Database							Django ENGINE value
+# ------------------------------------------------------------------------ #
+# MySQL							django.db.backends.mysql
+# Oracle							django.db.backends.oracle
+# PostgreSQL						django.db.backends.postgresql_psycopg2
+# SQLite							django.db.backends.sqlite3
+DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
-WEB_PORT='8000'
-NGINX_PORT='80'
+WEB_PORT = '8000'
+NGINX_PORT = '80'
 
-WEB_ENVIROMENT={
-	# all enviroment variables are optional
-	'REDIS_URL':'redis://redis:6379/1',
+WEB_ENVIROMENT = {
+  # all enviroment variables are optional
+  'REDIS_URL': 'redis://redis:6379/1',
 }
 
 
-CONTAINERS=[
-	# all container are aptional
-	'redis', # redis here is just a example of how to add container in network
+CONTAINERS = [
+  # all container are aptional
+  'redis',  # redis here is just a example of how to add container in network
 ]
 
 
-DOCKER_COMPOSE_VERSION='3.5'
+DOCKER_COMPOSE_VERSION = '3.5'
 
 NETWORK_NAME = "dd_net"
 
