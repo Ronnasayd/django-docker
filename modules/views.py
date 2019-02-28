@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.6-beta #
+# VERSION: 3.2.7-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -213,7 +213,6 @@ const browserSyncServer = ()=>{{
     gulp.watch("static/src/scss/*.scss", gulp.series(minifiedCss));
     gulp.watch("static/src/js/*.js", gulp.series(minifiedJavascript));
     gulp.watch("**/*.html").on('change', browserSync.reload);
-    gulp.watch("static/dist/css/*.css").on('change', browserSync.reload);
     gulp.watch("static/dist/js/*.js").on('change', browserSync.reload);
 
 }}
