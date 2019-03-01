@@ -1,84 +1,113 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>Django Docker</title>
-	
-	<!-- meta tags begin -->
-  <meta charset="utf-8">
-	<meta name="Description" content="Author: Ronnasayd de Sousa Machado">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- meta tags end -->
+    <title>Django Docker</title>
+
+    <!-- meta tags begin -->
+    <meta charset="utf-8">
+    <meta name="Description" content="Author: Ronnasayd de Sousa Machado">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- meta tags end -->
 
     {% include 'styles.html' %}
 </head>
+
 <body>
 
-<!-- Container begin -->
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-12 background">
-			<div class="painel">
-				<div class="row">
-					<div class="col-6">
-						<a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/source_code.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
-					</div>
-					<div class="col-6">
-					  <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker"><img class="github-logo" src="{% static 'images/github-w.png' %}" alt="github-logo"></a>
-					</div>			
-				</div>
-				<div class="row logo">
-					<div class="col-12">
-						<img class="logo-img" src="{% static 'images/django-docker.png' %}" alt="django docker logo">
-					</div>
-				</div>
-				<div class="row title-description">
-					<div class="col-12"><h1 class="title"><strong>Django-Docker</strong></h1></div>
-					<div class="col-12"><h2 class="description"><strong>Make your development and production full stack simpler</strong></h2></div>
-				</div>
-				<div class="row">
-					<div class="col-12 text-center">
-						<h2 class="tecnologias">What makes your life easier with this tool</h2>
-					</div>
-				</div>
-				<div class="row slide">
-					<div class="col-12">
-						<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-						  <div class="carousel-inner">
+    <!-- Container begin -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- background begin -->
+            <div class="col-12 background">
+                <!-- Painel begin -->
+                <div class="painel">
+                    <div class="row">
+                        <!-- Download-button begin -->
+                        <div class="col-6">
+                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/django_docker.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
+                        </div>
+                        <!-- Download-button end -->
+                        <!-- Github-link begin -->
+                        <div class="col-6">
+                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker"><img class="github-logo" src="{% static 'images/github-w.png' %}" alt="github-logo"></a>
+                        </div>
+                        <!-- Github-link end -->
+                    </div>
+                    <!-- logo begin -->
+                    <div class="row logo">
+                        <div class="col-12">
+                            <img class="logo-img" src="{% static 'images/django-docker.png' %}" alt="django docker logo">
+                        </div>
+                    </div>
+                    <!-- logo end -->
+                    <!-- Description begin -->
+                    <div class="row title-description">
+                        <div class="col-12">
+                            <h1 class="title"><strong>Django-Docker</strong></h1>
+                        </div>
+                        <div class="col-12">
+                            <h2 class="description"><strong>Make your development and production full stack simpler</strong></h2>
+                        </div>
+                    </div>
+                    <!-- Description end -->
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 class="tecnologias">What makes your life easier with this tool</h2>
+                        </div>
+                    </div>
+                    <!-- Slide begin-->
+                    <div class="row slide">
+                        <div class="col-12">
+                            <!-- Carrousel begin -->
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
 
-							{% for tec in tecnologias %}
-						  	 <div class="carousel-item  text-center">
-						      <a rel="noreferrer" href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
-						      <h1 class="carousel-item-element">{{tec.name}}</h1>
-						    </div>
-						    {% endfor %}
-							
-						    
-						  </div>
-						  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						    <span class="sr-only">Previous</span>
-						  </a>
-						  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-						    <span class="sr-only">Next</span>
-						  </a>
-						</div>
-					</div>
-				</div>
-				
-				
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Container end -->
+                                    {% for tec in tecnologias %}
+                                    <!-- Tech-item-{{tec.name}} begin -->
+                                    <div class="carousel-item  text-center">
+                                        <a rel="noreferrer" href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
+                                        <h1 class="carousel-item-element">{{tec.name}}</h1>
+                                    </div>
+                                    <!-- Tech-item-{{tec.name}} end -->
+                                    {% endfor %}
 
-<script type="text/javascript">
-var tecnologias = '{{tecnologias}}';
-</script>
 
-{% include 'scripts.html' %}
+                                </div>
+                                <!-- Previous-button begin -->
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <!-- Previous-button end -->
+                                <!-- Next-button begin -->
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                                <!-- Next-button end -->
+                            </div>
+                            <!-- Carrousel end -->
+                        </div>
+                    </div>
+                    <!-- Slide end -->
+
+
+                </div>
+                <!-- Painel end -->
+            </div>
+            <!-- background end -->
+        </div>
+    </div>
+    <!-- Container end -->
+
+    <script type="text/javascript">
+        var tecnologias = '{{tecnologias}}';
+    </script>
+
+    {% include 'scripts.html' %}
 
 </body>
+
 </html>

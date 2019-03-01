@@ -63,6 +63,11 @@ GULP_MODULES=[
  'gulp-sourcemaps',
  'gulp-imagemin',
  'gulp-purgecss',
+ 'gulp-clean-css',
+ 'gulp-html-beautify',
+ 'minimist',
+ 'gulp-concat',
+ 'gulp-cached'
  ]
 
 STATIC_ROOT='/tmp/static-data'

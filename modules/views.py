@@ -133,6 +133,7 @@ http {{
                         ## GULPFILE TEMPLATE ##
 ####################################################################
 GULPFILE_BASE='''
+
 const gulp            = require('gulp');
 const browserSync     = require('browser-sync').create();
 const sass            = require('gulp-sass');
@@ -141,10 +142,74 @@ const autoprefixer    = require('gulp-autoprefixer');
 const uglify          = require('gulp-uglify');
 const sourcemaps      = require('gulp-sourcemaps');
 const imagemin        = require('gulp-imagemin');
-const purgecss        = require('gulp-purgecss')
+const cleanCSS        = require('gulp-clean-css');
+const htmlbeautify    = require('gulp-html-beautify');
+const purgecss        = require('gulp-purgecss');
+const cache           = require('gulp-cached');
+const minimist        = require('minimist');
+const concat          = require('gulp-concat');
+
+//  gulp concatfiles --files <list_of_files:file1,file2,file3> --name <name_of_file:all.js> --dist <destination>
+const concatFiles = ()=>{{
+    let options = minimist(process.argv.slice(2));
+    console.log("files: "+options.files);
+    console.log("name: "+options.name);
+    console.log("dist: "+options.dist);
+    return gulp.src(options.files.split(","))
+    .pipe(cache('concatcss'))
+    .pipe(sourcemaps.init())
+    .pipe(concat(options.name))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(options.dist))
+}}
+
+
+const unusedCss = ()=>{{
+    return gulp.src(["static/dist/css/**/*.css","!static/dist/css/**/*clean.css"],{{base: './'}})
+    .pipe(cache('cssclean'))
+    .pipe(sourcemaps.init())
+    .pipe(purgecss({{
+        content: ["**/*.html","!node_modules/**/*.html"]
+    }}))
+    .pipe(rename(function(file){{
+        file.extname = ".clean.css"
+    }}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./'))
+    .pipe(browserSync.stream());
+}}
+
+const htmlBeauty = ()=>{{
+    const options = {{
+        indentSize: 2,
+      }};
+    return gulp.src(['**/*.html',"!node_modules/**/*.html"],{{base: './'}})
+    .pipe(cache('html'))
+    .pipe(htmlbeautify(options))
+    .pipe(gulp.dest('./'))
+}}
+
+const minifiedCss = ()=>{{
+    return gulp.src(["static/dist/css/**/*.css","!static/dist/css/**/*min.css","!static/dist/css/**/*clean.css"])
+    .pipe(cache('csstocssmin'))
+    .pipe(sourcemaps.init())
+    .pipe(rename(function(file){{
+        file.extname = ".min.css"
+    }}))
+    .pipe(cleanCSS())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest("static/dist/css"))
+    .pipe(browserSync.stream());
+}}
+
+const browserReload = (done)=>{{
+    browserSync.reload();
+    done();
+}}
 
 const minifiedJavascript = ()=>{{
-    return gulp.src(["static/src/js/*.js"])
+    return gulp.src(["static/src/js/**/*.js","!static/src/js/**/_*.js"])
+    .pipe(cache('javascript'))
     .pipe(sourcemaps.init())
     .pipe(uglify()).on('error',function(err){{
             console.log(err.message);
@@ -176,13 +241,14 @@ const minifiedImages =()=>{{
     .pipe(gulp.dest("static/images"))
 }}
 
-const minifiedCss = ()=>{{
-    return gulp.src(["static/src/scss/*.scss"])
+
+const sassToCss = ()=>{{
+    return gulp.src(["static/src/scss/**/*.scss","!static/src/scss/**/_*.scss"])
+        .pipe(cache('csstosass'))
         .pipe(sourcemaps.init())
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
-            outputStyle: 'compressed'
         }}).on('error',function(err){{
             console.log(err.message);
             browserSync.notify(err.message, 3000); // Display error in the browser
@@ -192,12 +258,10 @@ const minifiedCss = ()=>{{
             browsers: ['last 100 versions'],
             cascade: false
         }}))
-        .pipe(purgecss({{
-            content: ["**/*.html"]
-        }}))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest("static/dist/css"))
         .pipe(browserSync.stream());
+        
 
 }}
 
@@ -210,19 +274,19 @@ const browserSyncServer = ()=>{{
         }}
     }});
 
-    gulp.watch("static/src/scss/*.scss", gulp.series(minifiedCss));
-    gulp.watch("static/src/js/*.js", gulp.series(minifiedJavascript));
-    gulp.watch("**/*.html").on('change', browserSync.reload);
-    gulp.watch("static/dist/js/*.js").on('change', browserSync.reload);
+    gulp.watch("static/src/scss/**/*.scss", gulp.series(sassToCss, minifiedCss, unusedCss));
+    gulp.watch("static/src/js/**/*.js", gulp.series(minifiedJavascript));
+    gulp.watch("**/*.html", gulp.series(htmlBeauty, browserReload));
+    gulp.watch("static/src/js/**/*.js", gulp.series(minifiedJavascript, browserReload));
 
 }}
 
-const minifiedAssets = gulp.parallel(minifiedCss,minifiedJavascript)
-const server = gulp.series(minifiedAssets,browserSyncServer)
+const minifiedAssets = gulp.parallel(gulp.series(sassToCss, minifiedCss, unusedCss), minifiedJavascript)
+const server = gulp.series(htmlBeauty, minifiedAssets, browserSyncServer)
 
 exports.imagemin = minifiedImages
+exports.concatfiles = concatFiles
 exports.default  = server
-
 '''
 ########################################################################
                         ## GULP SCRIPT ##
