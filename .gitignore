@@ -9,11 +9,11 @@ node_modules/
 djd_data/
 dd_auxiliary_files/
 
-
+*.yml
+!.travis.yml
 *.lock
 *.json
 *.txt
-*.yml
 *.Dockerfile
 runserver.sh
 make_ambient.sh
