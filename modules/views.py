@@ -583,13 +583,13 @@ STATIC_URL = config('STATIC_URL')
 MEDIA_URL = config('MEDIA_URL')
 
 try:
-    DATABASES['default']['ENGINE']=config('DATABASE_ENGINE'),
-    DATABASES['default']['HOST']=config('DATABASE_HOST'),
-    DATABASES['default']['PORT']=config('DATABASE_PORT'),
-    DATABASES['default']['NAME']=config('DATABASE_NAME'),
-    DATABASES['default']['USER']=config('DATABASE_USER'),
-    DATABASES['default']['PASSWORD']=config('DATABASE_PASSWORD'),
-except:
+    DATABASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
+    DATABASES['default']['HOST'] = config('DATABASE_HOST'),
+    DATABASES['default']['PORT'] = config('DATABASE_PORT'),
+    DATABASES['default']['NAME'] = config('DATABASE_NAME'),
+    DATABASES['default']['USER'] = config('DATABASE_USER'),
+    DATABASES['default']['PASSWORD'] = config('DATABASE_PASSWORD'),
+except KeyError:
     DATABASES = {
         'default': {
             'ENGINE':config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
@@ -617,7 +617,7 @@ try:
     STATICFILES_DIRS += [
         os.path.join(BASE_DIR,"static"),
     ]
-except:
+except NameError:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR,"static"),
     ]'''

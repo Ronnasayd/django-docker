@@ -27,7 +27,6 @@
 
 import os
 class Service(object):
-	@classmethod
 	def __init__(self):
 		self.service_version=""
 		self.base=""
@@ -35,31 +34,25 @@ class Service(object):
 		self.network=""
 		self.space=" "
 
-	@classmethod
 	def __str__(self):
 		return self.base
 
-	@classmethod
 	def version(self,service_version):
 		self.service_version = service_version
 		return self
 
-	@classmethod
 	def volumes(self,list_of_volumes):
 		self.list_of_volumes = list_of_volumes
 		return self
 
-	@classmethod
 	def networks(self,list_of_networks):
 		self.list_of_networks = list_of_networks
 		return self
 
-	@classmethod
 	def containers(self,list_of_containers):
 		self.list_of_containers = list_of_containers
 		return self
 
-	@classmethod
 	def build(self):
 		self.base += 'version: "'+self.service_version+'"\nservices:\n'
 		for container in self.list_of_containers:
@@ -75,7 +68,6 @@ class Service(object):
 			self.base += self.space+volume+':\n'
 		return self
 	
-	@classmethod
 	def save(self,path_to_save,filename):
 		if not os.path.exists(path_to_save):
 			os.makedirs(path_to_save)
@@ -88,21 +80,17 @@ class Service(object):
 
 class Container(object):
 
-	@classmethod
 	def __init__(self):
 		self.base=""
 		self.space=" "
 		self.container_name=""
 
-	@classmethod
 	def __str__(self):
 		return self.base
 
-	@classmethod
 	def __unique_element(self,name,element,prefix="",sufix=""):
 		self.base += 2*self.space+name+': '+prefix+element+sufix+'\n'
 
-	@classmethod
 	def __many_elements(self,name,elements,separator=':',prefix='',sufix=''):
 		self.base += 2*self.space+name+':\n'
 		for element in elements:
@@ -111,7 +99,6 @@ class Container(object):
 			else:
 				self.base += 3*self.space+'- '+prefix+element[0]+separator+element[1]+sufix+'\n'
 
-	@classmethod
 	def name(self,container_name):
 		self.container_name=container_name
 		self.base += 1*self.space+container_name+':\n'
@@ -120,52 +107,42 @@ class Container(object):
 		self.__unique_element('tty','True')
 		return self
 	
-	@classmethod
 	def restart(self,restart_option='always'):
 		self.__unique_element('restart',restart_option)
 		return self
 
-	@classmethod
 	def ports(self,list_ports):
 		self.__many_elements('ports',list_ports)
 		return self
-	
-	@classmethod
+		
 	def expose(self,list_expose_ports):
 		self.__many_elements('expose',list_expose_ports)
 		return self
 
-	@classmethod
 	def workdir(self,work_directory):
 		self.__unique_element('working_dir',work_directory)
 		return self
 
-	@classmethod
 	def command(self,command):
 		self.__unique_element('command',command)
 		return self
 
-	@classmethod
 	def depends(self,list_depends):
 		self.__many_elements('depends_on',list_depends)
 		return self
 
-	@classmethod
 	def environ(self,list_enviroments):
 		self.__many_elements('environment',list_enviroments,separator="=")
 		return self
 
-	@classmethod
 	def volumes(self,list_volumes):
 		self.__many_elements('volumes',list_volumes,prefix='"',sufix=':rw"')
 		return self
 
-	@classmethod
 	def image(self,image_base):
 		self.__unique_element('image',image_base)
 		return self
 
-	@classmethod
 	def build(self,context,dockerfile):
 		self.__unique_element('build','')
 		self.__unique_element(' context',context,prefix='"',sufix='"')
