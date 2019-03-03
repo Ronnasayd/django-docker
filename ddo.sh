@@ -111,7 +111,7 @@ elif [ "$1" = "--make" -o "$1" = "-m" ];then
       MINGW*)     machine=MinGw && python ./pydd.py;;
       *)          machine="UNKNOWN:${unameOut}"
   esac
-  echo "Ambiente: "${machine}" Arquivos criados"
+  echo "Ambiente: ${machine} Arquivos criados"
 elif [ "$1" = "--run" -o "$1" = "-r" ];then
   echo "Executing..."
   bash $FOLDER_TO_SAVE/make_ambient.sh

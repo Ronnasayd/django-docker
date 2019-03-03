@@ -26,7 +26,7 @@
 # VERSION: 3.2.9-beta #
 
 import os
-from copy import deepcopy, copy
+from copy import deepcopy
 from config import *
 from modules.dockerfile import Dockerfile
 from modules.compose import Container, Service
