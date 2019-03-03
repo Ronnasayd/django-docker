@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.8-beta #
+# VERSION: 3.2.9-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -148,6 +148,7 @@ const cache           = require("gulp-cached");
 const minimist        = require("minimist");
 const concat          = require("gulp-concat");
 const clean           = require("gulp-clean");
+const sassPartials    = require('gulp-sass-partials-imported');
 
 
 
@@ -189,6 +190,7 @@ const sassToCss = ()=>{{
     return gulp.src([src_scss,"!_*.scss",not_node],{{allowEmpty: true}})
         .pipe(cache("sassToCss"))
         .pipe(sourcemaps.init())
+        .pipe(sassPartials("static/src/scss"))
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
@@ -291,7 +293,7 @@ const minifyImages =()=>{{
 const js_line = gulp.series(minifyJs);
 const css_line = gulp.series(gulp.parallel(sassToCss, copySrcCss), minifyCss, deleteTempCss);
 const image_line = gulp.series(minifyImages);
-const html_line = gulp.series(htmlBeautify);
+const html_line = gulp.parallel(htmlBeautify);
 
 
 

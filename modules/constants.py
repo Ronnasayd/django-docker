@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.8-beta #
+# VERSION: 3.2.9-beta #
 
 from config import *
 
@@ -54,7 +54,6 @@ REQUIREMENTS += [
 
 GULP_MODULES = [
   "browser-sync",
-  "eslint-config-google",
   "gulp",
   "gulp-autoprefixer",
   "gulp-cached",
@@ -70,7 +69,7 @@ GULP_MODULES = [
   "gulp-uglify",
   "minimist",
   "node-sass",
-
+  "gulp-sass-partials-imported"
  ]
 
 STATIC_ROOT = '/tmp/static-data'
