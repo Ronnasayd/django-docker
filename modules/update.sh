@@ -39,7 +39,7 @@ then
   if [ "$answer" = "y" ];then
   	echo "updating..."
   	# wget -q --no-cache https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true -O tmp/source_code.zip
-  	curl -H 'Cache-Control: no-cache' -s -L https://github.com/Ronnasayd/django-docker/blob/master/source_code.zip?raw=true --output tmp/source_code.zip
+  	curl -H 'Cache-Control: no-cache' -s -L https://github.com/Ronnasayd/django-docker/blob/master/django_docker.zip?raw=true --output tmp/source_code.zip
     unzip -q tmp/source_code.zip -d tmp/
   	rm tmp/source_code.zip
   	cp tmp/pydd.py pydd.py
