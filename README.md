@@ -2,10 +2,10 @@
 <p  align="center"><img  src="django-docker.png"  alt="django-docker"  width="200"/></p>
 
 # Django-Docker CLI
-
 https://ronnasayd.github.io/django-docker/
 
-![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)   [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+[![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.
 
@@ -23,13 +23,15 @@ Modify the ***config.py*** settings as you wish, and then run the ***ddo.sh*** s
 
 The choice of environment between development or production is made by the ***DEBUG*** variable located in the file ***config.py***
 
+  
+
 ## List of commands
 
     --help | -h : Show help
     --run | -r : Run the application in selected mode
     --make | -m : Enviroment creation mode
     --clear | -c : Delete generated files
-    --clear-all | -ca : Delete all files
+	--clear-all | -ca : Delete all files
     --stop | -s : Stop a specific container
     --stop-app | -sap : Stop containers in app network
     --stop-net | -sn : Stop all containers off a network
@@ -40,8 +42,8 @@ The choice of environment between development or production is made by the ***DE
     --net-status | -ns : Show all networks
     --create-su | -csu : Create a new admin user
     --migrate | -mi : Apply migrations in django
-    --clear-mig | -cmi : Clear all migrations and __pycache__ folders
-    --show-db | -sdb : Show datbases create with django docker
+	--clear-mig | -cmi : Clear all migrations and __pycache__ folders
+	--show-db | -sdb : Show datbases create with django docker
     --clear-db | -cdb : Clear a specific database create with django docker
     --prune | -p : Prune the system
     --show-img | -si : Show the docker images
@@ -56,13 +58,15 @@ The choice of environment between development or production is made by the ***DE
     --dbeaver | -dbv : Run a container with Dbeaver database manager (Just in LINUX yet)
     --portainer | -ptn : Run a container with portainer gui manager for docke
 
+ 
 ## Contributing
-1.  Fork it ([https://github.com/Ronnasayd/django-docker/fork](https://github.com/Ronnasayd/django-docker))
-2.  Create your feature branch (`git checkout -b feature/fooBar`)
-3.  Commit your changes (`git commit -am 'Add some fooBar'`)
-4.  Push to the branch (`git push origin feature/fooBar`)
-5.  Create a new Pull Request
-  
+
+1. Fork it ([https://github.com/Ronnasayd/django-docker/fork](https://github.com/Ronnasayd/django-docker))
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
