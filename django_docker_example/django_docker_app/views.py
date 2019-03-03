@@ -9,6 +9,7 @@ class Home(View):
 	"""
 	Return the list of technologies utilized
 	"""
+	@classmethod
 	def get(self,request,*args, **kwargs):
 		"""
 			This method return a render instance with template and context
@@ -69,6 +70,7 @@ class Save(View):
 	"""
 	Save a DDuser on the database
 	"""
+	@classmethod
 	def post(self,request):
 		if request.method == 'POST':
 			dduser = DDUser.objects.create(email=request.POST['email'])

@@ -33,4 +33,4 @@ case "${unameOut}" in
       MINGW*)     machine=MinGw && docker volume create portainer_data && docker run  -p 9000:9000 --name portainer --restart always -v \\.\pipe\docker_engine:\\.\pipe\docker_engine -v portainer_data:C:\data portainer/portainer;;
       *)          machine="UNKNOWN:${unameOut}"
 esac
-echo "Ambiente: "${machine}" portainer fechado"
+echo "Ambiente: ${machine} portainer fechado"

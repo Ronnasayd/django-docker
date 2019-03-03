@@ -25,48 +25,59 @@
 
 # VERSION: 3.2.9-beta #
 
-from modules.views import *
-from modules.models import *
+from modules import views
+from modules import models
 
 
 class Controller(object):
+	@classmethod
 	def __init__(self):
 		pass
-
+	
+	@classmethod
 	def build_nginx(self):
-		return NGINX_CONFIGURATIN_BASE.format(**NGINX_MODEL)
+		return views.NGINX_CONFIGURATIN_BASE.format(**models.NGINX_MODEL)
 
+	@classmethod
 	def build_gulpfile(self):
-		return GULPFILE_BASE.format(**GULPFILE_MODEL)
+		return views.GULPFILE_BASE.format(**models.GULPFILE_MODEL)
 
-	def build_make_ambiente(self,debug_mode):
+	@classmethod
+	def build_make_ambiente(self, debug_mode):
 		if debug_mode:
-			MAKE_AMBIENT = MAKE_AMBIENT_BASE + MAKE_AMBIENT_DEVELOPMENT
+			views.MAKE_AMBIENT = views.MAKE_AMBIENT_BASE + views.MAKE_AMBIENT_DEVELOPMENT
 		else:
-			MAKE_AMBIENT = MAKE_AMBIENT_BASE + MAKE_AMBIENT_PRODUCTION
-		return MAKE_AMBIENT.format(**MAKE_AMBIENT_MODEL)
+			views.MAKE_AMBIENT = views.MAKE_AMBIENT_BASE + views.MAKE_AMBIENT_PRODUCTION
+		return views.MAKE_AMBIENT.format(**models.MAKE_AMBIENT_MODEL)
+     
+	@classmethod
 	def build_runserver(self,debug_mode):
 		if debug_mode:
-			RUNSERVER_SCRIPT = RUNSERVER_SCRIPT_BASE + RUNSERVER_SCRIPT_DEVELOPMENT
+			views.RUNSERVER_SCRIPT = views.RUNSERVER_SCRIPT_BASE + views.RUNSERVER_SCRIPT_DEVELOPMENT
 		else:
-			RUNSERVER_SCRIPT = RUNSERVER_SCRIPT_BASE + RUNSERVER_SCRIPT_PRODUCTION
-		return RUNSERVER_SCRIPT.format(**RUNSERVER_SCRIPT_MODEL)
+			views.RUNSERVER_SCRIPT = views.RUNSERVER_SCRIPT_BASE + views.RUNSERVER_SCRIPT_PRODUCTION
+		return views.RUNSERVER_SCRIPT.format(**models.RUNSERVER_SCRIPT_MODEL)
 
+	@classmethod
 	def build_requirements(self):
-		return '\n'.join(REQUIREMENTS)
+		return '\n'.join(models.REQUIREMENTS)
 
+	@classmethod
 	def build_gulp_script(self):
 		modules=""
-		for module in GULP_MODULES:
-			modules += GULP_ADD.format(module)
-		return GULP_SCRIPT_BEGIN + modules + GULP_SCRIPT_END
+		for module in models.GULP_MODULES:
+			modules += views.GULP_ADD.format(module)
+		return views.GULP_SCRIPT_BEGIN + modules + views.GULP_SCRIPT_END
 
+	@classmethod
 	def build_wait_for_it(self):
-		return WAIT_FOR_IT
+		return views.WAIT_FOR_IT
 
+	@classmethod
 	def build_settings(self):
-		return SETTINGS
+		return views.SETTINGS
 
+	@classmethod
 	def build_manage(self):
-		return MANAGE.format(**MANAGE_MODEL)
-	
+		return views.MANAGE.format(**models.MANAGE_MODEL)
+
