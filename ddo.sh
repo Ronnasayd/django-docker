@@ -37,36 +37,36 @@ if [ "$1" = "--help" -o "$1" = "-h" ];then
   echo -e "Use: $0 <options> <complements>
 
 Options:
-  --help                      or    -h       : Show help
-  --run                       or    -r       : Mode of execution
-  --make                      or    -m       : Enviroment creation mode
-  --clear                     or    -c       : Delete generated files
-  --clear-all                 or    -ca      : Delete all files
-  --stop                      or    -s       : Stop a specific container
-  --stop-app                  or    -sap     : Stop containers in app network
-  --stop-net                  or    -sn      : Stop all containers off a network
-  --stop-all                  or    -sal     : Stop all containers running on docker
-  --shell                     or    -sl      : Enter container shell
-  --status                    or    -st      : Show the status of containers
-  --command                   or    -cm      : Performs a command inside the container
-  --net-status                or    -ns      : Show all networks
-  --create-su                 or    -csu     : Create a new admin user
-  --migrate                   or    -mi      : Apply migrations in django 
-  --clear-mig                 or    -cmi     : Clear all migrations and __pycache__ folders
-  --show-db                   or    -sdb     : Show datbases create with django docker
-  --clear-db                  or    -cdb     : Clear a specific database create with django docker
-  --prune                     or    -p       : Prune the system
-  --show-img                  or    -si      : Show the docker images
-  --clear-img                 or    -ci      : Clear a specific docker image for image_id
-  --attach                    or    -att     : Attach to a runing dev ambient
-  --restart                   or    -res     : Restart a container
-  --update                    or    -up      : Update django docker
-  --show-vol                  or    -sv      : Show all volumes
-  --clear-vol                 or    -cv      : Clear a volume
-  --django-create-project     or    -dcp     : Create a django project 
-  --django-create-app         or    -dca     : Create a django app in a django project
-  --dbeaver                   or    -dbv     : Run a container with Dbeaver database manager (Just in LINUX yet)
-  --portainer                 or    -ptn     : Run a container with portainer gui manager for docker 
+  --help                     |      -h       : Show help
+  --run                      |      -r       : Run the application in selected mode
+  --make                     |      -m       : Enviroment creation mode
+  --clear                    |      -c       : Delete generated files
+  --clear-all                |      -ca      : Delete all files
+  --stop                     |      -s       : Stop a specific container
+  --stop-app                 |      -sap     : Stop containers in app network
+  --stop-net                 |      -sn      : Stop all containers off a network
+  --stop-all                 |      -sal     : Stop all containers running on docker
+  --shell                    |      -sl      : Enter container shell
+  --status                   |      -st      : Show the status of containers
+  --command                  |      -cm      : Performs a command inside the container
+  --net-status               |      -ns      : Show all networks
+  --create-su                |      -csu     : Create a new admin user
+  --migrate                  |      -mi      : Apply migrations in django 
+  --clear-mig                |      -cmi     : Clear all migrations and __pycache__ folders
+  --show-db                  |      -sdb     : Show datbases create with django docker
+  --clear-db                 |      -cdb     : Clear a specific database create with django docker
+  --prune                    |      -p       : Prune the system
+  --show-img                 |      -si      : Show the docker images
+  --clear-img                |      -ci      : Clear a specific docker image for image_id
+  --attach                   |      -att     : Attach to a running ambient
+  --restart                  |      -res     : Restart a container
+  --update                   |      -up      : Update django docker
+  --show-vol                 |      -sv      : Show all volumes
+  --clear-vol                |      -cv      : Clear a volume
+  --django-create-project    |      -dcp     : Create a django project 
+  --django-create-app        |      -dca     : Create a django app in a django project
+  --dbeaver                  |      -dbv     : Run a container with Dbeaver database manager (Just in LINUX yet)
+  --portainer                |      -ptn     : Run a container with portainer gui manager for docker 
 
 
 Examples:
