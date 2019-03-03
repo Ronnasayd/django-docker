@@ -145,7 +145,7 @@ if __name__ == '__main__':
 	]+json2list(DATABASE_OTHERS_ENVIROMENTS))
 	)
 	if DEBUG:
-		database_compose.ports(list_ports=[(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
+		database_compose.ports(list_ports=[(DATABASE_EXTERNAL_PORT,DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
 	# print(database_compose)
 ###########################################################################
 					## NODE CONTAINER OBJECT ##

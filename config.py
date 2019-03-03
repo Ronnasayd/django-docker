@@ -114,6 +114,7 @@ DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
 WEB_PORT = '8000'
 NGINX_PORT = '80'
+DATABASE_EXTERNAL_PORT = '5433'
 
 WEB_ENVIROMENT = {
   # all enviroment variables are optional
