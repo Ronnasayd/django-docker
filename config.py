@@ -25,7 +25,7 @@
 
 # VERSION: 3.2.9-beta #
 
-DEBUG = True
+DEBUG = False
 
 FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
