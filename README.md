@@ -5,7 +5,7 @@
 
 https://ronnasayd.github.io/django-docker/
 
-![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)  ![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)
+![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master) [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.
 ## Required Programs
