@@ -5,6 +5,7 @@
 
 https://ronnasayd.github.io/django-docker/
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6c17ff1f9285433685bce0dc44363a53)](https://app.codacy.com/app/Ronnasayd/django-docker?utm_source=github.com&utm_medium=referral&utm_content=Ronnasayd/django-docker&utm_campaign=Badge_Grade_Dashboard)
 [![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.
