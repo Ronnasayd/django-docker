@@ -27,7 +27,7 @@
 
 DEBUG = True
 
-FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [
@@ -127,7 +127,7 @@ CONTAINERS = [
 ]
 
 
-DOCKER_COMPOSE_VERSION = '3.5'
+DOCKER_COMPOSE_VERSION = '3.3'
 
 NETWORK_NAME = "dd_net"
 
