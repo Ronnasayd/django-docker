@@ -15,6 +15,20 @@ System to automatically create development and production environments in django
 - [Docker](https://www.docker.com/)
 - [Docker compose](https://docs.docker.com/compose/)
 
+## Installation
+
+Linux:
+
+    sudo apt-get install python3.6
+    sudo apt-get install docker.io
+    sudo apt-get install docker-compose
+    sudo groupadd docker
+    sudo usermod -aG docker $USER
+
+Windows:
+
+> Download and install the binaries of [python](https://www.python.org/downloads/) and [docker toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/)
+
 ## How to use
 
 The files (***config.py***, ***pydd.py*** e ***ddo.sh*** ) and the folder (***modules***) should be in the directory of your django project.
