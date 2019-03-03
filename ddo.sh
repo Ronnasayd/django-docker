@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -60,7 +60,6 @@ Options:
   --clear-img                 or    -ci      : Clear a specific docker image for image_id
   --attach                    or    -att     : Attach to a runing dev ambient
   --restart                   or    -res     : Restart a container
-  --minify-img                or    -mimg    : Minify images in selected folder
   --update                    or    -up      : Update django docker
   --show-vol                  or    -sv      : Show all volumes
   --clear-vol                 or    -cv      : Clear a volume
@@ -93,7 +92,6 @@ Examples:
   $0 --clear-img 627c27fc5060
   $0 --attach
   $0 --restart web
-  $0 --minify-img
   $0 --update
   $0 --show-vol
   $0 --stop-all
@@ -123,7 +121,7 @@ elif [ "$1" = "--stop-app" -o "$1" = "-sap" ];then
   docker system prune --force
   echo "Containers stopped"
 elif [ "$1" = "--stop" -o "$1" = "-s" ];then
-  docker stop $2
+  docker stop $2-$PROJECT_RENAME
   docker system prune --force
   echo "Container stopped"
 elif [ "$1" = "--stop-all" -o "$1" = "-sal" ];then
@@ -132,17 +130,15 @@ elif [ "$1" = "--stop-all" -o "$1" = "-sal" ];then
   echo "Containers stopped"
 elif [ "$1" = "--shell" -o "$1" = "-sl" ];then
   echo "Use exit to close"
-  docker exec -ti $2 /bin/bash
+  docker exec -ti $2-$PROJECT_RENAME /bin/bash
 elif [ "$1" = "--command" -o "$1" = "-c" ];then
   echo "Use exit to close"
-  docker exec -ti $2 $3
+  docker exec -ti $2-$PROJECT_RENAME $3
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
-  docker exec -ti web.$PROJECT_RENAME python manage.py createsuperuser
-elif [ "$1" = "--minify-img" -o "$1" = "-mimg" ];then
-  docker exec -ti node.$PROJECT_RENAME gulp imagemin
+  docker exec -ti web-$PROJECT_RENAME python manage.py createsuperuser
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
-  docker exec -ti web.$PROJECT_RENAME python manage.py makemigrations $2
-  docker exec -ti web.$PROJECT_RENAME python manage.py migrate $2
+  docker exec -ti web-$PROJECT_RENAME python manage.py makemigrations $2
+  docker exec -ti web-$PROJECT_RENAME python manage.py migrate $2
 elif [ "$1" = "--status" -o "$1" = "-st" ];then
   docker ps
 elif [ "$1" = "--show-db" -o "$1" = "-sdb" ];then
@@ -190,7 +186,7 @@ elif [ "$1" = "--update" -o "$1" = "-up" ];then
 elif [ "$1" = "--clear-img" -o "$1" = "-ci" ];then
   docker rmi -f $2
 elif [ "$1" = "--restart" -o "$1" = "-res" ];then
-  docker container restart $2
+  docker container restart $2-$PROJECT_RENAME
 elif [ "$1" = "--django-create-project" -o "$1" = "-dcp" ];then
   django-admin startproject $2
 elif [ "$1" = "--django-create-app" -o "$1" = "-dca" ];then

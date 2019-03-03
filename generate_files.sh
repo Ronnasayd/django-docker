@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 rm source_code.zip
 rm -rf docs/

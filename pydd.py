@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 import os
 from copy import deepcopy, copy
@@ -260,6 +260,7 @@ settings = controller.build_settings()
 manage = controller.build_manage()
 
 
+
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
@@ -269,4 +270,3 @@ save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),SETTINGS_FILE_NAME+'.py',settings)
 save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'manage.py',manage)
-########################################################################

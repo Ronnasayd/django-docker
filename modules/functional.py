@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 import os
 def json2list(json_data):

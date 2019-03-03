@@ -4,7 +4,7 @@
 
 <p align="center"><img src="django-docker.png" alt="django-docker" width="200"/></p>
 
-# Django-Docker 
+# Django-Docker CLI 
 https://ronnasayd.github.io/django-docker/
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.

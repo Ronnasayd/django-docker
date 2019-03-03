@@ -23,57 +23,60 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 from config import *
 
-ROOT_DIRECTORY="."
-PARENT_DIRECTORY=".."
+ROOT_DIRECTORY = "."
+PARENT_DIRECTORY = ".."
 PROJECT_NAME_LOWER = PROJECT_NAME.lower()
 
 DATABASE_VOLUME = 'database_'+PROJECT_NAME_LOWER
 STATIC_VOLUME = 'static_'+PROJECT_NAME_LOWER
 MEDIA_VOLUME = 'media_'+PROJECT_NAME_LOWER
-LOGS_VOLUME='logs_'+PROJECT_NAME_LOWER
+LOGS_VOLUME = 'logs_'+PROJECT_NAME_LOWER
 
-PROJECT_RENAME = PROJECT_NAME.replace('_','.')
-WEB_CONTAINER_NAME='web.'+PROJECT_RENAME
-NODE_CONTAINER_NAME='node.'+PROJECT_RENAME
-NGINX_CONTAINER_NAME='nginx.'+PROJECT_RENAME
-DATABASE_CONTAINER_NAME=DATABASE_IMAGE+'.'+PROJECT_RENAME
+PROJECT_RENAME = PROJECT_NAME.replace('_', '.')
+WEB_CONTAINER_NAME = 'web-'+PROJECT_RENAME
+NODE_CONTAINER_NAME = 'node-'+PROJECT_RENAME
+NGINX_CONTAINER_NAME = 'nginx-'+PROJECT_RENAME
+DATABASE_CONTAINER_NAME = DATABASE_IMAGE+'-'+PROJECT_RENAME
 
-OTHERS_CONTAINER_NAME=[container+'.'+PROJECT_RENAME for container in  CONTAINERS]
+OTHERS_CONTAINER_NAME = [container+'-'+PROJECT_RENAME for container in  CONTAINERS]
 
 
-REQUIREMENTS+=[
-'django>='+DJANGO_VERSION,
-'gunicorn',
-'python-decouple',
-'psycopg2-binary'
+REQUIREMENTS += [
+  'django>='+DJANGO_VERSION,
+  'gunicorn',
+  'python-decouple',
+  'psycopg2-binary'
 ]
 
-GULP_MODULES=[
- 'gulp',
- 'node-sass',
- 'browser-sync',
- 'gulp-sass',
- 'gulp-rename',
- 'gulp-autoprefixer',
- 'gulp-uglify',
- 'gulp-sourcemaps',
- 'gulp-imagemin',
- 'gulp-purgecss',
- 'gulp-clean-css',
- 'gulp-html-beautify',
- 'minimist',
- 'gulp-concat',
- 'gulp-cached'
+GULP_MODULES = [
+  "browser-sync",
+  "eslint-config-google",
+  "gulp",
+  "gulp-autoprefixer",
+  "gulp-cached",
+  "gulp-clean",
+  "gulp-clean-css",
+  "gulp-concat",
+  "gulp-html-beautify",
+  "gulp-imagemin",
+  "gulp-purgecss",
+  "gulp-rename",
+  "gulp-sass",
+  "gulp-sourcemaps",
+  "gulp-uglify",
+  "minimist",
+  "node-sass",
+
  ]
 
-STATIC_ROOT='/tmp/static-data'
-MEDIA_ROOT='/tmp/media-data'
-LOGS_ROOT='/tmp/logs-data'
+STATIC_ROOT = '/tmp/static-data'
+MEDIA_ROOT = '/tmp/media-data'
+LOGS_ROOT = '/tmp/logs-data'
 
 
-RUNSERVER_SCRIPT_NAME='runserver.sh'
-SETTINGS_FILE_NAME='ddsettings'
+RUNSERVER_SCRIPT_NAME = 'runserver.sh'
+SETTINGS_FILE_NAME = 'ddsettings'

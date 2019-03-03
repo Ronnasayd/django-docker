@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 from modules.views import *
 from modules.models import *
@@ -69,5 +69,4 @@ class Controller(object):
 
 	def build_manage(self):
 		return MANAGE.format(**MANAGE_MODEL)
-
-
+	

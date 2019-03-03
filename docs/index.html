@@ -14,11 +14,12 @@
     
 <!-- Css begin -->
 
-<link rel="stylesheet" href="static/dist/css/reset.min.clean.css">
-<link rel="stylesheet" href="static/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="static/dist/css/opensans.min.clean.css">
-<link rel="stylesheet" href="static/dist/css/fonteawesome.min.clean.css">
-<link rel="stylesheet" href="static/dist/css/main.min.clean.css">
+<link rel="stylesheet" href="static/dist/css/reset.min.css">
+<link rel="stylesheet" href="static/libs/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="static/dist/css/roboto.min.css">
+<link rel="stylesheet" href="static/dist/css/material.min.css">
+<link rel="stylesheet" href="static/libs/propeller/css/propeller.min.css">
+<link rel="stylesheet" href="static/dist/css/main.min.css">
 <!-- Css end -->
 <link rel="shortcut icon" type="image/x-icon" href="static/images/icons/favicon.ico" />
 
@@ -36,7 +37,17 @@
                     <div class="row">
                         <!-- Download-button begin -->
                         <div class="col-6">
-                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/django_docker.zip"><button class="btn btn-primary download-button"><i class="fas fa-download"></i> Download</button></a>
+                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/django_docker.zip"><button class="pmd-ripple-effect btn btn-primary download-button">
+                                    <!--<i class="fas fa-download"></i>-->
+                                    <!--<img src="/static/images/icons/download.svg" alt="download-img">-->
+                                    <div>
+                                        <i class="material-icons">
+                                            cloud_download
+                                        </i>
+                                        <span class="button-text">Download</span>
+                                    </div>
+
+                                </button></a>
                         </div>
                         <!-- Download-button end -->
                         <!-- Github-link begin -->
@@ -55,7 +66,7 @@
                     <!-- Description begin -->
                     <div class="row title-description">
                         <div class="col-12">
-                            <h1 class="title"><strong>Django-Docker</strong></h1>
+                            <h1 class="title"><strong>Django-Docker CLI</strong></h1>
                         </div>
                         <div class="col-12">
                             <h2 class="description"><strong>Make your development and production full stack simpler</strong></h2>
@@ -180,10 +191,10 @@
     </script>
 
     
-<script src="static/dist/js/jquery-3.3.1.min.js"></script>
-<script src="static/dist/js/popper.min.js"></script>
-<script src="static/dist/js/bootstrap.min.js"></script>
-<script src="static/dist/js/hammer.min.js"></script>
+<script src="static/libs/jquery/jquery-3.3.1.min.js"></script>
+<script src="static/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/libs/hammer/hammer.min.js"></script>
+<script src="static/libs/propeller/js/propeller.min.js"></script>
 <script src="static/dist/js/main.min.js"></script>
 
 </body>

@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.7-beta #
+# VERSION: 3.2.8-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -132,22 +132,110 @@ http {{
 ####################################################################
                         ## GULPFILE TEMPLATE ##
 ####################################################################
-GULPFILE_BASE='''
+GULPFILE_BASE = '''
+const gulp            = require("gulp");
+const browserSync     = require("browser-sync").create();
+const sass            = require("gulp-sass");
+const rename          = require("gulp-rename");
+const autoprefixer    = require("gulp-autoprefixer");
+const uglify          = require("gulp-uglify");
+const sourcemaps      = require("gulp-sourcemaps");
+const imagemin        = require("gulp-imagemin");
+const cleanCSS        = require("gulp-clean-css");
+const htmlbeautify    = require("gulp-html-beautify");
+const purgecss        = require("gulp-purgecss");
+const cache           = require("gulp-cached");
+const minimist        = require("minimist");
+const concat          = require("gulp-concat");
+const clean           = require("gulp-clean");
 
-const gulp            = require('gulp');
-const browserSync     = require('browser-sync').create();
-const sass            = require('gulp-sass');
-const rename          = require('gulp-rename');
-const autoprefixer    = require('gulp-autoprefixer');
-const uglify          = require('gulp-uglify');
-const sourcemaps      = require('gulp-sourcemaps');
-const imagemin        = require('gulp-imagemin');
-const cleanCSS        = require('gulp-clean-css');
-const htmlbeautify    = require('gulp-html-beautify');
-const purgecss        = require('gulp-purgecss');
-const cache           = require('gulp-cached');
-const minimist        = require('minimist');
-const concat          = require('gulp-concat');
+
+
+const src_scss        = "static/src/scss/**/*.scss";
+const src_css         = "static/src/css/**/*.css";
+const src_js          = "static/src/js/**/*.js";
+
+const images_folder   = "static/images/**/*.{{png,jpeg,jpg,svg,ico}}";
+
+const not_node        = "!node_modules/"
+
+const tmp_css         = "static/tmp/css/"
+
+const dist_js         = "static/dist/js/"
+const dist_css        = "static/dist/css/"
+
+
+const html_files      = "**/*.html"
+
+
+const minifyJs = ()=>{{
+    return gulp.src([src_js,not_node],{{allowEmpty: true}})
+    .pipe(cache("minifyJs"))
+    .pipe(sourcemaps.init())
+    .pipe(uglify()).on("error",function(err){{
+            console.log(err.message);
+            console.log(err.cause);
+            browserSync.notify(err.message, 3000); // Display error in the browser
+            this.emit("end"); // Prevent gulp from catching the error and exiting the watch process
+     }})
+    .pipe(rename(function(file){{
+            file.extname = ".min.js"
+     }}))
+    .pipe(sourcemaps.write("./"))
+    .pipe(gulp.dest(dist_js))
+}}
+
+const sassToCss = ()=>{{
+    return gulp.src([src_scss,"!_*.scss",not_node],{{allowEmpty: true}})
+        .pipe(cache("sassToCss"))
+        .pipe(sourcemaps.init())
+        .pipe(sass({{
+            errLogToConsole: true,
+            indentedSyntax: false,
+        }}).on("error",function(err){{
+            console.log(err.message);
+            browserSync.notify(err.message, 3000); // Display error in the browser
+            this.emit("end"); // Prevent gulp from catching the error and exiting the watch process
+        }}))
+        .pipe(autoprefixer({{
+            browsers: ["last 100 versions"],
+            cascade: false
+        }}))
+        .pipe(sourcemaps.write("./"))
+        .pipe(gulp.dest(tmp_css))
+}}
+
+const copySrcCss = ()=>{{
+    return gulp.src([src_css,not_node],{{allowEmpty: true}})
+    .pipe(cache("copySrcCss"))
+    .pipe(gulp.dest(tmp_css))
+}}
+
+const minifyCss = ()=>{{
+    return gulp.src([tmp_css+"**/*.css",not_node],{{allowEmpty: true}})
+    .pipe(cache("minifyCss"))
+    .pipe(sourcemaps.init())
+    .pipe(purgecss({{content: [html_files,not_node]}}))
+    .on("error",function(err){{
+        console.log(err.message,err);
+        browserSync.notify(err.message, 3000); // Display error in the browser
+        this.emit("end"); // Prevent gulp from catching the error and exiting the watch process
+    }})
+    .pipe(cleanCSS())
+    .pipe(rename(function(file){{
+        file.extname = ".min.css"
+    }}))
+    .pipe(sourcemaps.write("./"))
+    .pipe(gulp.dest(dist_css))
+    .pipe(browserSync.stream())
+}}
+
+
+const deleteTempCss = ()=>{{
+    return gulp.src(["static/tmp/",not_node], {{read: false, base: "./", allowEmpty: true}})
+            .pipe(clean());
+}}
+
 
 //  gulp concatfiles --files <list_of_files:file1,file2,file3> --name <name_of_file:all.js> --dist <destination>
 const concatFiles = ()=>{{
@@ -155,51 +243,26 @@ const concatFiles = ()=>{{
     console.log("files: "+options.files);
     console.log("name: "+options.name);
     console.log("dist: "+options.dist);
-    return gulp.src(options.files.split(","))
-    .pipe(cache('concatcss'))
+    return gulp.src(options.files.split(","),{{base: "./",allowEmpty: true}})
+    .pipe(cache("concatFiles"))
     .pipe(sourcemaps.init())
     .pipe(concat(options.name))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest(options.dist))
 }}
 
 
-const unusedCss = ()=>{{
-    return gulp.src(["static/dist/css/**/*.css","!static/dist/css/**/*clean.css"],{{base: './'}})
-    .pipe(cache('cssclean'))
-    .pipe(sourcemaps.init())
-    .pipe(purgecss({{
-        content: ["**/*.html","!node_modules/**/*.html"]
-    }}))
-    .pipe(rename(function(file){{
-        file.extname = ".clean.css"
-    }}))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./'))
-    .pipe(browserSync.stream());
-}}
 
-const htmlBeauty = ()=>{{
+const htmlBeautify = ()=>{{
     const options = {{
         indentSize: 2,
+        indent_with_tabs: false,
+        indent_char: " ",
       }};
-    return gulp.src(['**/*.html',"!node_modules/**/*.html"],{{base: './'}})
-    .pipe(cache('html'))
+    return gulp.src([html_files,not_node],{{base: "./",allowEmpty: true}})
+    .pipe(cache("htmlBeautify"))
     .pipe(htmlbeautify(options))
-    .pipe(gulp.dest('./'))
-}}
-
-const minifiedCss = ()=>{{
-    return gulp.src(["static/dist/css/**/*.css","!static/dist/css/**/*min.css","!static/dist/css/**/*clean.css"])
-    .pipe(cache('csstocssmin'))
-    .pipe(sourcemaps.init())
-    .pipe(rename(function(file){{
-        file.extname = ".min.css"
-    }}))
-    .pipe(cleanCSS())
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("static/dist/css"))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest("./"))
 }}
 
 const browserReload = (done)=>{{
@@ -207,26 +270,9 @@ const browserReload = (done)=>{{
     done();
 }}
 
-const minifiedJavascript = ()=>{{
-    return gulp.src(["static/src/js/**/*.js","!static/src/js/**/_*.js"])
-    .pipe(cache('javascript'))
-    .pipe(sourcemaps.init())
-    .pipe(uglify()).on('error',function(err){{
-            console.log(err.message);
-            console.log(err.cause);
-            browserSync.notify(err.message, 3000); // Display error in the browser
-            this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
-     }})
-    .pipe(rename(function(file){{
-            file.extname = ".min.js"
-     }}))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest("static/dist/js"))
-
-}}
-
-const minifiedImages =()=>{{
-    return gulp.src(["static/images/**"],{{allowEmpty: true}})
+const minifyImages =()=>{{
+    return gulp.src([images_folder,not_node],{{base: "./",allowEmpty: true}})
+    .pipe(cache("minifyImages"))
     .pipe(imagemin([
         imagemin.gifsicle({{interlaced: true}}),
         imagemin.jpegtran({{progressive: true}}),
@@ -238,32 +284,16 @@ const minifiedImages =()=>{{
             ]
         }})
     ]))
-    .pipe(gulp.dest("static/images"))
+    .pipe(gulp.dest("./"))
 }}
 
 
-const sassToCss = ()=>{{
-    return gulp.src(["static/src/scss/**/*.scss","!static/src/scss/**/_*.scss"])
-        .pipe(cache('csstosass'))
-        .pipe(sourcemaps.init())
-        .pipe(sass({{
-            errLogToConsole: true,
-            indentedSyntax: false,
-        }}).on('error',function(err){{
-            console.log(err.message);
-            browserSync.notify(err.message, 3000); // Display error in the browser
-            this.emit('end'); // Prevent gulp from catching the error and exiting the watch process
-        }}))
-        .pipe(autoprefixer({{
-            browsers: ['last 100 versions'],
-            cascade: false
-        }}))
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest("static/dist/css"))
-        .pipe(browserSync.stream());
-        
+const js_line = gulp.series(minifyJs);
+const css_line = gulp.series(gulp.parallel(sassToCss, copySrcCss), minifyCss, deleteTempCss);
+const image_line = gulp.series(minifyImages);
+const html_line = gulp.series(htmlBeautify);
 
-}}
+
 
 const browserSyncServer = ()=>{{
     browserSync.init({{
@@ -274,19 +304,17 @@ const browserSyncServer = ()=>{{
         }}
     }});
 
-    gulp.watch("static/src/scss/**/*.scss", gulp.series(sassToCss, minifiedCss, unusedCss));
-    gulp.watch("static/src/js/**/*.js", gulp.series(minifiedJavascript));
-    gulp.watch("**/*.html", gulp.series(htmlBeauty, browserReload));
-    gulp.watch("static/src/js/**/*.js", gulp.series(minifiedJavascript, browserReload));
-
+    gulp.watch([src_css,src_scss], css_line);
+    gulp.watch(src_js, gulp.series(js_line,browserReload));
+    gulp.watch(images_folder, image_line);
+    gulp.watch(html_files, gulp.series(html_line,browserReload));
 }}
 
-const minifiedAssets = gulp.parallel(gulp.series(sassToCss, minifiedCss, unusedCss), minifiedJavascript)
-const server = gulp.series(htmlBeauty, minifiedAssets, browserSyncServer)
+const server = gulp.series(gulp.parallel(js_line,css_line,image_line,html_line),browserSyncServer)
 
-exports.imagemin = minifiedImages
 exports.concatfiles = concatFiles
 exports.default  = server
+
 '''
 ########################################################################
                         ## GULP SCRIPT ##
