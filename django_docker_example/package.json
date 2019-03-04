@@ -16,6 +16,12 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-uglify": "^3.0.2",
     "minimist": "^1.2.0",
-    "node-sass": "^4.11.0"
-  }
+    "node-sass": "^4.11.0",
+    "snyk": "^1.135.1"
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
