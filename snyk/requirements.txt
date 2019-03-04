@@ -1,0 +1,11 @@
+channels
+channels_redis
+django-redis
+Pillow
+django-widget-tweaks
+djangorestframework
+docutils
+django>=2.1.5
+gunicorn
+python-decouple
+psycopg2-binary

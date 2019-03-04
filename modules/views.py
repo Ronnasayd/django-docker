@@ -340,6 +340,19 @@ fi
                     ## MAKE AMBIENT SCRIPT ##
 ####################################################################
 MAKE_AMBIENT_BASE='''
+#!/bin/bash
+
+trap cleanup 1 2 3 6
+cleanup()
+{{
+  echo "Caught Signal ... cleaning up."
+  rm {PROJECT_NAME}/runserver.sh
+  rm {PROJECT_NAME}/gulp.sh
+  rm {PROJECT_NAME}/gulpfile.js
+  rm {PROJECT_NAME}/wait-for-it.sh
+  echo "Done cleanup ... quitting."
+  exit 1
+}}
 chmod +x {FOLDER_NAME}/wait-for-it.sh
 sed -i "s/\\r$//" {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME}
 sed -i "s/\\r$//" {FOLDER_NAME}/wait-for-it.sh
