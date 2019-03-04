@@ -7,7 +7,7 @@ media/
 nginx/
 node_modules/
 djd_data/
-dd_auxiliary_files/
+dd_auxfiles/
 
 *.yml
 !.travis.yml
