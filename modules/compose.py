@@ -27,6 +27,8 @@
 
 import os
 class Service(object):
+
+	@classmethod
 	def __init__(self):
 		self.service_version=""
 		self.base=""
@@ -34,10 +36,11 @@ class Service(object):
 		self.network=""
 		self.space=" "
 
+	@classmethod
 	def __str__(self):
 		return self.base
 
-	def version(self,service_version):
+	def version(self, service_version):
 		self.service_version = service_version
 		return self
 

@@ -25,9 +25,9 @@
 
 # VERSION: 3.2.9-beta #
 
-DEBUG = True
+DEBUG = False
 
-FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [
@@ -91,7 +91,7 @@ DATABASE_DEFAULT_ENVIROMENTS = {
 
 
 DATABASE_OTHERS_ENVIROMENTS = {
-  'ANY_ENV': '/tmp',
+  'ANY_ENV': '/home',
 }
 
 

@@ -38,12 +38,10 @@ class Dockerfile(object):
 	def __str__(self):
 		return self.base
 
-	@classmethod
 	def _from(self,container_base):
 		self.base +='FROM '+container_base+'\n'
 		return self
 
-	@classmethod
 	def run(self,list_of_commands):
 		self.base+='RUN set -ex && '
 		for command in list_of_commands[:-1]:
@@ -51,27 +49,22 @@ class Dockerfile(object):
 		self.base += list_of_commands[-1]+'\n'
 		return self
 
-	@classmethod
 	def add(self,local_path,container_path):
 		self.base += 'ADD '+local_path+' '+container_path+'\n'
 		return self
 
-	@classmethod
 	def workdir(self,work_directory):
 		self.base += 'WORKDIR '+work_directory+'\n'
 		return self
 
-	@classmethod
 	def user(self,container_user):
 		self.base += 'USER '+container_user+'\n'
 		return self
 
-	@classmethod
 	def cmd(self,last_command):
 		self.base += 'CMD '+last_command+'\n'
 		return self
 
-	@classmethod
 	def save(self,path_to_save,filename):
 		self.filename = filename+'.Dockerfile'
 		if not os.path.exists(path_to_save):

@@ -26,13 +26,13 @@
 # VERSION: 3.2.9-beta #
 
 import os
+import config 
 from copy import deepcopy
-from config import *
-from modules.dockerfile import Dockerfile
-from modules.compose import Container, Service
-from modules.controller import Controller
-from modules.functional import *
-from modules.constants import *
+from modules import dockerfile
+from modules import compose
+from modules import controller
+from modules import functional
+from modules import constants
 
 if __name__ == '__main__':
 	CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -41,120 +41,120 @@ if __name__ == '__main__':
 #############################################################################	
 						## NODE DOCKERFILE OBJECT ##
 #############################################################################
-	node_dockerfile = Dockerfile()
+	node_dockerfile = dockerfile.Dockerfile()
 	(node_dockerfile._from(container_base='node')
 	.run(list_of_commands=[
 	'apt-get update',
 	'yarn global add --no-bin-links gulp-cli',
 	'yarn global add --no-bin-links browser-sync',
-	'mkdir '+PROJECT_NAME,
+	'mkdir ' + config.PROJECT_NAME,
 	])
-	.workdir(work_directory=path_join([PROJECT_NAME]))
+	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.user(container_user='node')
 	.save(
-		path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
+		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
 		filename='node'
 	))
 #############################################################################
 						## WEB DOCKERFILE OBJECT ##
 #############################################################################
-	web_dockerfile = Dockerfile()
-	(web_dockerfile._from(container_base='python:'+PYTHON_VERSION)
+	web_dockerfile = dockerfile.Dockerfile()
+	(web_dockerfile._from(container_base='python:'+config.PYTHON_VERSION)
 	.add(
-		local_path=path_join([FOLDER_TO_SAVE, 'requirements.txt']),
-		container_path=path_join([ROOT_DIRECTORY, 'requirements.txt'])
+		local_path=functional.path_join([config.FOLDER_TO_SAVE, 'requirements.txt']),
+		container_path=functional.path_join([constants.ROOT_DIRECTORY, 'requirements.txt'])
 	)
 	.run(list_of_commands=[
 		'apt-get update',
 		'pip install --upgrade pip',
 		'pip install -r requirements.txt',
-	]+WEB_COMMANDS_BUILD)
+	]+config.WEB_COMMANDS_BUILD)
 	.add(
-		local_path=path_join([ROOT_DIRECTORY, PROJECT_NAME]),
-		container_path=path_join([PROJECT_NAME])
+		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
+		container_path=functional.path_join([config.PROJECT_NAME])
 	)
-	.workdir(work_directory=path_join([PROJECT_NAME]))
+	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.save(
-		path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
+		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
 		filename='web'
 	))
 ###########################################################################	
 						## WEB CONTAINER OBJECT ##
 ###########################################################################
-	web_compose = Container()
-	(web_compose.name(container_name=WEB_CONTAINER_NAME)
+	web_compose = compose.Container()
+	(web_compose.name(container_name=constants.WEB_CONTAINER_NAME)
 	.build(
 		context=CURRENT_DIRECTORY,
-	 	dockerfile=path_join([FOLDER_TO_SAVE,web_dockerfile.filename])
+	 	dockerfile=functional.path_join([config.FOLDER_TO_SAVE, web_dockerfile.filename])
 	 )
 	.restart(restart_option='always')
 	.ports(list_ports=[
-		(WEB_PORT,WEB_PORT),
+		(config.WEB_PORT, config.WEB_PORT),
 	])\
-	.expose(list_expose_ports=[WEB_PORT])
-	.workdir(work_directory=path_join([PROJECT_NAME]))
-	.command(command='./wait-for-it.sh '+(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if DATABASE_EXTERNAL else DATABASE_CONTAINER_NAME)+':'+DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')
-	.depends(list_depends=OTHERS_CONTAINER_NAME if DATABASE_EXTERNAL else [DATABASE_CONTAINER_NAME]+OTHERS_CONTAINER_NAME)
+	.expose(list_expose_ports=[config.WEB_PORT])
+	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
+	.command(command='./wait-for-it.sh '+(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if config.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)+':'+config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')
+	.depends(list_depends=constants.OTHERS_CONTAINER_NAME if config.DATABASE_EXTERNAL else [constants.DATABASE_CONTAINER_NAME]+constants.OTHERS_CONTAINER_NAME)
 	.environ(list_enviroments=[
-     ('DEBUG',str(DEBUG)),
-     ('STATIC_ROOT',STATIC_ROOT),
+     ('DEBUG',str(config.DEBUG)),
+     ('STATIC_ROOT',constants.STATIC_ROOT),
      ('STATIC_URL','/static/'),
-     ('MEDIA_ROOT',MEDIA_ROOT),
+     ('MEDIA_ROOT',constants.MEDIA_ROOT),
      ('MEDIA_URL','/media/'),
-     ('DATABASE_ENGINE',DATABASE_ENGINE),
-     ('DATABASE_USER',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
-     ('DATABASE_NAME',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
-     ('DATABASE_HOST',(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if DATABASE_EXTERNAL else DATABASE_CONTAINER_NAME)),
-     ('DATABASE_PORT',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']),
-     ('DATABASE_PASSWORD',DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
-	]+json2list(WEB_ENVIROMENT))
+     ('DATABASE_ENGINE',config.DATABASE_ENGINE),
+     ('DATABASE_USER',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
+     ('DATABASE_NAME',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
+     ('DATABASE_HOST',(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if config.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)),
+     ('DATABASE_PORT',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']),
+     ('DATABASE_PASSWORD',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
+	]+functional.json2list(config.WEB_ENVIROMENT))
 	.volumes(list_volumes=[
 		(
-			path_join([CURRENT_DIRECTORY,PROJECT_NAME]),
-			path_join([PROJECT_NAME])
+			functional.path_join([CURRENT_DIRECTORY,config.PROJECT_NAME]),
+			functional.path_join([config.PROJECT_NAME])
 		), 
         (
-        	MEDIA_VOLUME,
-        	path_join([MEDIA_ROOT])
+        	constants.MEDIA_VOLUME,
+        	functional.path_join([constants.MEDIA_ROOT])
         )
-    ] if DEBUG else [
+    ] if config.DEBUG else [
     	(
-    		MEDIA_VOLUME,
-    		path_join([MEDIA_ROOT])
+    		constants.MEDIA_VOLUME,
+    		functional.path_join([constants.MEDIA_ROOT])
     	),
     	(
-    		STATIC_VOLUME,
-    		path_join([STATIC_ROOT])
+    		constants.STATIC_VOLUME,
+    		functional.path_join([constants.STATIC_ROOT])
     	)
     ]))
 	# print(web_compose)
 ###########################################################################
 					## DATABASE CONTAINER OBJECT ##
 ###########################################################################
-	database_compose = Container()
-	(database_compose.name(container_name=DATABASE_CONTAINER_NAME)
-	.image(image_base=DATABASE_IMAGE)
+	database_compose = compose.Container()
+	(database_compose.name(container_name=constants.DATABASE_CONTAINER_NAME)
+	.image(image_base=config.DATABASE_IMAGE)
 	.restart(restart_option='always')
 	.volumes(list_volumes=[
-		(DATABASE_VOLUME,DATABASE_ROOT['DESTINATION'])
+		(constants.DATABASE_VOLUME,config.DATABASE_ROOT['DESTINATION'])
 	])
 	.environ([
-		(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_NAME'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
-		(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_NAME'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
-		(DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
-	]+json2list(DATABASE_OTHERS_ENVIROMENTS))
+		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
+		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
+		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
+	]+functional.json2list(config.DATABASE_OTHERS_ENVIROMENTS))
 	)
-	if DEBUG:
-		database_compose.ports(list_ports=[(DATABASE_EXTERNAL_PORT,DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
+	if config.DEBUG:
+		database_compose.ports(list_ports=[(config.DATABASE_EXTERNAL_PORT,config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
 	# print(database_compose)
 ###########################################################################
 					## NODE CONTAINER OBJECT ##
 ###########################################################################
-	node_compose = Container()
-	(node_compose.name(container_name=NODE_CONTAINER_NAME)
+	node_compose = compose.Container()
+	(node_compose.name(container_name=constants.NODE_CONTAINER_NAME)
 	.build(
 		context=CURRENT_DIRECTORY,
-	 	dockerfile=path_join([FOLDER_TO_SAVE,node_dockerfile.filename])
+	 	dockerfile=functional.path_join([config.FOLDER_TO_SAVE,node_dockerfile.filename])
 	 )
 	.restart(restart_option="always")
 	.ports(list_ports=[
@@ -164,109 +164,110 @@ if __name__ == '__main__':
 	])
 	.volumes(list_volumes=[
 		(
-			path_join([CURRENT_DIRECTORY,PROJECT_NAME]),
-			path_join([PROJECT_NAME])
+			functional.path_join([CURRENT_DIRECTORY,config.PROJECT_NAME]),
+			functional.path_join([config.PROJECT_NAME])
 		)
 	])
-	.depends(list_depends=[WEB_CONTAINER_NAME])
-	.workdir(work_directory=path_join([PROJECT_NAME]))
+	.depends(list_depends=[constants.WEB_CONTAINER_NAME])
+	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.command(command="bash gulp.sh"))
 	# print(node_compose)
 ############################################################################
 					## NGINX CONTAINER OBJECT ##
 ############################################################################
-nginx_compose = Container()
-(nginx_compose.name(container_name=NGINX_CONTAINER_NAME)
-.image(image_base='nginx')
-.restart(restart_option='always')
-.volumes(list_volumes=[
-	(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
-	(STATIC_VOLUME,STATIC_ROOT),
-	(MEDIA_VOLUME,MEDIA_ROOT),
-	(LOGS_VOLUME,LOGS_ROOT)
-])
-.depends(list_depends=[WEB_CONTAINER_NAME])
-.ports(list_ports=[
-	(NGINX_PORT,WEB_PORT)
-]))
+	nginx_compose = compose.Container()
+	(nginx_compose.name(container_name=constants.NGINX_CONTAINER_NAME)
+	.image(image_base='nginx')
+	.restart(restart_option='always')
+	.volumes(list_volumes=[
+		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
+		(constants.STATIC_VOLUME,constants.STATIC_ROOT),
+		(constants.MEDIA_VOLUME,constants.MEDIA_ROOT),
+		(constants.LOGS_VOLUME,constants.LOGS_ROOT)
+	])
+	.depends(list_depends=[constants.WEB_CONTAINER_NAME])
+	.ports(list_ports=[
+		(config.NGINX_PORT,config.WEB_PORT)
+	]))
 # print(node_compose)
 ##########################################################################
 						## USER CONTAINERS OBJECTS##
 ###########################################################################
-user_containers = []
-for index,container_image in enumerate(CONTAINERS):
-	temporary_container = Container()
-	(temporary_container.name(OTHERS_CONTAINER_NAME[index])
-	.image(container_image)
-	.restart('always'))
-	user_containers.append(temporary_container)
+	user_containers = []
+	for index,container_image in enumerate(config.CONTAINERS):
+		temporary_container = compose.Container()
+		(temporary_container.name(constants.OTHERS_CONTAINER_NAME[index])
+		.image(container_image)
+		.restart('always'))
+		user_containers.append(temporary_container)
 ###########################################################################
 						## FINAL COMPOSE FILES ##
 ###########################################################################
 
-filename_development=PROJECT_NAME+'_development'
-filename_production=PROJECT_NAME+'_production'
+	filename_development=config.PROJECT_NAME+'_development'
+	filename_production=config.PROJECT_NAME+'_production'
 
-containers_production = [deepcopy(web_compose)]+deepcopy(user_containers) + [nginx_compose]
-containers_development = [deepcopy(web_compose)]+deepcopy(user_containers)
+	containers_production = [deepcopy(web_compose)]+deepcopy(user_containers) + [nginx_compose]
+	containers_development = [deepcopy(web_compose)]+deepcopy(user_containers)
 
-if FRONT_DEV_TOOLS:
-	containers_development += [node_compose]
-if not DATABASE_EXTERNAL:
-	containers_development += [deepcopy(database_compose)]
-	containers_production += [deepcopy(database_compose)]
-
-
-service = Service()
-(service.version(service_version=DOCKER_COMPOSE_VERSION)
-.volumes(list_of_volumes=[DATABASE_VOLUME,MEDIA_VOLUME,STATIC_VOLUME,LOGS_VOLUME])
-.networks(list_of_networks=[NETWORK_NAME]))
+	if config.FRONT_DEV_TOOLS:
+		containers_development += [node_compose]
+	if not config.DATABASE_EXTERNAL:
+		containers_development += [deepcopy(database_compose)]
+		containers_production += [deepcopy(database_compose)]
 
 
-service_development = deepcopy(service)
-service_production = deepcopy(service)
+	service = compose.Service()
+	(service.version(service_version=config.DOCKER_COMPOSE_VERSION)
+	.volumes(list_of_volumes=[constants.DATABASE_VOLUME,constants.MEDIA_VOLUME,constants.STATIC_VOLUME,constants.LOGS_VOLUME])
+	.networks(list_of_networks=[config.NETWORK_NAME]))
 
 
-del service
-
-(service_development.containers(list_of_containers=containers_development)
-.build()
-.save(
-	path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
-	filename=filename_development
-))
-# print(service_development)
-
-(service_production.containers(list_of_containers=containers_production)
-.build()
-.save(
-	path_to_save=path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),
-	filename=filename_production
-))
-# print(service_production)
-########################################################################
-					## MVC GENERATED FILES ##
-########################################################################
-
-controller = Controller()
-nginx_content = controller.build_nginx()
-gulpfile_content = controller.build_gulpfile()
-make_ambient_content = controller.build_make_ambiente(debug_mode=DEBUG)
-runserver_content = controller.build_runserver(debug_mode=DEBUG)
-requirements_content = controller.build_requirements()
-gulp_script_content = controller.build_gulp_script()
-wait_for_it_content = controller.build_wait_for_it()
-settings = controller.build_settings()
-manage = controller.build_manage()
+	service_development = deepcopy(service)
+	service_production = deepcopy(service)
 
 
+	del service
 
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),RUNSERVER_SCRIPT_NAME,runserver_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),SETTINGS_FILE_NAME+'.py',settings)
-save(path_join([CURRENT_DIRECTORY,FOLDER_TO_SAVE]),'manage.py',manage)
+	(service_development.containers(list_of_containers=containers_development)
+	.build()
+	.save(
+		path_to_save=functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),
+		filename=filename_development
+	))
+	# print(service_development)
+
+	(service_production.containers(list_of_containers=containers_production)
+	.build()
+	.save(
+		path_to_save=functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),
+		filename=filename_production
+	))
+	# print(service_production)
+	########################################################################
+						## MVC GENERATED FILES ##
+	########################################################################
+
+	pycontroller = controller.Controller()
+
+	nginx_content = pycontroller.build_nginx()
+	gulpfile_content = pycontroller.build_gulpfile()
+	make_ambient_content = pycontroller.build_make_ambiente(debug_mode=config.DEBUG)
+	runserver_content = pycontroller.build_runserver(debug_mode=config.DEBUG)
+	requirements_content = pycontroller.build_requirements()
+	gulp_script_content = pycontroller.build_gulp_script()
+	wait_for_it_content = pycontroller.build_wait_for_it()
+	settings = pycontroller.build_settings()
+	manage = pycontroller.build_manage()
+
+
+
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.SETTINGS_FILE_NAME+'.py',settings)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage)

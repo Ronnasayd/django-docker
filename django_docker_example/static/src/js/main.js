@@ -35,5 +35,5 @@ hammertime.get("swipe").set({direction: Hammer.DIRECTION_HORIZONTAL});
 
 $($(".carousel-item")[0]).addClass("active");
 
-tecnologias = django2json(tecnologias);
+var tecnologias = django2json(tecnologias);
 console.log(tecnologias);
