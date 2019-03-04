@@ -3,14 +3,14 @@
 # Django-Docker CLI
 [https://ronnasayd.github.io/django-docker/](https://ronnasayd.github.io/django-docker/)
 
-![enter image description here](https://img.shields.io/codacy/grade/ff5a4f4521cd4d9a8c8e85214a29f5b1.svg) [![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+![enter image description here](https://img.shields.io/codacy/grade/ff5a4f4521cd4d9a8c8e85214a29f5b1.svg) [![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/github/license/ronnasayd/django-docker.svg)](LICENSE.md) ![enter image description here](https://img.shields.io/github/languages/code-size/ronnasayd/django-docker.svg)[![enter image description here](https://img.shields.io/github/release-pre/ronnasayd/django-docker.svg) ![\](https://github.com/Ronnasayd/django-docker/releases)](https://img.shields.io/github/release-date-pre/ronnasayd/django-docker.svg) ![enter image description here](https://img.shields.io/github/issues-closed-raw/ronnasayd/django-docker.svg) ![enter image description here](https://img.shields.io/github/last-commit/ronnasayd/django-docker.svg) ![enter image description here](https://img.shields.io/github/stars/ronnasayd/django-docker.svg?style=social)
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.
 
 ## Required Programs
-  - [Python](https://www.python.org/) version 3 or higher
-  - [Docker](https://www.docker.com/)
-  - [Docker compose](https://docs.docker.com/compose/)
+- [Python](https://www.python.org/) version 3 or higher
+- [Docker](https://www.docker.com/)
+- [Docker compose](https://docs.docker.com/compose/)
 
 ## Installation
 Linux:
@@ -69,11 +69,11 @@ The choice of environment between development or production is made by the ***DE
     --portainer | -ptn : Run a container with portainer gui manager for docker
 
 ## Contributing
- 1. Fork it ([https://github.com/Ronnasayd/django-docker/fork](https://github.com/Ronnasayd/django-docker))
- 2. Create your feature branch (`git checkout -b feature/fooBar`)
- 3. Commit your changes (`git commit -am 'Add some fooBar'`)
- 4. Push to the branch (`git push origin feature/fooBar`)
- 5. Create a new Pull Request
+1. Fork it ([https://github.com/Ronnasayd/django-docker/fork](https://github.com/Ronnasayd/django-docker))
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
