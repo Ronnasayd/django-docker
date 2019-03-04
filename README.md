@@ -3,7 +3,7 @@
 # Django-Docker CLI
 [https://ronnasayd.github.io/django-docker/](https://ronnasayd.github.io/django-docker/)
 
-[![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
+![enter image description here](https://img.shields.io/codacy/grade/ff5a4f4521cd4d9a8c8e85214a29f5b1.svg) [![enter image description here](https://travis-ci.org/Ronnasayd/django-docker.svg?branch=master)](https://travis-ci.org/Ronnasayd/django-docker)  [![enter image description here](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 System to automatically create development and production environments in django with docker and facilitate the development of applications.
 
