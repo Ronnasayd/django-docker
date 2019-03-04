@@ -20,6 +20,9 @@ make_ambient.sh
 gulp.sh
 gulpfile.js
 
+!package.json
+!requirements.txt
+
 ### Django ###
 *.log
 *.pot
