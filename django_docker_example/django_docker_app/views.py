@@ -76,4 +76,4 @@ class Save(View):
 			dduser = DDUser.objects.create(email=request.POST['email'])
 			dduser.save()
 			return redirect('/')
-		
+			

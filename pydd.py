@@ -26,7 +26,7 @@
 # VERSION: 3.2.10-beta #
 
 import os
-import config 
+import config
 from copy import deepcopy
 from modules import dockerfile
 from modules import compose
@@ -38,7 +38,7 @@ if __name__ == '__main__':
 	CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\', '/')
 
-#############################################################################	
+#############################################################################
 						## NODE DOCKERFILE OBJECT ##
 #############################################################################
 	node_dockerfile = dockerfile.Dockerfile()
@@ -78,7 +78,7 @@ if __name__ == '__main__':
 		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
 		filename='web'
 	))
-###########################################################################	
+###########################################################################
 						## WEB CONTAINER OBJECT ##
 ###########################################################################
 	web_compose = compose.Container()
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 		(
 			functional.path_join([CURRENT_DIRECTORY,config.PROJECT_NAME]),
 			functional.path_join([config.PROJECT_NAME])
-		), 
+		),
         (
         	constants.MEDIA_VOLUME,
         	functional.path_join([constants.MEDIA_ROOT])

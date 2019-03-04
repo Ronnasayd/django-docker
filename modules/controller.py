@@ -49,7 +49,7 @@ class Controller(object):
 		else:
 			views.MAKE_AMBIENT = views.MAKE_AMBIENT_BASE + views.MAKE_AMBIENT_PRODUCTION
 		return views.MAKE_AMBIENT.format(**models.MAKE_AMBIENT_MODEL)
-     
+
 	@classmethod
 	def build_runserver(self,debug_mode):
 		if debug_mode:
@@ -80,4 +80,3 @@ class Controller(object):
 	@classmethod
 	def build_manage(self):
 		return views.MANAGE.format(**models.MANAGE_MODEL)
-

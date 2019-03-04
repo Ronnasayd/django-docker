@@ -43,7 +43,6 @@ def path_join(list_of_paths):
 	new_path = new_path.replace('//','/')
 	return new_path
 
-
 def save(path_to_save,filename,content):
 	if not os.path.exists(path_to_save):
 		os.makedirs(path_to_save)
@@ -51,10 +50,3 @@ def save(path_to_save,filename,content):
 	file = open(path,'w')
 	file.write(content)
 	file.close()
-
-
-	
-
-
-
-
