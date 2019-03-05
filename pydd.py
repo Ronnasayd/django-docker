@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.10-beta #
+# VERSION: 3.2.11-beta #
 
 import os
 import config
@@ -170,7 +170,7 @@ if __name__ == '__main__':
 	])
 	.depends(list_depends=[constants.WEB_CONTAINER_NAME])
 	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
-	.command(command="bash gulp.sh"))
+	.command(command='bash -c "yarn --no-bin-links && gulp"'))
 	# print(node_compose)
 ############################################################################
 					## NGINX CONTAINER OBJECT ##
@@ -255,10 +255,10 @@ if __name__ == '__main__':
 	make_ambient_content = pycontroller.build_make_ambiente(debug_mode=config.DEBUG)
 	runserver_content = pycontroller.build_runserver(debug_mode=config.DEBUG)
 	requirements_content = pycontroller.build_requirements()
-	gulp_script_content = pycontroller.build_gulp_script()
 	wait_for_it_content = pycontroller.build_wait_for_it()
-	settings = pycontroller.build_settings()
-	manage = pycontroller.build_manage()
+	settings_content = pycontroller.build_settings()
+	manage_content = pycontroller.build_manage()
+	packagejson_content = pycontroller.build_packagejson()
 
 
 
@@ -267,7 +267,7 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulp.sh',gulp_script_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.SETTINGS_FILE_NAME+'.py',settings)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.SETTINGS_FILE_NAME+'.py',settings_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'package.json',packagejson_content)

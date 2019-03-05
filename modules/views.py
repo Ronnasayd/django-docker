@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.10-beta #
+# VERSION: 3.2.11-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -306,10 +306,10 @@ const browserSyncServer = ()=>{{
         }}
     }});
 
-    gulp.watch([src_css,src_scss], css_line);
-    gulp.watch(src_js, gulp.series(js_line,browserReload));
-    gulp.watch(images_folder, image_line);
-    gulp.watch(html_files, gulp.series(html_line,browserReload));
+    gulp.watch([src_css,src_scss], {{interval: 100, usePolling: true}}, css_line);
+    gulp.watch(src_js, {{interval: 100, usePolling: true}}, gulp.series(js_line,browserReload));
+    gulp.watch(images_folder, {{interval: 100, usePolling: true}}, image_line);
+    gulp.watch(html_files, {{interval: 100, usePolling: true}}, gulp.series(html_line,browserReload));
 }}
 
 const server = gulp.series(gulp.parallel(js_line,css_line,image_line,html_line),browserSyncServer)
@@ -317,24 +317,6 @@ const server = gulp.series(gulp.parallel(js_line,css_line,image_line,html_line),
 exports.concatfiles = concatFiles
 exports.default  = server
 
-'''
-########################################################################
-                        ## GULP SCRIPT ##
-########################################################################
-GULP_SCRIPT_BEGIN ='''
-#!/bin/bash
-file="./package.json"
-if [ ! -f "$file" ]
-then
-'''
-GULP_ADD='''  yarn add --no-bin-links {}
-'''
-
-GULP_SCRIPT_END='''  gulp
-else
-  yarn --no-bin-links
-  gulp
-fi
 '''
 ####################################################################
                     ## MAKE AMBIENT SCRIPT ##
@@ -357,13 +339,13 @@ chmod +x {FOLDER_NAME}/wait-for-it.sh
 sed -i "s/\\r$//" {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME}
 sed -i "s/\\r$//" {FOLDER_NAME}/wait-for-it.sh
 sed -i "s/\\r$//" {FOLDER_NAME}/gulpfile.js
-sed -i "s/\\r$//" {FOLDER_NAME}/gulp.sh
+sed -i "s/\\r$//" {FOLDER_NAME}/package.json
 sed -i "s/\\r$//" {FOLDER_NAME}/ddsettings.py
 sed -i "s/\\r$//" {FOLDER_NAME}/manage.py
 cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp {FOLDER_NAME}/wait-for-it.sh ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
-cp {FOLDER_NAME}/gulp.sh ./{PROJECT_NAME}
+cp {FOLDER_NAME}/package.json ./{PROJECT_NAME}
 cp {FOLDER_NAME}/manage.py ./{PROJECT_NAME}
 cp {FOLDER_NAME}/ddsettings.py ./{PROJECT_NAME}/{PROJECT_NAME}
 '''
@@ -652,4 +634,45 @@ if __name__ == "__main__":
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
+'''
+######################################################################
+                    ## PACKAGE.JSON FILE ##
+######################################################################
+PACKAGEJSON='''{  
+  "name": "django-docker",
+  "description": "Package.json for development front utilities of django-docker",
+  "version": "3.2.11-beta",
+  "main": "index.js",
+  "author": "Ronnasayd de Sousa Machado",
+  "license": "MIT",
+  "homepage": "https://github.com/Ronnasayd/django-docker",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ronnasayd/django-docker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ronnasayd/django-docker/issues"
+  },
+
+  "dependencies": {
+    "browser-sync": "latest",
+    "gulp": "latest",
+    "gulp-autoprefixer": "latest",
+    "gulp-cached": "latest",
+    "gulp-clean": "latest",
+    "gulp-clean-css": "latest",
+    "gulp-concat": "latest",
+    "gulp-html-beautify": "latest",
+    "gulp-imagemin": "latest",
+    "gulp-purgecss": "latest",
+    "gulp-rename": "latest",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "latest",
+    "gulp-uglify": "latest",
+    "minimist": "latest",
+    "node-sass": "latest",
+    "gulp-sass-partials-imported":"latest"
+  }
+}
 '''

@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.10-beta #
+# VERSION: 3.2.11-beta #
 
 from modules import views
 from modules import models
@@ -63,13 +63,6 @@ class Controller(object):
 		return '\n'.join(models.REQUIREMENTS)
 
 	@classmethod
-	def build_gulp_script(self):
-		modules=""
-		for module in models.GULP_MODULES:
-			modules += views.GULP_ADD.format(module)
-		return views.GULP_SCRIPT_BEGIN + modules + views.GULP_SCRIPT_END
-
-	@classmethod
 	def build_wait_for_it(self):
 		return views.WAIT_FOR_IT
 
@@ -80,3 +73,7 @@ class Controller(object):
 	@classmethod
 	def build_manage(self):
 		return views.MANAGE.format(**models.MANAGE_MODEL)
+	
+	@classmethod
+	def build_packagejson(self):
+		return views.PACKAGEJSON
