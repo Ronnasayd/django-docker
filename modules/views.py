@@ -586,7 +586,7 @@ try:
     DATABASES['default']['NAME'] = config('DATABASE_NAME'),
     DATABASES['default']['USER'] = config('DATABASE_USER'),
     DATABASES['default']['PASSWORD'] = config('DATABASE_PASSWORD'),
-except KeyError:
+except (KeyError, NameError):
     DATABASES = {
         'default': {
             'ENGINE':config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
