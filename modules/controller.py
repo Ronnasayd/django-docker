@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.11-beta #
+# VERSION: 3.2.12-beta #
 
 from modules import views
 from modules import models
@@ -77,3 +77,7 @@ class Controller(object):
 	@classmethod
 	def build_packagejson(self):
 		return views.PACKAGEJSON
+	
+	@classmethod
+	def build_dockerignore(self):
+		return views.DOCKERIGNORE

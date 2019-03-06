@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.2.11-beta #
+# VERSION: 3.2.12-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -147,7 +147,6 @@ const purgecss        = require("gulp-purgecss");
 const cache           = require("gulp-cached");
 const minimist        = require("minimist");
 const concat          = require("gulp-concat");
-const clean           = require("gulp-clean");
 const sassPartials    = require('gulp-sass-partials-imported');
 
 
@@ -159,8 +158,6 @@ const src_js          = "static/src/js/**/*.js";
 const images_folder   = "static/images/**/*.{{png,jpeg,jpg,svg,ico}}";
 
 const not_node        = "!node_modules/"
-
-const tmp_css         = "static/tmp/css/"
 
 const dist_js         = "static/dist/js/"
 const dist_css        = "static/dist/css/"
@@ -182,15 +179,15 @@ const minifyJs = ()=>{{
     .pipe(rename(function(file){{
             file.extname = ".min.js"
      }}))
-    .pipe(sourcemaps.write("./"))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dist_js))
 }}
 
-const sassToCss = ()=>{{
+const sassToCssMin = ()=>{{
     return gulp.src([src_scss,"!_*.scss",not_node],{{allowEmpty: true}})
-        .pipe(cache("sassToCss"))
-        .pipe(sourcemaps.init())
+        .pipe(cache("sassToCssMin"))
         .pipe(sassPartials("static/src/scss"))
+        .pipe(sourcemaps.init({{loadMaps: true, largeFile: true}}))
         .pipe(sass({{
             errLogToConsole: true,
             indentedSyntax: false,
@@ -203,20 +200,29 @@ const sassToCss = ()=>{{
             browsers: ["last 100 versions"],
             cascade: false
         }}))
-        .pipe(sourcemaps.write("./"))
-        .pipe(gulp.dest(tmp_css))
-}}
-
-const copySrcCss = ()=>{{
-    return gulp.src([src_css,not_node],{{allowEmpty: true}})
-    .pipe(cache("copySrcCss"))
-    .pipe(gulp.dest(tmp_css))
+        .pipe(purgecss({{content: [html_files,not_node]}}))
+        .on("error",function(err){{
+            console.log(err.message,err);
+            browserSync.notify(err.message, 3000); // Display error in the browser
+            this.emit("end"); // Prevent gulp from catching the error and exiting the watch process
+        }})
+        .pipe(cleanCSS())
+        .pipe(rename(function(file){{
+            file.extname = ".min.css"
+        }}))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(dist_css))
+        .pipe(browserSync.stream())
 }}
 
 const minifyCss = ()=>{{
-    return gulp.src([tmp_css+"**/*.css",not_node],{{allowEmpty: true}})
+    return gulp.src([src_css,"!_*.css", not_node],{{allowEmpty: true}})
     .pipe(cache("minifyCss"))
-    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init({{loadMaps: true, largeFile: true}}))
+    .pipe(autoprefixer({{
+        browsers: ["last 100 versions"],
+        cascade: false
+    }}))
     .pipe(purgecss({{content: [html_files,not_node]}}))
     .on("error",function(err){{
         console.log(err.message,err);
@@ -227,15 +233,9 @@ const minifyCss = ()=>{{
     .pipe(rename(function(file){{
         file.extname = ".min.css"
     }}))
-    .pipe(sourcemaps.write("./"))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dist_css))
     .pipe(browserSync.stream())
-}}
-
-
-const deleteTempCss = ()=>{{
-    return gulp.src(["static/tmp/",not_node], {{read: false, base: "./", allowEmpty: true}})
-            .pipe(clean());
 }}
 
 
@@ -245,7 +245,7 @@ const concatFiles = ()=>{{
     console.log("files: "+options.files);
     console.log("name: "+options.name);
     console.log("dist: "+options.dist);
-    return gulp.src(options.files.split(","),{{base: "./",allowEmpty: true}})
+    return gulp.src(options.files.split(","),{{base: "./", allowEmpty: true}})
     .pipe(cache("concatFiles"))
     .pipe(sourcemaps.init())
     .pipe(concat(options.name))
@@ -291,7 +291,8 @@ const minifyImages =()=>{{
 
 
 const js_line = gulp.series(minifyJs);
-const css_line = gulp.series(gulp.parallel(sassToCss, copySrcCss), minifyCss, deleteTempCss);
+const sass_line = gulp.series(sassToCssMin)
+const css_line = gulp.series(minifyCss);
 const image_line = gulp.series(minifyImages);
 const html_line = gulp.parallel(htmlBeautify);
 
@@ -306,13 +307,14 @@ const browserSyncServer = ()=>{{
         }}
     }});
 
-    gulp.watch([src_css,src_scss], {{interval: 100, usePolling: true}}, css_line);
+    gulp.watch(src_scss, {{interval: 100, usePolling: true}}, sass_line);
+    gulp.watch(src_css, {{interval: 100, usePolling: true}}, css_line);
     gulp.watch(src_js, {{interval: 100, usePolling: true}}, gulp.series(js_line,browserReload));
     gulp.watch(images_folder, {{interval: 100, usePolling: true}}, image_line);
     gulp.watch(html_files, {{interval: 100, usePolling: true}}, gulp.series(html_line,browserReload));
 }}
 
-const server = gulp.series(gulp.parallel(js_line,css_line,image_line,html_line),browserSyncServer)
+const server = gulp.series(gulp.parallel(js_line, css_line, sass_line, image_line, html_line),browserSyncServer)
 
 exports.concatfiles = concatFiles
 exports.default  = server
@@ -641,7 +643,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.2.11-beta",
+  "version": "3.2.12-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
@@ -660,7 +662,6 @@ PACKAGEJSON='''{
     "gulp": "latest",
     "gulp-autoprefixer": "latest",
     "gulp-cached": "latest",
-    "gulp-clean": "latest",
     "gulp-clean-css": "latest",
     "gulp-concat": "latest",
     "gulp-html-beautify": "latest",
@@ -676,3 +677,8 @@ PACKAGEJSON='''{
   }
 }
 '''
+######################################################################
+                    ## DOCKERIGNORE FILE ##
+######################################################################
+DOCKERIGNORE = '''
+*/node_modules*'''
