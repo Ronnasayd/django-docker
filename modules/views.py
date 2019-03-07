@@ -38,7 +38,6 @@ events {{
 }}
 
 http {{
-
     proxy_cache_path {STATIC_ROOT} levels=1:2 keys_zone=my_cache:10m max_size=10g 
         inactive=60m use_temp_path=off;
 
@@ -48,9 +47,6 @@ http {{
     log_format compression '$remote_addr - $remote_user [$time_local] '
                            '"$request" $status $body_bytes_sent '
                            '"$http_referer" "$http_user_agent" "$gzip_ratio"';
-   
-
-
 
 
     sendfile on;
