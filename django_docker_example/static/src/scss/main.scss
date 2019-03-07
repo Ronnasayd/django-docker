@@ -1,6 +1,9 @@
 @import 'vendor/variables';
 
 .github-logo{
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 2s;
 	width: 160px;
 	position: relative;
 	left: 100%;
@@ -19,6 +22,16 @@ body{
 	letter-spacing: 0.5px;
 }
 
+@keyframes animationopacity{
+	0%{
+		opacity: 0;
+
+	}
+	100%{
+		opacity: 1;
+	}
+}
+
 .background{
 	height: 100vh;
 	background-image: url('../../images/backgrounds/6.jpg');
@@ -31,23 +44,41 @@ body{
 .painel{
 	$painel-color:black;
 	width: $painel-width;
-	height: $painel-height;
+	height: 0vh;
 	margin-top: (100-$painel-height)/2;
 	margin-bottom: (100-$painel-height)/2;
 	margin-left: (100-$painel-width)/2;
 	margin-right: (100-$painel-width)/2;
-	background-color: rgba($painel-color,0.6);
+	// background-color: rgba($painel-color,0.6);
+	animation: painelgrow 3s forwards;
+	animation-delay: 1s;
+
+	@keyframes painelgrow{
+		0%{
+			height: 0vh;
+			background-color: rgba($painel-color,0.0);
+
+		}
+		100%{
+			height: $painel-height;
+			background-color: rgba($painel-color,0.6);
+		}
+	}
 }
 .logo-img{
 	max-width: $logo-max-width;
 	display: block;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 4%;
+	padding-top: 4%;
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 3s;
+	
     @media(max-width: 720px){
     	padding-top: 10%;
     	@media (orientation:landscape){
-    		padding-top: 0vh;
+  		padding-top: 0vh;
     		max-width: $logo-max-width*0.75;
     	}
     }
@@ -64,8 +95,14 @@ body{
 	@media (orientation:landscape){
 		font-size: 2*16px;
 	}
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 3.5s;
 }
 .description{
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 4s;
 	text-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 	@extend %align-color;
 	font-weight: bold;
@@ -80,6 +117,9 @@ body{
 
 }
 .tecnologias{
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 4.5s;
 	font-weight: bold;
 	padding-top: 2vh;
 	color: rgba(199, 199, 199, 0.8);
@@ -98,12 +138,43 @@ body{
 	}
 
 }
+@keyframes shake{
+	0%{
+
+	}
+
+	20%{
+		transform: translateX(5px);
+		transform: rotate(5deg);
+	}
+	40%{
+		transform: translateX(-5px);
+		transform: rotate(-5deg);
+	}
+	60%{
+		transform: translateX(5px);
+		transform: rotate(5deg);
+	}
+	80%{
+		transform: translateX(-5px);
+		transform: rotate(-5deg);
+	}
+	100%{
+
+	}
+}
 .carousel-img{
-	max-height: 18vh;	
+	max-height: 18vh;
+	&:hover{
+		animation: shake linear 0.3s;
+	}	
 }
 
 
 .slide{
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 4.5s;
 	padding-top: 15px;
 	@media (max-width: 720px){
 		padding-top: 5px;
@@ -113,7 +184,24 @@ body{
 
 
 .download-button{
-	width: 200px;
+	& i{
+		position: absolute;
+		left: 10px;
+		top:50%;
+		transform: translateY(-50%);
+	}
+	& span{
+		position: absolute;
+		top:50%;
+		left: 70px;
+		transform: translateY(-50%);
+	}
+	padding: 20px 20px;
+	overflow: hidden;
+	opacity: 0;
+	animation: animationopacity linear 1s forwards;
+	animation-delay: 2s;
+	width: 50px;
 	border-radius: 1px;
 	background: transparent;
 	text-transform: capitalize;
@@ -124,12 +212,17 @@ body{
 	font-weight: bold;
 	box-shadow: 0px 1.5px 2px 1px rgba(0,0,0,0.3);
 	text-shadow: 1.5px 1.5px 2px rgba(0,0,0,0.3);
+	transition: width linear 0.2s;
 	@media (max-width: 750px){
 		width: 150px;
+		& span{
+			left: 55px;
+		}
 	}
 	&:hover{
 		background-color: lighten($default-color, 10%);
 		border-color: lighten($default-color,10%);
+		width: 200px;
 
 	}
 	&:active{
