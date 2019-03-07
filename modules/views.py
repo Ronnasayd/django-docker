@@ -327,9 +327,9 @@ cleanup()
 {{
   echo "Caught Signal ... cleaning up."
   rm {PROJECT_NAME}/runserver.sh
-  rm {PROJECT_NAME}/gulp.sh
   rm {PROJECT_NAME}/gulpfile.js
   rm {PROJECT_NAME}/wait-for-it.sh
+  rm {PROJECT_NAME}/package.json
   echo "Done cleanup ... quitting."
   exit 1
 }}
@@ -677,4 +677,7 @@ PACKAGEJSON='''{
                     ## DOCKERIGNORE FILE ##
 ######################################################################
 DOCKERIGNORE = '''
-*/node_modules*'''
+*/node_modules*
+*/gulpfile.js*
+*/package.json*
+'''
