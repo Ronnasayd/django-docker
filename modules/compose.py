@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # MIT License
@@ -12,8 +11,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -26,25 +25,62 @@
 # VERSION: 3.2.12-beta #
 
 import os
+
+
 class Service(object):
+	"""
+	The Service class contains common parameters for all containers
+		that are part of the same network through the same compose file
+	
+	Attributes:
+		service_version (str): version of docker compose
+		base (str):represents all attributes added to an instance. 
+			Is the value returned in the __str__
+		list_of_volumes (List[str]): list of shared volumes
+		network: (str): The network common to all containers
+		__space: (str): standard spacing for internal use"""
 
 	@classmethod
 	def __init__(self):
-		self.service_version=""
-		self.base=""
-		self.list_of_volumes=[]
-		self.network=""
-		self.space=" "
+		self.service_version = ""
+		self.base = ""
+		self.list_of_volumes = []
+		self.network = ""
+		self.__space = " "
 
 	@classmethod
 	def __str__(self):
-		return self.base
+		"""
+		Returns information about the parameters used with self.base
+
+		Args:
+		Returns:
+			str: self.base
+		Raises:
+			TypeError: if self.base is not str
+		"""
+		if isinstance(self.base, str):
+			return self.base
+		raise TypeError("self.base must be str")
 
 	def version(self, service_version):
-		self.service_version = service_version
-		return self
+		"""
+		Specifies the version of the docker compose in the yml file
 
-	def volumes(self,list_of_volumes):
+		Args:
+			service_version (str): docker compose version
+		Returns:
+			self (Service): a new instance of the Service class with the updated
+				parameter
+		Raises:
+			TypeError: if service_version not str
+		"""
+		if isinstance(service_version, str):
+			self.service_version = service_version
+			return self
+		raise TypeError("service_version must be str")
+
+	def volumes(self, list_of_volumes):
 		self.list_of_volumes = list_of_volumes
 		return self
 
@@ -59,16 +95,16 @@ class Service(object):
 	def build(self):
 		self.base += 'version: "'+self.service_version+'"\nservices:\n'
 		for container in self.list_of_containers:
-			container.base += 2*self.space+'networks:\n'
+			container.base += 2*self.__space+'networks:\n'
 			for network in self.list_of_networks:
-				container.base += 3*self.space+'- '+network+'\n'
+				container.base += 3*self.__space+'- '+network+'\n'
 			self.base += container.base+'\n'
 		self.base += 'networks:\n'
 		for network in self.list_of_networks:
-			self.base += self.space+network+':\n'
+			self.base += self.__space+network+':\n'
 		self.base += 'volumes:\n'
 		for volume in self.list_of_volumes:
-			self.base += self.space+volume+':\n'
+			self.base += self.__space+volume+':\n'
 		return self
 	
 	def save(self,path_to_save,filename):
@@ -85,26 +121,26 @@ class Container(object):
 
 	def __init__(self):
 		self.base=""
-		self.space=" "
+		self.__space=" "
 		self.container_name=""
 
 	def __str__(self):
 		return self.base
 
 	def __unique_element(self,name,element,prefix="",sufix=""):
-		self.base += 2*self.space+name+': '+prefix+element+sufix+'\n'
+		self.base += 2*self.__space+name+': '+prefix+element+sufix+'\n'
 
 	def __many_elements(self,name,elements,separator=':',prefix='',sufix=''):
-		self.base += 2*self.space+name+':\n'
+		self.base += 2*self.__space+name+':\n'
 		for element in elements:
 			if len(element) == 1 or isinstance(element,str):
-				self.base += 3*self.space+'- '+element+'\n'
+				self.base += 3*self.__space+'- '+element+'\n'
 			else:
-				self.base += 3*self.space+'- '+prefix+element[0]+separator+element[1]+sufix+'\n'
+				self.base += 3*self.__space+'- '+prefix+element[0]+separator+element[1]+sufix+'\n'
 
 	def name(self,container_name):
 		self.container_name=container_name
-		self.base += 1*self.space+container_name+':\n'
+		self.base += 1*self.__space+container_name+':\n'
 		self.__unique_element('container_name',container_name)
 		self.__unique_element('stdin_open','True')
 		self.__unique_element('tty','True')
