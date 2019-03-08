@@ -66,7 +66,8 @@ Options:
   --django-create-project    |      -dcp     : Create a django project 
   --django-create-app        |      -dca     : Create a django app in a django project
   --dbeaver                  |      -dbv     : Run a container with Dbeaver database manager (Just in LINUX yet)
-  --portainer                |      -ptn     : Run a container with portainer gui manager for docker 
+  --portainer                |      -ptn     : Run a container with portainer gui manager for docker
+  --loadtestdata             |      -ltd     : Generate random test data in the database
 
 
 Examples:
@@ -98,7 +99,8 @@ Examples:
   $0 --django-create-project django_docker_example
   $0 --django-create-app django_docker_example api
   $0 --dbeaver
-  $0 --portainer 
+  $0 --portainer
+  $0 --loadtestdata django_docker_app.DDuser:10 
 
   "
 
@@ -206,6 +208,8 @@ elif [ "$1" = "--dbeaver" -o "$1" = "-dbv" ];then
   bash modules/dbeaver/dbeaver.sh
 elif [ "$1" = "--portainer" -o "$1" = "-ptn" ];then
   bash modules/portainer/portainer.sh
+elif [ "$1" = "--loadtestdata" -o "$1" = "-ltd" ];then
+  docker exec -ti web-$PROJECT_RENAME python manage.py loadtestdata $2
 else 
   echo "Unrecognized argument in command list. Use <$0 --help> to see options"
 fi

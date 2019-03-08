@@ -52,6 +52,7 @@ REQUIREMENTS += [
   'psycopg2-binary',
   'django-debug-toolbar',
   'Pillow',
+  'django-autofixture'
 ]
 REQUIREMENTS = list(set(REQUIREMENTS))
 REQUIREMENTS.sort()

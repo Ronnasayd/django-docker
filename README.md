@@ -174,6 +174,7 @@ Modify the *config.py* settings as you wish, and then run the *ddo.sh* script wi
   --django-create-app        |      -dca     | Create a django app in a django project
   --dbeaver                  |      -dbv     | Run a container with Dbeaver database manager (Just in LINUX yet)
   --portainer                |      -ptn     | Run a container with portainer gui manager for docker 
+  --loadtestdata             |      -ltd     | Generate random test data in the database
 
 
   

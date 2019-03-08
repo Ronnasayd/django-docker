@@ -26,7 +26,7 @@
 
 DEBUG = False
 
-FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [
@@ -36,6 +36,7 @@ REQUIREMENTS = [
   'django-widget-tweaks',
   'djangorestframework',
   'docutils',
+  
 ]
 
 PROJECT_NAME = 'django_docker_example'

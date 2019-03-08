@@ -625,7 +625,10 @@ if DEBUG:
     def custom_show_toolbar(request):
         return True  # Always show toolbar, for example purposes only.
 
-    INSTALLED_APPS += ["debug_toolbar"]
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        "autofixture",
+    ]
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     DEBUG_TOOLBAR_CONFIG = {{
         'SHOW_TOOLBAR_CALLBACK': '{PROJECT_NAME}.ddsettings.custom_show_toolbar',
