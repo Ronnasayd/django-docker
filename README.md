@@ -36,35 +36,112 @@ Modify the *config.py* settings as you wish, and then run the *ddo.sh* script wi
 **Variables in config.py:**
 
 *DEBUG (boolean):*	
-> when False determines the mode of development and when True mode of production
+> When False determines the mode of development and when True mode of production
 > 
  *FRONT_DEV_TOOLS (boolean):*   
-> when True enables front-end helper tools like gulp and browsersync
+> When True enables front-end helper tools like gulp and browsersync
 
  *REQUIREMENTS (List[str]):*
->   list with the python modules to be installed
+>   List with the python modules to be installed
 
 *PROJECT_NAME (str):*
-> the name of your django project
+> The name of your django project
 
 *PYTHON_VERSION (str):*
-> python version in the container that will run django
+> Python version in the container that will run django
 
 *DJANGO_VERSION (str):*
-  > version of Django
+  > Version of Django
   
 *WEB_COMMANDS_BUILD (List[str]):*
->  list of shell commands to be added to the container in build
+>  List of shell commands to be added to the container in build
 
- **Make enviroment:**
+*DATABASE_IMAGE (str):*
+> The database container image when it is used
+
+*options:*
+>  - postgres
+>  - mysql
+>  - oracle
+>  - mongo
+
+*DATABASE_EXTERNAL (boolean):*
+> When true enable django communication with an external database
+
+*DATABASE_DEFAULT_ENVIROMENTS (Dict[str]):*
+
+> - DATABASE_USER : username of the database
+> - DATABASE_USER_NAME : environment variable that represents the user in the database container (ex: POSTGRES_USER)
+>  - DATABASE_PASSWORD : the password of the database
+>  - DATABASE_PASSWORD_NAME :  environment variable that represents the password in the database container (ex: POSTGRES_PASSWORD)
+>  - DATABASE_DB : name of the database
+>  - DATABASE_DB_NAME : environment variable that represents the name of  the database container (ex: POSTGRES_DB)
+>  - DATABASE_PORT : the port operation of the database
+>  - DATABASE_HOST : host of a external database (just use in external database)
+>  
+*DATABASE_OTHERS_ENVIROMENTS (Dict[str]):*
+> The first term represents the name of the environment variable to be
+> added in the database container and the second term its respective
+> value ex('HOME_ENV': '/home')
+
+*DATABASE_ROOT (Dict[str]):*
+
+> -  DESTINATION : The folder where the database will be stored in the container ex:(/var/lib/postgresql/data)
+> 
+*options:*
+> 
+>  - /var/lib/postgresql/data
+>  - /var/lib/mysql
+>  - /var/lib/mongodb
+
+*DATABASE_ENGINE (str):*
+> The django database engine ex(django.db.backends.postgresql_psycopg2)
+
+*options:*
+
+>  - django.db.backends.mysql
+>  - django.db.backends.oracle
+>  - django.db.backends.postgresql_psycopg2
+>  - django.db.backends.sqlite3
+
+*WEB_PORT (str):*
+> Port where the django application will run (default: 8000)
+
+*NGINX_PORT (str):*
+> The port where the nginx will run in production mode (default: 80)
+
+*DATABASE_EXTERNAL_PORT (str):*
+> External port for communication with the database in case of conflict
+
+*WEB_ENVIROMENT (Dict[str]):*
+> The first term represents the name of the environment variable to be
+> added to the container with Django the second term its value
+
+*CONTAINERS List(str):*
+> List with optional containers to be added to the environment. (the
+> containers must have the same name of their respective images ex:
+> redis)
+
+*DOCKER_COMPOSE_VERSION (str):*
+> Version of your docker-compose to be added to the generated yml files
+> at run time
+
+*NETWORK_NAME (str):*
+> Name of the internal network created by the docker that will contain
+> all the containers of the environment
+
+*FOLDER_TO_SAVE (str):*
+> Directory where the necessary files will be generated at runtime
+
+ **Make Enviroment:**
 
     bash ddo.sh --make
 
- **Run enviroment:**
+ **Run Enviroment:**
 
     bash ddo.sh --run
 
-## List of commands
+## List of Arguments
 | Argument |Abbreviation  |Explanation|
 |--|--|--|
  --help                     |      -h       | Show help
