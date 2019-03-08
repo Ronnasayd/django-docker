@@ -29,9 +29,7 @@ System to automatically create development and production environments in django
 
 ## How to use
 
-The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be in the same directory of your django project.
-
-Modify the *config.py* settings as you wish, and then run the *ddo.sh* script with a desirable argument. 
+The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be in the same directory of your django project. Modify the *config.py* settings as you wish, and then run the *ddo.sh* script with a desirable argument. 
 
 **Variables in config.py:**
 
@@ -176,6 +174,38 @@ Modify the *config.py* settings as you wish, and then run the *ddo.sh* script wi
   --portainer                |      -ptn     | Run a container with portainer gui manager for docker 
   --loadtestdata             |      -ltd     | Generate random test data in the database
 
+## Commands Examples
+
+      bash ddo.sh --run
+      bash ddo.sh --make
+      bash ddo.sh --clear
+      bash ddo.sh --clear-all
+      bash ddo.sh --stop web
+      bash ddo.sh --stop-app
+      bash ddo.sh --stop-net network_example
+      bash ddo.sh --shell web
+      bash ddo.sh --status
+      bash ddo.sh --net-status
+      bash ddo.sh --command web 'python manage.py migrate'
+      bash ddo.sh --create-su
+      bash ddo.sh --migrate # migrate in all models
+      bash ddo.sh --migrate django_docker_app # migrate specific model
+      bash ddo.sh --clear-mig
+      bash ddo.sh --show-db
+      bash ddo.sh --clear-db djangodocker_database
+      bash ddo.sh --prune
+      bash ddo.sh --show-img
+      bash ddo.sh --clear-img 627c27fc5060
+      bash ddo.sh --attach
+      bash ddo.sh --restart web
+      bash ddo.sh --update
+      bash ddo.sh --show-vol
+      bash ddo.sh --stop-all
+      bash ddo.sh --django-create-project django_docker_example
+      bash ddo.sh --django-create-app django_docker_example api
+      bash ddo.sh --dbeaver
+      bash ddo.sh --portainer
+      bash ddo.sh --loadtestdata django_docker_app.DDuser:10 
 
   
 ## Contributing
