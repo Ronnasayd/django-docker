@@ -68,7 +68,7 @@ class Controller(object):
 
 	@classmethod
 	def build_settings(self):
-		return views.SETTINGS
+		return views.SETTINGS.format(**models.SETTINGS_MODEL)
 
 	@classmethod
 	def build_manage(self):
@@ -81,3 +81,7 @@ class Controller(object):
 	@classmethod
 	def build_dockerignore(self):
 		return views.DOCKERIGNORE
+	
+	@classmethod
+	def build_ddurls(self):
+		return views.DDURLS.format(**models.DDURLS_MODEL)

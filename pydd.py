@@ -260,6 +260,7 @@ if __name__ == '__main__':
 	manage_content = pycontroller.build_manage()
 	packagejson_content = pycontroller.build_packagejson()
 	dockerignore_content = pycontroller.build_dockerignore()
+	ddurls_content = pycontroller.build_ddurls()
 
 
 
@@ -272,4 +273,5 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.SETTINGS_FILE_NAME+'.py',settings_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'package.json',packagejson_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'ddurls.py',ddurls_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY]),'.dockerignore',dockerignore_content)

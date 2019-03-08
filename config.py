@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # MIT License
@@ -27,14 +26,13 @@
 
 DEBUG = False
 
-FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [
   'channels',
   'channels_redis',
   'django-redis',
-  'Pillow',
   'django-widget-tweaks',
   'djangorestframework',
   'docutils',
@@ -106,10 +104,10 @@ DATABASE_ROOT = {
 # USE ONE OF DEFAULT DJANGO DATABASES ENGINES ###
 # Database							Django ENGINE value
 # ------------------------------------------------------------------------ #
-# MySQL							django.db.backends.mysql
-# Oracle							django.db.backends.oracle
+# MySQL							    django.db.backends.mysql
+# Oracle							  django.db.backends.oracle
 # PostgreSQL						django.db.backends.postgresql_psycopg2
-# SQLite							django.db.backends.sqlite3
+# SQLite							  django.db.backends.sqlite3
 DATABASE_ENGINE = 'django.db.backends.postgresql_psycopg2'
 
 WEB_PORT = '8000'

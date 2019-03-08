@@ -49,28 +49,12 @@ REQUIREMENTS += [
   'django>='+DJANGO_VERSION,
   'gunicorn',
   'python-decouple',
-  'psycopg2-binary'
+  'psycopg2-binary',
+  'django-debug-toolbar',
+  'Pillow',
 ]
-
-GULP_MODULES = [
-  "browser-sync",
-  "gulp",
-  "gulp-autoprefixer",
-  "gulp-cached",
-  "gulp-clean",
-  "gulp-clean-css",
-  "gulp-concat",
-  "gulp-html-beautify",
-  "gulp-imagemin",
-  "gulp-purgecss",
-  "gulp-rename",
-  "gulp-sass",
-  "gulp-sourcemaps",
-  "gulp-uglify",
-  "minimist",
-  "node-sass",
-  "gulp-sass-partials-imported"
- ]
+REQUIREMENTS = list(set(REQUIREMENTS))
+REQUIREMENTS.sort()
 
 STATIC_ROOT = '/tmp/static-data'
 MEDIA_ROOT = '/tmp/media-data'

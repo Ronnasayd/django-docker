@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # MIT License
@@ -339,6 +338,7 @@ sed -i "s/\\r$//" {FOLDER_NAME}/wait-for-it.sh
 sed -i "s/\\r$//" {FOLDER_NAME}/gulpfile.js
 sed -i "s/\\r$//" {FOLDER_NAME}/package.json
 sed -i "s/\\r$//" {FOLDER_NAME}/ddsettings.py
+sed -i "s/\\r$//" {FOLDER_NAME}/ddurls.py
 sed -i "s/\\r$//" {FOLDER_NAME}/manage.py
 cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp {FOLDER_NAME}/wait-for-it.sh ./{PROJECT_NAME}
@@ -346,6 +346,7 @@ cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
 cp {FOLDER_NAME}/package.json ./{PROJECT_NAME}
 cp {FOLDER_NAME}/manage.py ./{PROJECT_NAME}
 cp {FOLDER_NAME}/ddsettings.py ./{PROJECT_NAME}/{PROJECT_NAME}
+cp {FOLDER_NAME}/ddurls.py ./{PROJECT_NAME}/{PROJECT_NAME}
 '''
 
 MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
@@ -566,7 +567,8 @@ fi'''
 ######################################################################
                     ## SETTINGS FILE ##
 ######################################################################
-SETTINGS='''from .settings import *
+SETTINGS='''
+from .settings import *
 from decouple import config
 
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -576,44 +578,74 @@ STATIC_URL = config('STATIC_URL')
 MEDIA_URL = config('MEDIA_URL')
 
 try:
-    DATABASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
-    DATABASES['default']['HOST'] = config('DATABASE_HOST'),
-    DATABASES['default']['PORT'] = config('DATABASE_PORT'),
-    DATABASES['default']['NAME'] = config('DATABASE_NAME'),
-    DATABASES['default']['USER'] = config('DATABASE_USER'),
-    DATABASES['default']['PASSWORD'] = config('DATABASE_PASSWORD'),
-except (KeyError, NameError):
-    DATABASES = {
-        'default': {
+    if 'default' not in DATABASES:
+        DATABASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
+        DATABASES['default']['HOST'] = config('DATABASE_HOST'),
+        DATABASES['default']['PORT'] = config('DATABASE_PORT'),
+        DATABASES['default']['NAME'] = config('DATABASE_NAME'),
+        DATABASES['default']['USER'] = config('DATABASE_USER'),
+        DATABASES['default']['PASSWORD'] = config('DATABASE_PASSWORD'),
+    else:
+        raise KeyError("Dont use 'default' as DATABASES key. Django-Docker will override it")
+
+except (KeyError, NameError) as err:
+    DATABASES = {{
+        'default': {{
             'ENGINE':config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
             'HOST': config('DATABASE_HOST'),
             'PORT': config('DATABASE_PORT'),
             'NAME': config('DATABASE_NAME'),
             'USER': config('DATABASE_USER'),
             'PASSWORD': config('DATABASE_PASSWORD')
-        }
-    }
+        }}
+    }}
 
 ## CODE IF YOU WILL USE REDIS TO CACHE
 if config('REDIS_URL',default=None) != None:
-    CACHES = {
-        "default": {
+    CACHES = {{
+        "default": {{
             "BACKEND": "django_redis.cache.RedisCache",
             "LOCATION": config('REDIS_URL'),
-            "OPTIONS": {
+            "OPTIONS": {{
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        }
-    }
+            }}
+        }}
+    }}
 
 try:
     STATICFILES_DIRS += [
         os.path.join(BASE_DIR,"static"),
     ]
-except NameError:
+except NameError as err:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR,"static"),
-    ]'''
+    ]
+
+if DEBUG:
+    def custom_show_toolbar(request):
+        return True  # Always show toolbar, for example purposes only.
+
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+    DEBUG_TOOLBAR_CONFIG = {{
+        'SHOW_TOOLBAR_CALLBACK': '{PROJECT_NAME}.ddsettings.custom_show_toolbar',
+    }}
+    DEBUG_TOOLBAR_PANELS = [
+        "debug_toolbar.panels.versions.VersionsPanel",
+        "debug_toolbar.panels.timer.TimerPanel",
+        "debug_toolbar.panels.settings.SettingsPanel",
+        "debug_toolbar.panels.headers.HeadersPanel",
+        "debug_toolbar.panels.request.RequestPanel",
+        "debug_toolbar.panels.sql.SQLPanel",
+        "debug_toolbar.panels.staticfiles.StaticFilesPanel",
+        "debug_toolbar.panels.templates.TemplatesPanel",
+        "debug_toolbar.panels.cache.CachePanel",
+        "debug_toolbar.panels.signals.SignalsPanel",
+        "debug_toolbar.panels.logging.LoggingPanel",
+        "debug_toolbar.panels.redirects.RedirectsPanel",
+    ]
+    ROOT_URLCONF = "{PROJECT_NAME}.ddurls"
+'''
 ######################################################################
                     ## MANAGE FILE ##
 ######################################################################
@@ -680,4 +712,16 @@ DOCKERIGNORE = '''
 */node_modules*
 */gulpfile.js*
 */package.json*
+'''
+######################################################################
+                    ## DDURLS FILE ##
+######################################################################
+DDURLS = '''
+from django.urls import path, include
+import debug_toolbar
+
+urlpatterns = [
+    path('', include('{PROJECT_NAME}.urls')),
+    path('__debug__/', include(debug_toolbar.urls)),
+]
 '''
