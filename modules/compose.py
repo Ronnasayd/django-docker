@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.3.0-beta #
+# VERSION: 3.4.0-beta #
 
 import os
 
@@ -186,4 +186,8 @@ class Container(object):
 		self.__unique_element('build','')
 		self.__unique_element(' context',context,prefix='"',sufix='"')
 		self.__unique_element(' dockerfile',dockerfile,prefix='"',sufix='"')
+		return self
+
+	def user(self,user):
+		self.__unique_element('user',user,prefix='"',sufix='"')
 		return self
