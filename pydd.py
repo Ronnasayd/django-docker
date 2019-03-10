@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.0-beta #
+# VERSION: 3.4.2-beta #
 
 import os
 import config
@@ -276,4 +276,5 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'package.json',packagejson_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'ddurls.py',ddurls_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'dd.env',web_compose.get_enviroments_as_string())
 	functional.save(functional.path_join([CURRENT_DIRECTORY]),'.dockerignore',dockerignore_content)

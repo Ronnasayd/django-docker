@@ -202,7 +202,7 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
       bash ddo.sh --show-vol
       bash ddo.sh --stop-all
       bash ddo.sh --django-create-project django_docker_example
-      bash ddo.sh --django-create-app django_docker_example api
+      bash ddo.sh --django-create-app main
       bash ddo.sh --dbeaver
       bash ddo.sh --portainer
       bash ddo.sh --loadtestdata django_docker_app.DDuser:10 

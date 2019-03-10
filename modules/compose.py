@@ -22,9 +22,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.0-beta #
+# VERSION: 3.4.2-beta #
 
 import os
+from modules import functional
 
 
 class Service(object):
@@ -120,9 +121,10 @@ class Service(object):
 class Container(object):
 
 	def __init__(self):
-		self.base=""
-		self.__space=" "
-		self.container_name=""
+		self.base = ""
+		self.__space = " "
+		self.container_name = ""
+		self._enviroments = ""
 
 	def __str__(self):
 		return self.base
@@ -171,6 +173,7 @@ class Container(object):
 		return self
 
 	def environ(self,list_enviroments):
+		self._enviroments = functional.get_list_of_enviroments_as_string(list_enviroments)
 		self.__many_elements('environment',list_enviroments,separator="=")
 		return self
 
@@ -191,3 +194,6 @@ class Container(object):
 	def user(self,user):
 		self.__unique_element('user',user,prefix='"',sufix='"')
 		return self
+	
+	def get_enviroments_as_string(self):
+		return self._enviroments

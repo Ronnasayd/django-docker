@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.0-beta #
+# VERSION: 3.4.2-beta #
 
 import os
 def json2list(json_data):
@@ -50,3 +50,9 @@ def save(path_to_save,filename,content):
 	file = open(path,'w')
 	file.write(content)
 	file.close()
+
+def get_list_of_enviroments_as_string(list_of_enviroments):
+	_enviroments = ""
+	for name, value in list_of_enviroments:
+		_enviroments += name+"="+value+"\n"
+	return _enviroments
