@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.2-beta #
+# VERSION: 3.4.3-beta #
 
 DEBUG = False
 
-FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [

@@ -24,7 +24,7 @@
 # SOFTWARE.
 
 
-# VERSION: 3.4.2-beta #
+# VERSION: 3.4.3-beta #
 
 import os
 class Dockerfile(object):

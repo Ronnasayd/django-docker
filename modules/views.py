@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.2-beta #
+# VERSION: 3.4.3-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -323,6 +323,10 @@ MAKE_AMBIENT_BASE='''
 
 if [ ! -d "{PROJECT_NAME}/static" ]; then
   mkdir {PROJECT_NAME}/static
+  mkdir {PROJECT_NAME}/static/src
+  mkdir {PROJECT_NAME}/static/src/css
+  mkdir {PROJECT_NAME}/static/src/scss
+  mkdir {PROJECT_NAME}/static/src/js
 fi
 
 trap cleanup 1 2 3 6
@@ -678,7 +682,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.4.2-beta",
+  "version": "3.4.3-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
