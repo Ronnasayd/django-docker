@@ -9,20 +9,30 @@ STATIC_URL = config('STATIC_URL')
 MEDIA_URL = config('MEDIA_URL')
 
 try:
-    if 'default' not in DATABASES:
-        DATABASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
-        DATABASES['default']['HOST'] = config('DATABASE_HOST'),
-        DATABASES['default']['PORT'] = config('DATABASE_PORT'),
-        DATABASES['default']['NAME'] = config('DATABASE_NAME'),
-        DATABASES['default']['USER'] = config('DATABASE_USER'),
-        DATABASES['default']['PASSWORD'] = config('DATABASE_PASSWORD'),
+    if "default" not in DATABASES:
+        DATBASE_AUX = {
+            "default": {
+                'ENGINE': config('DATABASE_ENGINE'),
+                'HOST': config('DATABASE_HOST'),
+                'PORT': config('DATABASE_PORT'),
+                'NAME': config('DATABASE_NAME'),
+                'USER': config('DATABASE_USER'),
+                'PASSWORD': config('DATABASE_PASSWORD')
+            }
+        }
+        DATABASES.update(DATBASE_AUX)
     else:
-        raise KeyError("Dont use 'default' as DATABASES key. Django-Docker will override it")
+        DATBASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
+        DATBASES['default']['HOST'] = config('DATABASE_HOST'),
+        DATBASES['default']['PORT'] = config('DATABASE_PORT'),
+        DATBASES['default']['NAME'] = config('DATABASE_NAME'),
+        DATBASES['default']['USER'] = config('DATABASE_USER'),
+        DATBASES['default']['PASSWORD'] = config('DATABASE_PASSWORD')
 
 except (KeyError, NameError) as err:
     DATABASES = {
         'default': {
-            'ENGINE':config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
+            'ENGINE': config('DATABASE_ENGINE'), ## coloque aqui a engine do banco que você vai utilizar ##
             'HOST': config('DATABASE_HOST'),
             'PORT': config('DATABASE_PORT'),
             'NAME': config('DATABASE_NAME'),

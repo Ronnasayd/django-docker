@@ -1,7 +1,7 @@
 {  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.4.3-beta",
+  "version": "3.4.4-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
