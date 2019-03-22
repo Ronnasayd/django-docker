@@ -22,12 +22,14 @@ try:
         }
         DATABASES.update(DATBASE_AUX)
     else:
-        DATBASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
-        DATBASES['default']['HOST'] = config('DATABASE_HOST'),
-        DATBASES['default']['PORT'] = config('DATABASE_PORT'),
-        DATBASES['default']['NAME'] = config('DATABASE_NAME'),
-        DATBASES['default']['USER'] = config('DATABASE_USER'),
-        DATBASES['default']['PASSWORD'] = config('DATABASE_PASSWORD')
+        DATABASES["default"] = {
+            'ENGINE': config('DATABASE_ENGINE'),
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD')
+        }
 
 except (KeyError, NameError) as err:
     DATABASES = {

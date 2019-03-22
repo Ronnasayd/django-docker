@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.4-beta #
+# VERSION: 3.4.5-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -143,6 +143,7 @@ const cache           = require("gulp-cached");
 const minimist        = require("minimist");
 const concat          = require("gulp-concat");
 const sassPartials    = require('gulp-sass-partials-imported');
+const jshint          = require('gulp-jshint');
 
 
 
@@ -160,6 +161,13 @@ const dist_css        = "static/dist/css/"
 
 const html_files      = "**/*.html"
 
+
+const jsHint = ()=>{{
+    return gulp.src([src_js,not_node],{{allowEmpty: true}})
+    .pipe(cache("jsHint"))
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+}}
 
 const minifyJs = ()=>{{
     return gulp.src([src_js,not_node],{{allowEmpty: true}})
@@ -285,7 +293,7 @@ const minifyImages =()=>{{
 }}
 
 
-const js_line = gulp.series(minifyJs);
+const js_line = gulp.series(jsHint,minifyJs);
 const sass_line = gulp.series(sassToCssMin)
 const css_line = gulp.series(minifyCss);
 const image_line = gulp.series(minifyImages);
@@ -599,12 +607,14 @@ try:
         }}
         DATABASES.update(DATBASE_AUX)
     else:
-        DATBASES['default']['ENGINE'] = config('DATABASE_ENGINE'),
-        DATBASES['default']['HOST'] = config('DATABASE_HOST'),
-        DATBASES['default']['PORT'] = config('DATABASE_PORT'),
-        DATBASES['default']['NAME'] = config('DATABASE_NAME'),
-        DATBASES['default']['USER'] = config('DATABASE_USER'),
-        DATBASES['default']['PASSWORD'] = config('DATABASE_PASSWORD')
+        DATABASES["default"] = {{
+            'ENGINE': config('DATABASE_ENGINE'),
+            'HOST': config('DATABASE_HOST'),
+            'PORT': config('DATABASE_PORT'),
+            'NAME': config('DATABASE_NAME'),
+            'USER': config('DATABASE_USER'),
+            'PASSWORD': config('DATABASE_PASSWORD')
+        }}
 
 except (KeyError, NameError) as err:
     DATABASES = {{
@@ -692,7 +702,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.4.4-beta",
+  "version": "3.4.5-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
@@ -722,7 +732,9 @@ PACKAGEJSON='''{
     "gulp-uglify": "latest",
     "minimist": "latest",
     "node-sass": "latest",
-    "gulp-sass-partials-imported":"latest"
+    "gulp-sass-partials-imported":"latest",
+    "jshint":"latest",
+    "gulp-jshint":"latest"
   }
 }
 '''

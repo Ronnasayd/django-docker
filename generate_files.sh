@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# VERSION: 3.4.4-beta #
+# VERSION: 3.4.5-beta #
 
 rm -rf snyk
 mkdir snyk
