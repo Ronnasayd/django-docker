@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.6-beta #
+# VERSION: 3.4.7-beta #
 
 from modules import views
 from modules import models

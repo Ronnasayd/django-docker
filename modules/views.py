@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.4.6-beta #
+# VERSION: 3.4.7-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -356,6 +356,7 @@ sed -i "s/\\r$//" {FOLDER_NAME}/package.json
 sed -i "s/\\r$//" {FOLDER_NAME}/ddsettings.py
 sed -i "s/\\r$//" {FOLDER_NAME}/ddurls.py
 sed -i "s/\\r$//" {FOLDER_NAME}/manage.py
+sed -i "s/\\r$//" {FOLDER_NAME}/.dockerignore
 cp {FOLDER_NAME}/{RUNSERVER_SCRIPT_NAME} ./{PROJECT_NAME}
 cp {FOLDER_NAME}/wait-for-it.sh ./{PROJECT_NAME}
 cp {FOLDER_NAME}/gulpfile.js ./{PROJECT_NAME}
@@ -363,6 +364,7 @@ cp {FOLDER_NAME}/package.json ./{PROJECT_NAME}
 cp {FOLDER_NAME}/manage.py ./{PROJECT_NAME}
 cp {FOLDER_NAME}/ddsettings.py ./{PROJECT_NAME}/{PROJECT_NAME}
 cp {FOLDER_NAME}/ddurls.py ./{PROJECT_NAME}/{PROJECT_NAME}
+cp {FOLDER_NAME}/.dockerignore ./
 '''
 
 MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
@@ -702,7 +704,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.4.6-beta",
+  "version": "3.4.7-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
