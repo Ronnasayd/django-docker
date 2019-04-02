@@ -8,7 +8,6 @@ nginx/
 node_modules/
 migrations/
 
-*.yml
 !.travis.yml
 *.lock
 *.json
