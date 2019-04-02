@@ -169,6 +169,9 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
   docker volume rm $(docker volume ls | grep static_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep media_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep logs_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep web_root_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep certbot_etc_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep certbot_var_$PROJECT_NAME | awk '{print $2}')
   echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
   rm -rf $(find . -name '__pycache__')

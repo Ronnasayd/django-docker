@@ -89,3 +89,6 @@ volumes:
  media_django_docker_example:
  static_django_docker_example:
  logs_django_docker_example:
+ web_root_django_docker_example:
+ certbot_etc_django_docker_example:
+ certbot_var_django_docker_example:

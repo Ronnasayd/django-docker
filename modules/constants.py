@@ -36,6 +36,10 @@ STATIC_VOLUME = 'static_'+PROJECT_NAME_LOWER
 MEDIA_VOLUME = 'media_'+PROJECT_NAME_LOWER
 LOGS_VOLUME = 'logs_'+PROJECT_NAME_LOWER
 
+WEB_ROOT_VOLUME = "web_root_"+PROJECT_NAME_LOWER
+CERTBOT_ETC_VOLUME = "certbot_etc_"+PROJECT_NAME_LOWER
+CERTBOT_VAR_VOLUME = "certbot_var_"+PROJECT_NAME_LOWER
+
 PROJECT_RENAME = PROJECT_NAME.replace('_', '.')
 WEB_CONTAINER_NAME = 'web-'+PROJECT_RENAME
 NODE_CONTAINER_NAME = 'node-'+PROJECT_RENAME
@@ -64,3 +68,14 @@ LOGS_ROOT = '/tmp/logs-data'
 
 RUNSERVER_SCRIPT_NAME = 'runserver.sh'
 SETTINGS_FILE_NAME = 'ddsettings'
+
+WEB_ROOT_PATH = '/var/www/html' 
+SERVER_DNS_NAMES = ' '.join(SERVER_NAMES)
+
+NGINX_SNIPPET_HTTPS_NAME = 'nginx-snippet-https.conf'
+
+WEB_ROOT = "/var/www/html"
+CERTBOT_ETC = "/etc/letsencrypt"
+CERTBOT_VAR = "/var/lib/letsencrypt"
+
+

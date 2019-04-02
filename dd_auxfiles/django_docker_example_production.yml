@@ -49,17 +49,19 @@ services:
   container_name: nginx-django.docker.example
   stdin_open: True
   tty: True
-  image: nginx
+  build: 
+   context: "/home/ronnasayd/django-docker"
+   dockerfile: "dd_auxfiles/nginx.Dockerfile"
   restart: always
   volumes:
    - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx.conf:/etc/nginx/nginx.conf:rw"
-   - "/home/ronnasayd/django-docker/dd_auxfiles/dhparam/dhparam-2048.pem:/etc/ssl/certs/dhparam-2048.pem:rw"
    - "static_django_docker_example:/tmp/static-data:rw"
    - "media_django_docker_example:/tmp/media-data:rw"
    - "logs_django_docker_example:/tmp/logs-data:rw"
-   - "web-root:/var/www/html"
-   - "certbot-etc:/etc/letsencrypt"
-   - "certbot-var:/var/lib/letsencrypt"
+   - "web_root_django_docker_example:/var/www/html:rw"
+   - "certbot_etc_django_docker_example:/etc/letsencrypt:rw"
+   - "certbot_var_django_docker_example:/var/lib/letsencrypt:rw"
+   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx-snippet-https.conf:/etc/nginx/nginx-snippet-https.conf:rw"
   depends_on:
    - web-django.docker.example
   ports:
@@ -67,19 +69,6 @@ services:
    - 443:443
   networks:
    - dd_net
- 
-#  certbot:
-#     image: certbot/certbot
-#     container_name: certbot
-#     volumes:
-#       - "certbot-etc:/etc/letsencrypt"
-#       - "certbot-var:/var/lib/letsencrypt"
-#       - "web-root:/var/www/html"
-#     depends_on:
-#       - nginx-django.docker.example
-#     networks:
-#       - dd_net
-#     command: certonly --webroot --webroot-path=/var/www/html --email ronnasayd@hotmail.com --agree-tos --no-eff-email --force-renewal  -d 462bcf23.ngrok.io
 
  postgres-django.docker.example:
   container_name: postgres-django.docker.example
@@ -104,6 +93,6 @@ volumes:
  media_django_docker_example:
  static_django_docker_example:
  logs_django_docker_example:
- web-root:
- certbot-etc:
- certbot-var:
+ web_root_django_docker_example:
+ certbot_etc_django_docker_example:
+ certbot_var_django_docker_example:

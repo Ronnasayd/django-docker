@@ -132,3 +132,6 @@ DOCKER_COMPOSE_VERSION = '3.3'
 NETWORK_NAME = "dd_net"
 
 FOLDER_TO_SAVE = "dd_auxfiles"
+
+ENABLE_HTTPS = True
+SERVER_NAMES = ['6804d226.ngrok.io']

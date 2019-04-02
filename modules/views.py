@@ -77,6 +77,11 @@ http {{
 
         # Running port
         listen {WEB_PORT};
+        listen [::]:{WEB_PORT};
+
+        
+        {NGINX_SNIPPET_HTTPS}
+        
 
         # Max_size
         client_max_body_size 20M;
@@ -121,9 +126,24 @@ http {{
 
         }}
     }}
+
+    #ssl on;
 }}
 
 '''
+####################################################################
+                        ## NGINX_SNIPPET TEMPLATE ##
+####################################################################
+NGINX_SNIPPET_HTTPS='''
+        root {WEB_ROOT_PATH};
+            index index.html intex.htm index.nginx-debian.html;
+
+        server_name {SERVER_DNS_NAMES};
+
+        location ~ /.well-known/acme-challenge{{
+            allow all;
+            root {WEB_ROOT_PATH};
+        }}'''
 ####################################################################
                         ## GULPFILE TEMPLATE ##
 ####################################################################
