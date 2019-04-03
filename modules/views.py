@@ -70,6 +70,7 @@ http {{
 
     # Configuration for Nginx
     server {{
+        
 
         #access_log {LOGS_ROOT}/access.log compression;
         error_log {LOGS_ROOT}/error.log warn;
@@ -78,6 +79,9 @@ http {{
         # Running port
         listen {WEB_PORT};
         listen [::]:{WEB_PORT};
+
+        listen 80;
+        listen [::]:80;
 
         
         {NGINX_SNIPPET_HTTPS}
@@ -127,7 +131,6 @@ http {{
         }}
     }}
 
-    #ssl on;
 }}
 
 '''

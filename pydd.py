@@ -42,7 +42,7 @@ if __name__ == '__main__':
 		(constants.WEB_ROOT_VOLUME,constants.WEB_ROOT),
    		(constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_ETC),
    		(constants.CERTBOT_VAR_VOLUME,constants.CERTBOT_VAR),
-		   (functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
+		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
 		] if config.ENABLE_HTTPS else []
 	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if config.ENABLE_HTTPS else []
 #############################################################################
