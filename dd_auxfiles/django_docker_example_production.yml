@@ -62,6 +62,7 @@ services:
    - "certbot_etc_django_docker_example:/etc/letsencrypt:rw"
    - "certbot_var_django_docker_example:/var/lib/letsencrypt:rw"
    - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx-snippet-https.conf:/etc/nginx/nginx-snippet-https.conf:rw"
+   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx_cert_script.sh:/nginx_cert_script.sh:rw"
   depends_on:
    - web-django.docker.example
   ports:

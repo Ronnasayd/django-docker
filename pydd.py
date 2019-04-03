@@ -43,6 +43,7 @@ if __name__ == '__main__':
    		(constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_ETC),
    		(constants.CERTBOT_VAR_VOLUME,constants.CERTBOT_VAR),
 		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
+		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx_cert_script.sh']) , "/nginx_cert_script.sh"),
 		] if config.ENABLE_HTTPS else []
 	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if config.ENABLE_HTTPS else []
 #############################################################################
@@ -276,6 +277,7 @@ if __name__ == '__main__':
 
 	nginx_content = pycontroller.build_nginx()
 	nginx_snippet_https_content = pycontroller.build_nginx_snippet_https()
+	nginx_cert_script_content = pycontroller.build_nginx_cert_scripy()
 	gulpfile_content = pycontroller.build_gulpfile()
 	make_ambient_content = pycontroller.build_make_ambiente(debug_mode=config.DEBUG)
 	runserver_content = pycontroller.build_runserver(debug_mode=config.DEBUG)
@@ -291,6 +293,7 @@ if __name__ == '__main__':
 
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)

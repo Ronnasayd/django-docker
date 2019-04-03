@@ -41,6 +41,10 @@ class Controller(object):
 	@classmethod
 	def build_nginx_snippet_https(self):
 		return views.NGINX_SNIPPET_HTTPS.format(**models.NGINX_SNIPPET_HTTPS_MODEL)
+	
+	@classmethod
+	def build_nginx_cert_scripy(self):
+		return views.NGINX_CERT_SCRIPT.format(**models.NGINX_CERT_SCRIPT_MODEL)
 
 	@classmethod
 	def build_gulpfile(self):

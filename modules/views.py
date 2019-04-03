@@ -148,6 +148,10 @@ NGINX_SNIPPET_HTTPS='''
             root {WEB_ROOT_PATH};
         }}'''
 ####################################################################
+                        ## NGINX_SCRIPT TEMPLATE ##
+####################################################################
+NGINX_CERT_SCRIPT='''certbot certonly  --webroot --webroot-path={WEB_ROOT_PATH} --agree-tos --no-eff-email --force-renewal {SERVER_NAMES} && certbot --nginx'''
+####################################################################
                         ## GULPFILE TEMPLATE ##
 ####################################################################
 GULPFILE_BASE = '''
