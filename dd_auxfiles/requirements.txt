@@ -1,0 +1,13 @@
+Pillow
+channels
+channels_redis
+django-autofixture
+django-debug-toolbar
+django-redis
+django-widget-tweaks
+django>=2.1.5
+djangorestframework
+docutils
+gunicorn
+psycopg2-binary
+python-decouple

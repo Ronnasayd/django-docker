@@ -1,0 +1,99 @@
+version: "3.3"
+services:
+ web-django.docker.example:
+  container_name: web-django.docker.example
+  stdin_open: True
+  tty: True
+  build: 
+   context: "/home/ronnasayd/django-docker"
+   dockerfile: "dd_auxfiles/web.Dockerfile"
+  restart: always
+  ports:
+   - 8000:8000
+  expose:
+   - 8000
+  working_dir: /django_docker_example/
+  command: ./wait-for-it.sh postgres-django.docker.example:5432 --timeout=15 --strict -- /bin/bash runserver.sh
+  depends_on:
+   - postgres-django.docker.example
+   - redis-django.docker.example
+  environment:
+   - DEBUG=False
+   - STATIC_ROOT=/tmp/static-data
+   - STATIC_URL=/static/
+   - MEDIA_ROOT=/tmp/media-data
+   - MEDIA_URL=/media/
+   - DATABASE_ENGINE=django.db.backends.postgresql_psycopg2
+   - DATABASE_USER=django_docker_example_user
+   - DATABASE_NAME=django_docker_example_db
+   - DATABASE_HOST=postgres-django.docker.example
+   - DATABASE_PORT=5432
+   - DATABASE_PASSWORD=!TB2PGy%{PBd)q>E
+   - REDIS_URL=redis://redis:6379/1
+  volumes:
+   - "media_django_docker_example:/tmp/media-data/:rw"
+   - "static_django_docker_example:/tmp/static-data/:rw"
+  networks:
+   - dd_net
+
+ redis-django.docker.example:
+  container_name: redis-django.docker.example
+  stdin_open: True
+  tty: True
+  image: redis
+  restart: always
+  networks:
+   - dd_net
+
+ nginx-django.docker.example:
+  container_name: nginx-django.docker.example
+  stdin_open: True
+  tty: True
+  build: 
+   context: "/home/ronnasayd/django-docker"
+   dockerfile: "dd_auxfiles/nginx.Dockerfile"
+  restart: always
+  volumes:
+   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx.conf:/etc/nginx/nginx.conf:rw"
+   - "static_django_docker_example:/tmp/static-data:rw"
+   - "media_django_docker_example:/tmp/media-data:rw"
+   - "logs_django_docker_example:/tmp/logs-data:rw"
+   - "web_root_django_docker_example:/var/www/html:rw"
+   - "certbot_etc_django_docker_example:/etc/letsencrypt:rw"
+   - "certbot_var_django_docker_example:/var/lib/letsencrypt:rw"
+   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx-snippet-https.conf:/etc/nginx/nginx-snippet-https.conf:rw"
+   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx_cert_script.sh:/nginx_cert_script.sh:rw"
+  depends_on:
+   - web-django.docker.example
+  ports:
+   - 80:8000
+   - 443:443
+  networks:
+   - dd_net
+
+ postgres-django.docker.example:
+  container_name: postgres-django.docker.example
+  stdin_open: True
+  tty: True
+  image: postgres
+  restart: always
+  volumes:
+   - "database_django_docker_example:/var/lib/postgresql/data:rw"
+  environment:
+   - POSTGRES_USER=django_docker_example_user
+   - POSTGRES_PASSWORD=!TB2PGy%{PBd)q>E
+   - POSTGRES_DB=django_docker_example_db
+   - ANY_ENV=/home
+  networks:
+   - dd_net
+
+networks:
+ dd_net:
+volumes:
+ database_django_docker_example:
+ media_django_docker_example:
+ static_django_docker_example:
+ logs_django_docker_example:
+ web_root_django_docker_example:
+ certbot_etc_django_docker_example:
+ certbot_var_django_docker_example:

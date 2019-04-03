@@ -70,6 +70,7 @@ http {{
 
     # Configuration for Nginx
     server {{
+        
 
         #access_log {LOGS_ROOT}/access.log compression;
         error_log {LOGS_ROOT}/error.log warn;
@@ -77,6 +78,14 @@ http {{
 
         # Running port
         listen {WEB_PORT};
+        listen [::]:{WEB_PORT};
+
+        listen 80;
+        listen [::]:80;
+
+        
+        {NGINX_SNIPPET_HTTPS}
+        
 
         # Max_size
         client_max_body_size 20M;
@@ -121,9 +130,27 @@ http {{
 
         }}
     }}
+
 }}
 
 '''
+####################################################################
+                        ## NGINX_SNIPPET TEMPLATE ##
+####################################################################
+NGINX_SNIPPET_HTTPS='''
+        root {WEB_ROOT_PATH};
+            index index.html intex.htm index.nginx-debian.html;
+
+        server_name {SERVER_DNS_NAMES};
+
+        location ~ /.well-known/acme-challenge{{
+            allow all;
+            root {WEB_ROOT_PATH};
+        }}'''
+####################################################################
+                        ## NGINX_SCRIPT TEMPLATE ##
+####################################################################
+NGINX_CERT_SCRIPT='''certbot certonly  --webroot --webroot-path={WEB_ROOT_PATH} --agree-tos --no-eff-email --force-renewal {SERVER_NAMES} && certbot --nginx'''
 ####################################################################
                         ## GULPFILE TEMPLATE ##
 ####################################################################

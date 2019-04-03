@@ -68,6 +68,7 @@ Options:
   --dbeaver                  |      -dbv     : Run a container with Dbeaver database manager (Just in LINUX yet)
   --portainer                |      -ptn     : Run a container with portainer gui manager for docker
   --loadtestdata             |      -ltd     : Generate random test data in the database
+  --get-certs                |      -gtc     : Get certifies from https letsecnrypt
 
 
 Examples:
@@ -100,7 +101,8 @@ Examples:
   $0 --django-create-app main
   $0 --dbeaver
   $0 --portainer
-  $0 --loadtestdata django_docker_app.DDuser:10 
+  $0 --loadtestdata django_docker_app.DDuser:10
+  $0 --get-certs 
 
   "
 
@@ -138,6 +140,8 @@ elif [ "$1" = "--command" -o "$1" = "-c" ];then
   docker exec -ti $2-$PROJECT_RENAME $3
 elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py createsuperuser
+elif [ "$1" = "--get-certs" -o "$1" = "-gtc" ];then
+  docker exec -ti nginx-$PROJECT_RENAME bash nginx_cert_script.sh
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py makemigrations $2
   docker exec -ti web-$PROJECT_RENAME python manage.py migrate $2
@@ -169,6 +173,9 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
   docker volume rm $(docker volume ls | grep static_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep media_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep logs_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep web_root_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep certbot_etc_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep certbot_var_$PROJECT_NAME | awk '{print $2}')
   echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
   rm -rf $(find . -name '__pycache__')

@@ -6,11 +6,8 @@ logs/
 media/
 nginx/
 node_modules/
-djd_data/
-dd_auxfiles/
 migrations/
 
-*.yml
 !.travis.yml
 *.lock
 *.json

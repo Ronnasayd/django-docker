@@ -38,6 +38,14 @@ if __name__ == '__main__':
 	CURRENT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 	CURRENT_DIRECTORY = CURRENT_DIRECTORY.replace('\\', '/')
 
+	OPTIONAL_NGINX_HTTPS_VOLUMES = [
+		(constants.WEB_ROOT_VOLUME,constants.WEB_ROOT),
+   		(constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_ETC),
+   		(constants.CERTBOT_VAR_VOLUME,constants.CERTBOT_VAR),
+		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
+		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx_cert_script.sh']) , "/nginx_cert_script.sh"),
+		] if config.ENABLE_HTTPS else []
+	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if config.ENABLE_HTTPS else []
 #############################################################################
 						## NODE DOCKERFILE OBJECT ##
 #############################################################################
@@ -77,6 +85,20 @@ if __name__ == '__main__':
 	.save(
 		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
 		filename='web'
+	))
+#############################################################################
+						## NGINX DOCKERFILE OBJECT ##
+#############################################################################
+	nginx_dockerfile = dockerfile.Dockerfile()
+	(nginx_dockerfile._from(container_base='nginx')
+	.run(list_of_commands=[
+		'echo "deb http://deb.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/stretch.list',
+		'apt-get update',
+		'apt-get install -y certbot python-certbot-nginx -t stretch-backports',
+	])
+	.save(
+		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
+		filename='nginx'
 	))
 ###########################################################################
 						## WEB CONTAINER OBJECT ##
@@ -176,18 +198,22 @@ if __name__ == '__main__':
 ############################################################################
 	nginx_compose = compose.Container()
 	(nginx_compose.name(container_name=constants.NGINX_CONTAINER_NAME)
-	.image(image_base='nginx')
+	.build(
+		context=CURRENT_DIRECTORY,
+	 	dockerfile=functional.path_join([config.FOLDER_TO_SAVE, nginx_dockerfile.filename])
+	 )
 	.restart(restart_option='always')
 	.volumes(list_volumes=[
 		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
 		(constants.STATIC_VOLUME,constants.STATIC_ROOT),
 		(constants.MEDIA_VOLUME,constants.MEDIA_ROOT),
 		(constants.LOGS_VOLUME,constants.LOGS_ROOT)
-	])
+	]+OPTIONAL_NGINX_HTTPS_VOLUMES)
 	.depends(list_depends=[constants.WEB_CONTAINER_NAME])
 	.ports(list_ports=[
-		(config.NGINX_PORT,config.WEB_PORT)
-	]))
+		(config.NGINX_PORT,config.WEB_PORT),
+		("443","443"),
+	] if config.ENABLE_HTTPS else [(config.NGINX_PORT,config.WEB_PORT),]))
 # print(node_compose)
 ##########################################################################
 						## USER CONTAINERS OBJECTS##
@@ -218,7 +244,7 @@ if __name__ == '__main__':
 
 	service = compose.Service()
 	(service.version(service_version=config.DOCKER_COMPOSE_VERSION)
-	.volumes(list_of_volumes=[constants.DATABASE_VOLUME,constants.MEDIA_VOLUME,constants.STATIC_VOLUME,constants.LOGS_VOLUME])
+	.volumes(list_of_volumes=[constants.DATABASE_VOLUME,constants.MEDIA_VOLUME,constants.STATIC_VOLUME,constants.LOGS_VOLUME]+NGIX_SNIPPETS_VOLUMES)
 	.networks(list_of_networks=[config.NETWORK_NAME]))
 
 
@@ -250,6 +276,8 @@ if __name__ == '__main__':
 	pycontroller = controller.Controller()
 
 	nginx_content = pycontroller.build_nginx()
+	nginx_snippet_https_content = pycontroller.build_nginx_snippet_https()
+	nginx_cert_script_content = pycontroller.build_nginx_cert_scripy()
 	gulpfile_content = pycontroller.build_gulpfile()
 	make_ambient_content = pycontroller.build_make_ambiente(debug_mode=config.DEBUG)
 	runserver_content = pycontroller.build_runserver(debug_mode=config.DEBUG)
@@ -264,6 +292,8 @@ if __name__ == '__main__':
 
 
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)
