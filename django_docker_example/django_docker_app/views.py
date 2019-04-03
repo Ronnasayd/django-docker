@@ -61,6 +61,10 @@ class Home(View):
 		 "image":"images/tecnologias/portainer.png",
 		 "url":"https://www.portainer.io"
 		 },
+		 {"name":"Let's Encrypt",
+		 "image":"images/tecnologias/letsencrypt.png",
+		 "url":"https://letsencrypt.org/"
+		 },
 		]
 		
 		if request.method == 'GET':

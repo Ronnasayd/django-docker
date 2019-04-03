@@ -58,16 +58,10 @@ services:
    - "static_django_docker_example:/tmp/static-data:rw"
    - "media_django_docker_example:/tmp/media-data:rw"
    - "logs_django_docker_example:/tmp/logs-data:rw"
-   - "web_root_django_docker_example:/var/www/html:rw"
-   - "certbot_etc_django_docker_example:/etc/letsencrypt:rw"
-   - "certbot_var_django_docker_example:/var/lib/letsencrypt:rw"
-   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx-snippet-https.conf:/etc/nginx/nginx-snippet-https.conf:rw"
-   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx_cert_script.sh:/nginx_cert_script.sh:rw"
   depends_on:
    - web-django.docker.example
   ports:
    - 80:8000
-   - 443:443
   networks:
    - dd_net
 
@@ -94,6 +88,3 @@ volumes:
  media_django_docker_example:
  static_django_docker_example:
  logs_django_docker_example:
- web_root_django_docker_example:
- certbot_etc_django_docker_example:
- certbot_var_django_docker_example:
