@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.5.0-beta #
+# VERSION: 3.6.0-beta #
 
 from config import *
 
@@ -78,4 +78,6 @@ WEB_ROOT = "/var/www/html"
 CERTBOT_ETC = "/etc/letsencrypt"
 CERTBOT_VAR = "/var/lib/letsencrypt"
 
+NUMBER_WEB_INSTANCES = NUMBER_WEB_INSTANCES
 
+WEB_IS_BIGGER_THAN_ONE = (NUMBER_WEB_INSTANCES > 1)

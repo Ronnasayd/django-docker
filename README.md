@@ -131,6 +131,15 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
 *FOLDER_TO_SAVE (str):*
 > Directory where the necessary files will be generated at runtime
 
+*ENABLE_HTTPS (boolean):*
+> When is True enable https with let's encrypt in production
+
+*SERVER_NAMES (List[str]):*
+> The list of dns names to pass to let's encrypt certificates
+
+*NUMBER_WEB_INSTANCES (int):*
+> The number of containers with application running in production
+
  **Make Enviroment:**
 
     bash ddo.sh --make
@@ -173,6 +182,7 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
   --dbeaver                  |      -dbv     | Run a container with Dbeaver database manager (Just in LINUX yet)
   --portainer                |      -ptn     | Run a container with portainer gui manager for docker 
   --loadtestdata             |      -ltd     | Generate random test data in the database
+  --get-certs                |      -gtc     | Get certifies from https letsecnrypt
 
 ## Commands Examples
 
@@ -205,7 +215,8 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
       bash ddo.sh --django-create-app main
       bash ddo.sh --dbeaver
       bash ddo.sh --portainer
-      bash ddo.sh --loadtestdata django_docker_app.DDuser:10 
+      bash ddo.sh --loadtestdata django_docker_app.DDuser:10
+      bash ddo.sh --get-certs 
 
   
 ## Contributing

@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.5.0-beta #
+# VERSION: 3.6.0-beta #
 
 import os
 import config
@@ -104,16 +104,19 @@ if __name__ == '__main__':
 						## WEB CONTAINER OBJECT ##
 ###########################################################################
 	web_compose = compose.Container()
-	(web_compose.name(container_name=constants.WEB_CONTAINER_NAME)
+	(web_compose.name(container_name=constants.WEB_CONTAINER_NAME,add_container_name=(config.DEBUG or not constants.WEB_IS_BIGGER_THAN_ONE))
 	.build(
 		context=CURRENT_DIRECTORY,
 	 	dockerfile=functional.path_join([config.FOLDER_TO_SAVE, web_dockerfile.filename])
 	 )
-	.restart(restart_option='always')
-	.ports(list_ports=[
-		(config.WEB_PORT, config.WEB_PORT),
-	])\
-	.expose(list_expose_ports=[config.WEB_PORT])
+	.restart(restart_option='always'))
+
+	if config.DEBUG: 
+		web_compose.ports(list_ports=[
+			(config.WEB_PORT, config.WEB_PORT),
+		])
+
+	(web_compose.expose(list_expose_ports=[config.WEB_PORT])
 	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.command(command='./wait-for-it.sh '+(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if config.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)+':'+config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')
 	.depends(list_depends=constants.OTHERS_CONTAINER_NAME if config.DATABASE_EXTERNAL else [constants.DATABASE_CONTAINER_NAME]+constants.OTHERS_CONTAINER_NAME)

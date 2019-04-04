@@ -8,8 +8,6 @@ services:
    context: "/home/ronnasayd/django-docker"
    dockerfile: "dd_auxfiles/web.Dockerfile"
   restart: always
-  ports:
-   - 8000:8000
   expose:
    - 8000
   working_dir: /django_docker_example/

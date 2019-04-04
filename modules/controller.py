@@ -23,10 +23,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.5.0-beta #
+# VERSION: 3.6.0-beta #
 
 from modules import views
 from modules import models
+from modules import constants
+import config
 
 
 class Controller(object):
@@ -36,6 +38,13 @@ class Controller(object):
 	
 	@classmethod
 	def build_nginx(self):
+		if constants.WEB_IS_BIGGER_THAN_ONE and not config.DEBUG:
+			aux_server = ''
+			for i in range(constants.NUMBER_WEB_INSTANCES):
+				aux_server += 'server dd_'+constants.WEB_CONTAINER_NAME+'_'+str(i+1)+':'+models.NGINX_MODEL['WEB_PORT']+';\n'
+			models.NGINX_MODEL['SERVERS'] = aux_server
+		else:
+			models.NGINX_MODEL['SERVERS'] = 'server '+constants.WEB_CONTAINER_NAME+':'+models.NGINX_MODEL['WEB_PORT']+';\n'
 		return views.NGINX_CONFIGURATIN_BASE.format(**models.NGINX_MODEL)
 	
 	@classmethod
@@ -52,6 +61,10 @@ class Controller(object):
 
 	@classmethod
 	def build_make_ambiente(self, debug_mode):
+		if constants.WEB_IS_BIGGER_THAN_ONE:
+			models.MAKE_AMBIENT_MODEL['SCALE'] = '--scale '+constants.WEB_CONTAINER_NAME+'='+str(constants.NUMBER_WEB_INSTANCES)
+		else:
+			models.MAKE_AMBIENT_MODEL['SCALE'] = ''
 		if debug_mode:
 			views.MAKE_AMBIENT = views.MAKE_AMBIENT_BASE + views.MAKE_AMBIENT_DEVELOPMENT
 		else:

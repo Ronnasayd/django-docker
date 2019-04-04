@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.5.0-beta #
+# VERSION: 3.6.0-beta #
 
 import os
 from modules import functional
@@ -140,10 +140,11 @@ class Container(object):
 			else:
 				self.base += 3*self.__space+'- '+prefix+element[0]+separator+element[1]+sufix+'\n'
 
-	def name(self,container_name):
+	def name(self,container_name,add_container_name=True):
 		self.container_name=container_name
 		self.base += 1*self.__space+container_name+':\n'
-		self.__unique_element('container_name',container_name)
+		if add_container_name:
+			self.__unique_element('container_name',container_name)
 		self.__unique_element('stdin_open','True')
 		self.__unique_element('tty','True')
 		return self

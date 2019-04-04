@@ -22,12 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.5.0-beta #
+# VERSION: 3.6.0-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
 ################################################################
-NGINX_CONFIGURATIN_BASE='''
+NGINX_CONFIGURATIN_BASE = '''
 worker_processes 1;
 
 events {{
@@ -63,8 +63,9 @@ http {{
 
     # Configuration containing list of application servers
     upstream app_servers {{
-        ip_hash;
-        server {WEB_CONTAINER_NAME}:{WEB_PORT};
+        #ip_hash;
+        {SERVERS}
+        
 
     }}
 
@@ -395,21 +396,21 @@ cp {FOLDER_NAME}/.dockerignore ./
 '''
 
 MAKE_AMBIENT_DEVELOPMENT='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
 docker system prune --force
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml build
-COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml up  --force-recreate'''
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml build
+COMPOSE_HTTP_TIMEOUT=3600 docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml up  --force-recreate'''
 
 
-MAKE_AMBIENT_PRODUCTION='''docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
+MAKE_AMBIENT_PRODUCTION='''docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml stop
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml stop
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
 docker system prune --force
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml build
-docker-compose -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d  --force-recreate'''
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml build
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d {SCALE} --force-recreate'''
 
 ######################################################################
                     ## RUNSERVER SCRIPT ##
@@ -731,7 +732,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.5.0-beta",
+  "version": "3.6.0-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
