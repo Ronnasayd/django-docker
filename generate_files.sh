@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# VERSION: 3.6.0-beta #
+# VERSION: 3.6.1-beta #
+
 
 rm -rf snyk
 mkdir snyk
@@ -12,3 +13,4 @@ zip django_docker -r modules/ pydd.py ddo.sh config.py
 wget -m -p -E -k http://localhost/
 mv ./localhost ./docs
 sed -i -e 's/index.html//g' docs/index.html
+python ddotests.py

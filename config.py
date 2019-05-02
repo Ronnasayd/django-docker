@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.0-beta #
+# VERSION: 3.6.1-beta #
 
 DEBUG = False
 
-FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 REQUIREMENTS = [
@@ -36,6 +36,7 @@ REQUIREMENTS = [
   'django-widget-tweaks',
   'djangorestframework',
   'docutils',
+  'djangorestframework-jwt'
   
 ]
 
@@ -134,7 +135,7 @@ NETWORK_NAME = "dd_net"
 FOLDER_TO_SAVE = "dd_auxfiles"
 
 ENABLE_HTTPS = False
-SERVER_NAMES = ['da368455.ngrok.io']
+SERVER_NAMES = ['392c3b3c.ngrok.io']
 
 
-NUMBER_WEB_INSTANCES = 1
+NUMBER_WEB_INSTANCES = 3

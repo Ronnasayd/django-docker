@@ -1,4 +1,4 @@
-﻿<p  align="center"><img  src="django-docker.png"  alt="django-docker"  width="200"/></p>
+﻿<p  align="center"><img  src="logos/django-docker.svg"  alt="django-docker"  width="200"/></p>
 
 # Django-Docker CLI
 [https://ronnasayd.github.io/django-docker/](https://ronnasayd.github.io/django-docker/)

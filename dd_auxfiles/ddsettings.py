@@ -1,6 +1,7 @@
 
 from .settings import *
 from decouple import config
+import os
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 STATIC_ROOT = config('STATIC_ROOT')
