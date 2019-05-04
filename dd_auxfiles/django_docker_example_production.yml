@@ -1,6 +1,7 @@
 version: "3.3"
 services:
  web-django.docker.example:
+  container_name: web-django.docker.example
   stdin_open: True
   tty: True
   build: 

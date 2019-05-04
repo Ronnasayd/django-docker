@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.1-beta #
+# VERSION: 3.6.2-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -165,7 +165,6 @@ const uglify          = require("gulp-uglify");
 const sourcemaps      = require("gulp-sourcemaps");
 const imagemin        = require("gulp-imagemin");
 const cleanCSS        = require("gulp-clean-css");
-const htmlbeautify    = require("gulp-html-beautify");
 const purgecss        = require("gulp-purgecss");
 const cache           = require("gulp-cached");
 const minimist        = require("minimist");
@@ -286,18 +285,6 @@ const concatFiles = ()=>{{
 
 
 
-const htmlBeautify = ()=>{{
-    const options = {{
-        indentSize: 2,
-        indent_with_tabs: false,
-        indent_char: " ",
-      }};
-    return gulp.src([html_files,not_node],{{base: "./",allowEmpty: true}})
-    .pipe(cache("htmlBeautify"))
-    .pipe(htmlbeautify(options))
-    .pipe(gulp.dest("./"))
-}}
-
 const browserReload = (done)=>{{
     browserSync.reload();
     done();
@@ -325,8 +312,6 @@ const js_line = gulp.series(jsHint,minifyJs);
 const sass_line = gulp.series(sassToCssMin)
 const css_line = gulp.series(minifyCss);
 const image_line = gulp.series(minifyImages);
-const html_line = gulp.parallel(htmlBeautify);
-
 
 
 const browserSyncServer = ()=>{{
@@ -342,10 +327,10 @@ const browserSyncServer = ()=>{{
     gulp.watch(src_css, {{interval: 100, usePolling: true}}, css_line);
     gulp.watch(src_js, {{interval: 100, usePolling: true}}, gulp.series(js_line,browserReload));
     gulp.watch(images_folder, {{interval: 100, usePolling: true}}, image_line);
-    gulp.watch(html_files, {{interval: 100, usePolling: true}}, gulp.series(html_line,browserReload));
+    gulp.watch(html_files, {{interval: 100, usePolling: true}}, gulp.series(browserReload));
 }}
 
-const server = gulp.series(gulp.parallel(js_line, css_line, sass_line, image_line, html_line),browserSyncServer)
+const server = gulp.series(gulp.parallel(js_line, css_line, sass_line, image_line),browserSyncServer)
 
 exports.concatfiles = concatFiles
 exports.default  = server
@@ -733,7 +718,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "3.6.1-beta",
+  "version": "3.6.2-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
@@ -754,7 +739,6 @@ PACKAGEJSON='''{
     "gulp-cached": "latest",
     "gulp-clean-css": "latest",
     "gulp-concat": "latest",
-    "gulp-html-beautify": "latest",
     "gulp-imagemin": "latest",
     "gulp-purgecss": "latest",
     "gulp-rename": "latest",

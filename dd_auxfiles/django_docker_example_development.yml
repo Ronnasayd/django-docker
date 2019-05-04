@@ -1,6 +1,7 @@
 version: "3.3"
 services:
  web-django.docker.example:
+  container_name: web-django.docker.example
   stdin_open: True
   tty: True
   build: 
@@ -39,6 +40,27 @@ services:
   tty: True
   image: redis
   restart: always
+  networks:
+   - dd_net
+
+ node-django.docker.example:
+  container_name: node-django.docker.example
+  stdin_open: True
+  tty: True
+  build: 
+   context: "/home/ronnasayd/django-docker"
+   dockerfile: "dd_auxfiles/node.Dockerfile"
+  restart: always
+  ports:
+   - 3000:3000
+   - 3001:3001
+   - 3002:3002
+  volumes:
+   - "/home/ronnasayd/django-docker/django_docker_example/:/django_docker_example/:rw"
+  depends_on:
+   - web-django.docker.example
+  working_dir: /django_docker_example/
+  command: bash -c "yarn --no-bin-links && gulp"
   networks:
    - dd_net
 

@@ -4,14 +4,13 @@
 
 <head>
     <title>Django Docker</title>
-
     <!-- meta tags begin -->
     <meta charset="utf-8">
     <meta name="Description" content="Author: Ronnasayd de Sousa Machado">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- meta tags end -->
-
     {% include 'styles.html' %}
+
 </head>
 
 <body>
@@ -26,7 +25,9 @@
                     <div class="row">
                         <!-- Download-button begin -->
                         <div class="col-6">
-                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker/raw/master/django_docker.zip"><button class="pmd-ripple-effect btn btn-primary download-button">
+                            <a rel="noreferrer"
+                                href="https://github.com/Ronnasayd/django-docker/raw/master/django_docker.zip"><button
+                                    class="pmd-ripple-effect btn btn-primary download-button">
                                     <!--<i class="fas fa-download"></i>-->
                                     <!--<img src="{% static 'images/icons/download.svg' %}" alt="download-img">-->
                                     <div>
@@ -41,14 +42,16 @@
                         <!-- Download-button end -->
                         <!-- Github-link begin -->
                         <div class="col-6">
-                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker"><img class="github-logo" src="{% static 'images/github-w.png' %}" alt="github-logo"></a>
+                            <a rel="noreferrer" href="https://github.com/Ronnasayd/django-docker"><img
+                                    class="github-logo" src="{% static 'images/github-w.png' %}" alt="github-logo"></a>
                         </div>
                         <!-- Github-link end -->
                     </div>
                     <!-- logo begin -->
                     <div class="row logo">
                         <div class="col-12">
-                            <img class="logo-img" src="{% static 'images/django-docker.png' %}" alt="django docker logo">
+                            <img class="logo-img" src="{% static 'images/django-docker.png' %}"
+                                alt="django docker logo">
                         </div>
                     </div>
                     <!-- logo end -->
@@ -58,7 +61,8 @@
                             <h1 class="title"><strong>Django-Docker CLI</strong></h1>
                         </div>
                         <div class="col-12">
-                            <h2 class="description"><strong>Make your development and production full stack simpler</strong></h2>
+                            <h2 class="description"><strong>Make your development and production full stack
+                                    simpler</strong></h2>
                         </div>
                     </div>
                     <!-- Description end -->
@@ -77,7 +81,8 @@
                                     {% for tec in tecnologias %}
                                     <!-- Tech-item-{{tec.name}} begin -->
                                     <div class="carousel-item  text-center">
-                                        <a rel="noreferrer" href="{{tec.url}}" target="_blank"><img class="carousel-img" src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
+                                        <a rel="noreferrer" href="{{tec.url}}" target="_blank"><img class="carousel-img"
+                                                src="{% static tec.image %}" alt="{{forloop.counter}}-slide"></a>
                                         <h1 class="carousel-item-element">{{tec.name}}</h1>
                                     </div>
                                     <!-- Tech-item-{{tec.name}} end -->
@@ -86,13 +91,15 @@
 
                                 </div>
                                 <!-- Previous-button begin -->
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+                                    data-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
                                 </a>
                                 <!-- Previous-button end -->
                                 <!-- Next-button begin -->
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+                                    data-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="sr-only">Next</span>
                                 </a>

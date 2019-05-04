@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# VERSION: 3.6.1-beta #
+# VERSION: 3.6.2-beta #
 
 
 rm -rf snyk
