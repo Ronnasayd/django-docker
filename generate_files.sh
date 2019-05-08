@@ -5,7 +5,6 @@
 
 rm -rf snyk
 mkdir snyk
-cp ./dd_auxfiles/requirements.txt ./snyk
 cp ./django_docker_example/package.json ./snyk
 rm django_docker.zip
 rm -rf docs/

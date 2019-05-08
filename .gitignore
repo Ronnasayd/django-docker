@@ -9,6 +9,7 @@ node_modules/
 migrations/
 
 !.travis.yml
+yarn.lock
 *.json
 *.txt
 *.Dockerfile
