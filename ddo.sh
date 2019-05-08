@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.2-beta #
+# VERSION: 4.0.0-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -69,6 +69,8 @@ Options:
   --portainer                |      -ptn     : Run a container with portainer gui manager for docker
   --loadtestdata             |      -ltd     : Generate random test data in the database
   --get-certs                |      -gtc     : Get certifies from https letsecnrypt
+  --install                  |      -i       : Install python module
+  --uninstall                |      -u       : Uninstall python module
 
 
 Examples:
@@ -102,7 +104,9 @@ Examples:
   $0 --dbeaver
   $0 --portainer
   $0 --loadtestdata django_docker_app.DDuser:10
-  $0 --get-certs 
+  $0 --get-certs
+  $0 --install celery
+  $0 --uninstall celery 
 
   "
 
@@ -200,6 +204,11 @@ elif [ "$1" = "--django-create-project" -o "$1" = "-dcp" ];then
   django-admin startproject $2
 elif [ "$1" = "--django-create-app" -o "$1" = "-dca" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py startapp $2
+elif [ "$1" = "--install" -o "$1" = "-i" ];then
+  docker exec -ti web-$PROJECT_RENAME pipenv install $2
+  docker exec -ti web-$PROJECT_RENAME pipenv install --system --deploy
+elif [ "$1" = "--uninstall" -o "$1" = "-u" ];then
+  docker exec -ti web-$PROJECT_RENAME pipenv uninstall $2
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
   COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) up
 elif [ "$1" = "--dbeaver" -o "$1" = "-dbv" ];then

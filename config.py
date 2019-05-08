@@ -22,32 +22,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.2-beta #
+# VERSION: 4.0.0-beta #
 
 DEBUG = False
 
 FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
-REQUIREMENTS = [
-  'channels',
-  'channels_redis',
-  'django-redis',
-  'django-widget-tweaks',
-  'djangorestframework',
-  'docutils',
-  'djangorestframework-jwt'
-  
-]
-
 PROJECT_NAME = 'django_docker_example'
 
 PYTHON_VERSION = '3.6'
-DJANGO_VERSION = '2.1.5'
 
 WEB_COMMANDS_BUILD = [
-  # 'apt-get install wget -y',
-  # # 'apt-get install curl -y',
+    # 'apt-get install wget -y',
+    # 'apt-get install curl -y',
 ]
 
 DATABASE_IMAGE = 'postgres'
@@ -78,20 +66,20 @@ DATABASE_EXTERNAL = False
 
 
 DATABASE_DEFAULT_ENVIROMENTS = {
-  'DATABASE_USER': 'django_docker_example_user',
-  'DATABASE_USER_NAME': 'POSTGRES_USER',
-  'DATABASE_PASSWORD': '!TB2PGy%{PBd)q>E',
-  'DATABASE_PASSWORD_NAME': 'POSTGRES_PASSWORD',
-  'DATABASE_DB': 'django_docker_example_db',
-  'DATABASE_DB_NAME': 'POSTGRES_DB',
-  'DATABASE_PORT': '5432',
-  'DATABASE_HOST': 'http://10.0.0.1',  # just use in external database
-  # connection
+    'DATABASE_USER': 'django_docker_example_user',
+    'DATABASE_USER_NAME': 'POSTGRES_USER',
+    'DATABASE_PASSWORD': '!TB2PGy%{PBd)q>E',
+    'DATABASE_PASSWORD_NAME': 'POSTGRES_PASSWORD',
+    'DATABASE_DB': 'django_docker_example_db',
+    'DATABASE_DB_NAME': 'POSTGRES_DB',
+    'DATABASE_PORT': '5432',
+    'DATABASE_HOST': 'http://10.0.0.1',  # just use in external database
+    # connection
 }
 
 
 DATABASE_OTHERS_ENVIROMENTS = {
-  'ANY_ENV': '/home',
+    'ANY_ENV': '/home',
 }
 
 
@@ -101,7 +89,7 @@ DATABASE_OTHERS_ENVIROMENTS = {
 # MONGO_DESTINATION = /var/lib/mongodb
 
 DATABASE_ROOT = {
-  'DESTINATION': '/var/lib/postgresql/data',
+    'DESTINATION': '/var/lib/postgresql/data',
 }
 # USE ONE OF DEFAULT DJANGO DATABASES ENGINES ###
 # Database							Django ENGINE value
@@ -117,14 +105,14 @@ NGINX_PORT = '80'
 DATABASE_EXTERNAL_PORT = '5433'
 
 WEB_ENVIROMENT = {
-  # all enviroment variables are optional
-  'REDIS_URL': 'redis://redis:6379/1',
+    # all enviroment variables are optional
+    'REDIS_URL': 'redis://redis:6379/1',
 }
 
 
 CONTAINERS = [
-  # all container are aptional
-  'redis',  # redis here is just a example of how to add container in network
+    # all container are aptional
+    'redis',  # redis here is just a example of how to add container in network
 ]
 
 

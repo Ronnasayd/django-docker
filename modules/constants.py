@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.2-beta #
+# VERSION: 4.0.0-beta #
 
 from config import *
 
@@ -46,20 +46,9 @@ NODE_CONTAINER_NAME = 'node-'+PROJECT_RENAME
 NGINX_CONTAINER_NAME = 'nginx-'+PROJECT_RENAME
 DATABASE_CONTAINER_NAME = DATABASE_IMAGE+'-'+PROJECT_RENAME
 
-OTHERS_CONTAINER_NAME = [container+'-'+PROJECT_RENAME for container in  CONTAINERS]
+OTHERS_CONTAINER_NAME = [container+'-' +
+                         PROJECT_RENAME for container in CONTAINERS]
 
-
-REQUIREMENTS += [
-  'django>='+DJANGO_VERSION,
-  'gunicorn',
-  'python-decouple',
-  'psycopg2-binary',
-  'django-debug-toolbar',
-  'Pillow',
-  'django-autofixture'
-]
-REQUIREMENTS = list(set(REQUIREMENTS))
-REQUIREMENTS.sort()
 
 STATIC_ROOT = '/tmp/static-data'
 MEDIA_ROOT = '/tmp/media-data'
@@ -69,7 +58,7 @@ LOGS_ROOT = '/tmp/logs-data'
 RUNSERVER_SCRIPT_NAME = 'runserver.sh'
 SETTINGS_FILE_NAME = 'ddsettings'
 
-WEB_ROOT_PATH = '/var/www/html' 
+WEB_ROOT_PATH = '/var/www/html'
 SERVER_DNS_NAMES = ' '.join(SERVER_NAMES)
 
 NGINX_SNIPPET_HTTPS_NAME = 'nginx-snippet-https.conf'

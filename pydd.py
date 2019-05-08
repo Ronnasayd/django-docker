@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 3.6.2-beta #
+# VERSION: 4.0.0-beta #
 
 import os
 import config
@@ -69,13 +69,18 @@ if __name__ == '__main__':
 	web_dockerfile = dockerfile.Dockerfile()
 	(web_dockerfile._from(container_base='python:'+config.PYTHON_VERSION)
 	.add(
-		local_path=functional.path_join([config.FOLDER_TO_SAVE, 'requirements.txt']),
-		container_path=functional.path_join([constants.ROOT_DIRECTORY, 'requirements.txt'])
+		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME,'Pipfile.lock']),
+		container_path=functional.path_join(['Pipfile.lock'])
+	)
+	.add(
+		local_path=constants.ROOT_DIRECTORY+'/'+config.PROJECT_NAME+'/'+'Pipfile',
+		container_path='Pipfile'
 	)
 	.run(list_of_commands=[
 		'apt-get update',
 		'pip install --upgrade pip',
-		'pip install -r requirements.txt',
+		'pip install pipenv',
+		'pipenv install --system --deploy'
 	]+config.WEB_COMMANDS_BUILD)
 	.add(
 		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
@@ -284,13 +289,14 @@ if __name__ == '__main__':
 	gulpfile_content = pycontroller.build_gulpfile()
 	make_ambient_content = pycontroller.build_make_ambiente(debug_mode=config.DEBUG)
 	runserver_content = pycontroller.build_runserver(debug_mode=config.DEBUG)
-	requirements_content = pycontroller.build_requirements()
 	wait_for_it_content = pycontroller.build_wait_for_it()
 	settings_content = pycontroller.build_settings()
 	manage_content = pycontroller.build_manage()
 	packagejson_content = pycontroller.build_packagejson()
 	dockerignore_content = pycontroller.build_dockerignore()
 	ddurls_content = pycontroller.build_ddurls()
+	pipfile_content = pycontroller.build_pipfile()
+	pipfilelock_content = pycontroller.build_pipfile_lock()
 
 
 
@@ -300,7 +306,6 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'wait-for-it.sh',wait_for_it_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.SETTINGS_FILE_NAME+'.py',settings_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'manage.py',manage_content)
@@ -308,3 +313,5 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'ddurls.py',ddurls_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'dd.env',web_compose.get_enviroments_as_string())
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'.dockerignore',dockerignore_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'Pipfile',pipfile_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'Pipfile.lock',pipfilelock_content)

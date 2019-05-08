@@ -39,17 +39,11 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
  *FRONT_DEV_TOOLS (boolean):*   
 > When True enables front-end helper tools like gulp and browsersync
 
- *REQUIREMENTS (List[str]):*
->   List with the python modules to be installed
-
 *PROJECT_NAME (str):*
 > The name of your django project
 
 *PYTHON_VERSION (str):*
 > Python version in the container that will run django
-
-*DJANGO_VERSION (str):*
-  > Version of Django
   
 *WEB_COMMANDS_BUILD (List[str]):*
 >  List of shell commands to be added to the container in build
@@ -183,6 +177,8 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
   --portainer                |      -ptn     | Run a container with portainer gui manager for docker 
   --loadtestdata             |      -ltd     | Generate random test data in the database
   --get-certs                |      -gtc     | Get certifies from https letsecnrypt
+  --install                  |      -i       | Install python module
+  --uninstall                |      -u       | Uninstall python module
 
 ## Commands Examples
 
@@ -216,7 +212,9 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
       bash ddo.sh --dbeaver
       bash ddo.sh --portainer
       bash ddo.sh --loadtestdata django_docker_app.DDuser:10
-      bash ddo.sh --get-certs 
+      bash ddo.sh --get-certs
+      bash ddo.sh --install celery
+      bash ddo.sh --uninstall celery 
 
   
 ## Contributing
