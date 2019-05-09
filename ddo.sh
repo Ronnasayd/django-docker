@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.0.0-beta #
+# VERSION: 4.1.0-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -205,10 +205,11 @@ elif [ "$1" = "--django-create-project" -o "$1" = "-dcp" ];then
 elif [ "$1" = "--django-create-app" -o "$1" = "-dca" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py startapp $2
 elif [ "$1" = "--install" -o "$1" = "-i" ];then
-  docker exec -ti web-$PROJECT_RENAME pipenv install $2
-  docker exec -ti web-$PROJECT_RENAME pipenv install --system --deploy
+  docker exec -ti web-$PROJECT_RENAME pip install $2 
+  docker exec -ti web-$PROJECT_RENAME bash -c 'pip freeze > requirements.txt'
 elif [ "$1" = "--uninstall" -o "$1" = "-u" ];then
-  docker exec -ti web-$PROJECT_RENAME pipenv uninstall $2
+  docker exec -ti web-$PROJECT_RENAME pip uninstall $2
+  docker exec -ti web-$PROJECT_RENAME bash -c 'pip freeze > requirements.txt'
 elif [ "$1" = "--attach" -o "$1" = "-att" ];then
   COMPOSE_HTTP_TIMEOUT=3600 docker-compose -f $(ls $FOLDER_TO_SAVE/*development.yml) up
 elif [ "$1" = "--dbeaver" -o "$1" = "-dbv" ];then

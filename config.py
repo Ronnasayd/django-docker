@@ -22,11 +22,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.0.0-beta #
+# VERSION: 4.1.0-beta #
 
 DEBUG = False
 
-FRONT_DEV_TOOLS = True  # turn to True or False to enable disable dev tools
+FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 #  like browsersync sass etc
 
 PROJECT_NAME = 'django_docker_example'

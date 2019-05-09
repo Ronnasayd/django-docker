@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.0.0-beta #
+# VERSION: 4.1.0-beta #
 
 import os
 import config
@@ -69,18 +69,13 @@ if __name__ == '__main__':
 	web_dockerfile = dockerfile.Dockerfile()
 	(web_dockerfile._from(container_base='python:'+config.PYTHON_VERSION)
 	.add(
-		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME,'Pipfile.lock']),
-		container_path=functional.path_join(['Pipfile.lock'])
-	)
-	.add(
-		local_path=constants.ROOT_DIRECTORY+'/'+config.PROJECT_NAME+'/'+'Pipfile',
-		container_path='Pipfile'
+		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME,'requirements.txt']),
+		container_path=functional.path_join(['requirements.txt'])
 	)
 	.run(list_of_commands=[
 		'apt-get update',
 		'pip install --upgrade pip',
-		'pip install pipenv',
-		'pipenv install --system --deploy'
+		'pip install -r requirements.txt',
 	]+config.WEB_COMMANDS_BUILD)
 	.add(
 		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
@@ -295,8 +290,7 @@ if __name__ == '__main__':
 	packagejson_content = pycontroller.build_packagejson()
 	dockerignore_content = pycontroller.build_dockerignore()
 	ddurls_content = pycontroller.build_ddurls()
-	pipfile_content = pycontroller.build_pipfile()
-	pipfilelock_content = pycontroller.build_pipfile_lock()
+	requirements_content = pycontroller.build_requirements()
 
 
 
@@ -313,5 +307,4 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'ddurls.py',ddurls_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'dd.env',web_compose.get_enviroments_as_string())
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'.dockerignore',dockerignore_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'Pipfile',pipfile_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'Pipfile.lock',pipfilelock_content)
+	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'requirements.txt',requirements_content)

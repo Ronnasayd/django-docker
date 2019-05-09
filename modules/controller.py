@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.0.0-beta #
+# VERSION: 4.1.0-beta #
 
 from modules import views
 from modules import models
@@ -111,9 +111,5 @@ class Controller(object):
         return views.DDURLS.format(**models.DDURLS_MODEL)
 
     @classmethod
-    def build_pipfile(self):
-        return views.PIPFILE.format(**models.PIPFILE_MODEL)
-
-    @classmethod
-    def build_pipfile_lock(self):
-        return views.PIPFILELOCK
+    def build_requirements(self):
+        return views.REQUIREMENTS
