@@ -32,7 +32,7 @@ FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 PROJECT_NAME = 'django_docker_example'
 
 PYTHON_VERSION = '3.6'
-DJANGO_VERSION = '2.1.5'
+DJANGO_VERSION = '2.2.1'
 
 WEB_COMMANDS_BUILD = [
     # 'apt-get install wget -y',
