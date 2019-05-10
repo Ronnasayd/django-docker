@@ -1,8 +1,9 @@
 
-django
+django==2.1.5
 gunicorn
 python-decouple
 psycopg2-binary
 django-debug-toolbar
 pillow
 django-autofixture
+pip-autoremove

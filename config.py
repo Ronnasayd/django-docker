@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.0-beta #
+# VERSION: 4.1.1-beta #
 
 DEBUG = False
 
@@ -32,6 +32,7 @@ FRONT_DEV_TOOLS = False  # turn to True or False to enable disable dev tools
 PROJECT_NAME = 'django_docker_example'
 
 PYTHON_VERSION = '3.6'
+DJANGO_VERSION = '2.1.5'
 
 WEB_COMMANDS_BUILD = [
     # 'apt-get install wget -y',

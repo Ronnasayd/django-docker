@@ -44,6 +44,9 @@ The files *config.py*, *pydd.py*, *ddo.sh*  and the folder *modules* should be i
 
 *PYTHON_VERSION (str):*
 > Python version in the container that will run django
+
+*DJANGO_VERSION (str):*
+  > Version of Django
   
 *WEB_COMMANDS_BUILD (List[str]):*
 >  List of shell commands to be added to the container in build

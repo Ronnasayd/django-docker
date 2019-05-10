@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.0-beta #
+# VERSION: 4.1.1-beta #
 
 from modules import views
 from modules import models
@@ -112,4 +112,4 @@ class Controller(object):
 
     @classmethod
     def build_requirements(self):
-        return views.REQUIREMENTS
+        return views.REQUIREMENTS.format(**models.REQUIREMENTS_MODEL)
