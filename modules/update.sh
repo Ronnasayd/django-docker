@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.1-beta #
+# VERSION: 4.1.2-beta #
 
 if [ ! -d "tmp/" ]; then
   mkdir tmp/

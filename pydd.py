@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.1-beta #
+# VERSION: 4.1.2-beta #
 
 import os
 import config
@@ -42,8 +42,8 @@ if __name__ == '__main__':
 		(constants.WEB_ROOT_VOLUME,constants.WEB_ROOT),
    		(constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_ETC),
    		(constants.CERTBOT_VAR_VOLUME,constants.CERTBOT_VAR),
-		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
-		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx_cert_script.sh']) , "/nginx_cert_script.sh"),
+		(functional.path_join([CURRENT_DIRECTORY,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
+		(functional.path_join([CURRENT_DIRECTORY,'nginx','nginx_cert_script.sh']) , "/nginx_cert_script.sh"),
 		] if config.ENABLE_HTTPS else []
 	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if config.ENABLE_HTTPS else []
 #############################################################################
@@ -207,7 +207,7 @@ if __name__ == '__main__':
 	 )
 	.restart(restart_option='always')
 	.volumes(list_volumes=[
-		(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
+		(functional.path_join([CURRENT_DIRECTORY,'nginx','nginx.conf']) , "/etc/nginx/nginx.conf"),
 		(constants.STATIC_VOLUME,constants.STATIC_ROOT),
 		(constants.MEDIA_VOLUME,constants.MEDIA_ROOT),
 		(constants.LOGS_VOLUME,constants.LOGS_ROOT)
@@ -292,11 +292,17 @@ if __name__ == '__main__':
 	ddurls_content = pycontroller.build_ddurls()
 	requirements_content = pycontroller.build_requirements()
 
-
-
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx.conf',nginx_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
-	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)
+	try:
+		if not config.ENABLE_HTTPS or 'nginx.conf' not in os.listdir(functional.path_join([CURRENT_DIRECTORY,'nginx'])):
+			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx.conf',nginx_content)
+			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
+			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)	
+	except:
+		functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx.conf',nginx_content)
+		functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
+		functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)
+		
+	
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'gulpfile.js',gulpfile_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'make_ambient.sh',make_ambient_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),constants.RUNSERVER_SCRIPT_NAME,runserver_content)
@@ -308,3 +314,5 @@ if __name__ == '__main__':
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'dd.env',web_compose.get_enviroments_as_string())
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'.dockerignore',dockerignore_content)
 	functional.save(functional.path_join([CURRENT_DIRECTORY,config.FOLDER_TO_SAVE]),'requirements.txt',requirements_content)
+
+	

@@ -52,7 +52,7 @@ services:
    dockerfile: "dd_auxfiles/nginx.Dockerfile"
   restart: always
   volumes:
-   - "/home/ronnasayd/django-docker/dd_auxfiles/nginx/nginx.conf:/etc/nginx/nginx.conf:rw"
+   - "/home/ronnasayd/django-docker/nginx/nginx.conf:/etc/nginx/nginx.conf:rw"
    - "static_django_docker_example:/tmp/static-data:rw"
    - "media_django_docker_example:/tmp/media-data:rw"
    - "logs_django_docker_example:/tmp/logs-data:rw"

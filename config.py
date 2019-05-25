@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.1-beta #
+# VERSION: 4.1.2-beta #
 
 DEBUG = False
 
@@ -59,12 +59,10 @@ DATABASE_EXTERNAL = False
 # 		PASSWORD_NAME = MONGO_INITDB_ROOT_PASSWORD
 # 		DB_NAME = ''
 
-
 # DATABASES DEFAULT PORTS
 # POSTGRES_PORT=5432
 # MYSQL_PORT=3306
 # MONGO_PORT=8081
-
 
 DATABASE_DEFAULT_ENVIROMENTS = {
     'DATABASE_USER': 'django_docker_example_user',
@@ -78,11 +76,9 @@ DATABASE_DEFAULT_ENVIROMENTS = {
     # connection
 }
 
-
 DATABASE_OTHERS_ENVIROMENTS = {
     'ANY_ENV': '/home',
 }
-
 
 # LOCATION OF DATABASE IN CONTAINER
 # POSTGRES_DESTINATION = /var/lib/postgresql/data'
@@ -110,12 +106,10 @@ WEB_ENVIROMENT = {
     'REDIS_URL': 'redis://redis:6379/1',
 }
 
-
 CONTAINERS = [
     # all container are aptional
     'redis',  # redis here is just a example of how to add container in network
 ]
-
 
 DOCKER_COMPOSE_VERSION = '3.3'
 
@@ -124,7 +118,6 @@ NETWORK_NAME = "dd_net"
 FOLDER_TO_SAVE = "dd_auxfiles"
 
 ENABLE_HTTPS = False
-SERVER_NAMES = ['392c3b3c.ngrok.io']
-
+SERVER_NAMES = ['0462de00.ngrok.io ']
 
 NUMBER_WEB_INSTANCES = 1
