@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.2-beta #
+# VERSION: 4.1.3-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -160,10 +160,20 @@ elif [ "$1" = "--clear-db" -o "$1" = "-cdb" ];then
 elif [ "$1" = "--clear-vol" -o "$1" = "-cv" ];then
   docker volume rm $2
 elif [ "$1" = "--clear" -o "$1" = "-c" ];then
-  rm -rf ./logs ./media ./__pycache__ ./static ./$FOLDER_TO_SAVE
+  rm -rf ./$FOLDER_TO_SAVE
+  rm -rf $(find . -name '__pycache__')
+  rm -rf $(find . -name 'migrations')
+  rm -rf $(find . -name 'node_modules')
+  rm -rf $(find . -name 'runserver.sh')
+  rm -rf $(find . -name 'gulp.sh')
+  rm -rf $(find . -name 'gulpfile.js')
+  rm -rf $(find . -name 'package.json')
+  rm -rf $(find . -name 'yarn.lock')
+  rm -rf $(find . -name 'yarn-error.log')
+  rm -rf $(find . -name 'wait-for-it.sh')
   echo "Enviroment cleaned"
 elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
-  rm -rf ./logs ./media ./__pycache__ ./static ./$FOLDER_TO_SAVE
+  rm -rf ./$FOLDER_TO_SAVE
   rm -rf $(find . -name '__pycache__')
   rm -rf $(find . -name 'migrations')
   rm -rf $(find . -name 'node_modules')
