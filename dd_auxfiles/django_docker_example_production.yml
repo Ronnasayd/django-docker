@@ -16,21 +16,22 @@ services:
    - postgres-django.docker.example
    - redis-django.docker.example
   environment:
-   - DEBUG=False
-   - STATIC_ROOT=/tmp/static-data
-   - STATIC_URL=/static/
-   - MEDIA_ROOT=/tmp/media-data
-   - MEDIA_URL=/media/
-   - DATABASE_ENGINE=django.db.backends.postgresql_psycopg2
-   - DATABASE_USER=django_docker_example_user
-   - DATABASE_NAME=django_docker_example_db
-   - DATABASE_HOST=postgres-django.docker.example
-   - DATABASE_PORT=5432
-   - DATABASE_PASSWORD=!TB2PGy%{PBd)q>E
-   - REDIS_URL=redis://redis:6379/1
+   - "DEBUG=False"
+   - "STATIC_ROOT=/tmp/static-data"
+   - "STATIC_URL=/static/"
+   - "MEDIA_ROOT=/tmp/media-data"
+   - "MEDIA_URL=/media/"
+   - "DATABASE_ENGINE=django.db.backends.postgresql_psycopg2"
+   - "DATABASE_USER=django_docker_example_user"
+   - "DATABASE_NAME=django_docker_example_db"
+   - "DATABASE_HOST=postgres-django.docker.example"
+   - "DATABASE_PORT=5432"
+   - "DATABASE_PASSWORD=!TB2PGy%{PBd)q>E"
+   - "REDIS_URL=redis://redis:6379/1"
   volumes:
    - "media_django_docker_example:/tmp/media-data/:rw"
    - "static_django_docker_example:/tmp/static-data/:rw"
+   - "app_django_docker_example:/django_docker_example/:rw"
   networks:
    - dd_net
 
@@ -72,16 +73,17 @@ services:
   volumes:
    - "database_django_docker_example:/var/lib/postgresql/data:rw"
   environment:
-   - POSTGRES_USER=django_docker_example_user
-   - POSTGRES_PASSWORD=!TB2PGy%{PBd)q>E
-   - POSTGRES_DB=django_docker_example_db
-   - ANY_ENV=/home
+   - "POSTGRES_USER=django_docker_example_user"
+   - "POSTGRES_PASSWORD=!TB2PGy%{PBd)q>E"
+   - "POSTGRES_DB=django_docker_example_db"
+   - "ANY_ENV=/home"
   networks:
    - dd_net
 
 networks:
  dd_net:
 volumes:
+ app_django_docker_example:
  database_django_docker_example:
  media_django_docker_example:
  static_django_docker_example:

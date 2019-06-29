@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.3-beta #
+# VERSION: 4.1.4-beta #
 
 import os
 import config
@@ -77,10 +77,10 @@ if __name__ == '__main__':
 		'pip install --upgrade pip',
 		'pip install -r requirements.txt',
 	]+config.WEB_COMMANDS_BUILD)
-	.add(
-		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
-		container_path=functional.path_join([config.PROJECT_NAME])
-	)
+	# .add(
+	# 	local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
+	# 	container_path=functional.path_join([config.PROJECT_NAME])
+	# )
 	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.save(
 		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
@@ -150,7 +150,11 @@ if __name__ == '__main__':
     	(
     		constants.STATIC_VOLUME,
     		functional.path_join([constants.STATIC_ROOT])
-    	)
+    	),
+		(
+			constants.PROJECT_VOLUME,
+			functional.path_join([config.PROJECT_NAME])
+		)
     ]))
 ###########################################################################
 					## DATABASE CONTAINER OBJECT ##
@@ -247,7 +251,7 @@ if __name__ == '__main__':
 
 	service = compose.Service()
 	(service.version(service_version=config.DOCKER_COMPOSE_VERSION)
-	.volumes(list_of_volumes=[constants.DATABASE_VOLUME,constants.MEDIA_VOLUME,constants.STATIC_VOLUME,constants.LOGS_VOLUME]+NGIX_SNIPPETS_VOLUMES)
+	.volumes(list_of_volumes=[constants.PROJECT_VOLUME,constants.DATABASE_VOLUME,constants.MEDIA_VOLUME,constants.STATIC_VOLUME,constants.LOGS_VOLUME]+NGIX_SNIPPETS_VOLUMES)
 	.networks(list_of_networks=[config.NETWORK_NAME]))
 
 

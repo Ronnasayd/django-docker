@@ -5,4 +5,5 @@ from .models import *
 class DDUserAdmin(admin.ModelAdmin):
     list_display = ('email',)
 
-admin.site.register(DDUser,DDUserAdmin)
+
+admin.site.register(DDUser, DDUserAdmin)

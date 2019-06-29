@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.3-beta #
+# VERSION: 4.1.4-beta #
 
 ################################################################
                     ## NGIX TEMPLATE ##
@@ -401,7 +401,11 @@ docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml down
 docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_development.yml down
 docker system prune --force
 docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml build
-docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d {SCALE} --force-recreate'''
+docker-compose -p dd -f {FOLDER_NAME}/{PROJECT_NAME}_production.yml up  -d {SCALE} --force-recreate
+docker cp ./{PROJECT_NAME}/ {WEB_CONTAINER_NAME}:/.
+docker exec {WEB_CONTAINER_NAME} python manage.py makemigrations
+docker exec {WEB_CONTAINER_NAME} python manage.py migrate
+'''
 
 ######################################################################
                     ## RUNSERVER SCRIPT ##
@@ -724,7 +728,7 @@ if __name__ == "__main__":
 PACKAGEJSON='''{  
   "name": "django-docker",
   "description": "Package.json for development front utilities of django-docker",
-  "version": "4.1.3-beta",
+  "version": "4.1.4-beta",
   "main": "index.js",
   "author": "Ronnasayd de Sousa Machado",
   "license": "MIT",
