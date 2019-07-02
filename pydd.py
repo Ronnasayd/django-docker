@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 4.1.4-beta #
+# VERSION: 5.0.0-beta #
 
 import os
 import config
@@ -44,8 +44,8 @@ if __name__ == '__main__':
    		(constants.CERTBOT_VAR_VOLUME,constants.CERTBOT_VAR),
 		(functional.path_join([CURRENT_DIRECTORY,'nginx',constants.NGINX_SNIPPET_HTTPS_NAME]) , "/etc/nginx/"+constants.NGINX_SNIPPET_HTTPS_NAME),
 		(functional.path_join([CURRENT_DIRECTORY,'nginx','nginx_cert_script.sh']) , "/nginx_cert_script.sh"),
-		] if config.ENABLE_HTTPS else []
-	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if config.ENABLE_HTTPS else []
+		] if constants.ENABLE_HTTPS else []
+	NGIX_SNIPPETS_VOLUMES=[constants.WEB_ROOT_VOLUME,constants.CERTBOT_ETC_VOLUME,constants.CERTBOT_VAR_VOLUME] if constants.ENABLE_HTTPS else []
 #############################################################################
 						## NODE DOCKERFILE OBJECT ##
 #############################################################################
@@ -118,20 +118,20 @@ if __name__ == '__main__':
 
 	(web_compose.expose(list_expose_ports=[config.WEB_PORT])
 	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
-	.command(command='./wait-for-it.sh '+(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if config.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)+':'+config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')
-	.depends(list_depends=constants.OTHERS_CONTAINER_NAME if config.DATABASE_EXTERNAL else [constants.DATABASE_CONTAINER_NAME]+constants.OTHERS_CONTAINER_NAME)
+	.command(command='./wait-for-it.sh '+(config.DATABASE_DATA['HOST'] if constants.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)+':'+config.DATABASE_DATA['PORT']+' --timeout=15 --strict -- /bin/bash runserver.sh')
+	.depends(list_depends=constants.OTHERS_CONTAINER_NAME if constants.DATABASE_EXTERNAL else [constants.DATABASE_CONTAINER_NAME]+constants.OTHERS_CONTAINER_NAME)
 	.environ(list_enviroments=[
      ('DEBUG',str(config.DEBUG)),
      ('STATIC_ROOT',constants.STATIC_ROOT),
      ('STATIC_URL','/static/'),
      ('MEDIA_ROOT',constants.MEDIA_ROOT),
      ('MEDIA_URL','/media/'),
-     ('DATABASE_ENGINE',config.DATABASE_ENGINE),
-     ('DATABASE_USER',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
-     ('DATABASE_NAME',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
-     ('DATABASE_HOST',(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_HOST'] if config.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)),
-     ('DATABASE_PORT',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT']),
-     ('DATABASE_PASSWORD',config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
+     ('DATABASE_ENGINE',config.DATABASE_DATA['DB_ENGINE']),
+     ('DATABASE_USER',config.DATABASE_DATA['USERNAME']),
+     ('DATABASE_NAME',config.DATABASE_DATA['NAME']),
+     ('DATABASE_HOST',(config.DATABASE_DATA['HOST'] if constants.DATABASE_EXTERNAL else constants.DATABASE_CONTAINER_NAME)),
+     ('DATABASE_PORT',config.DATABASE_DATA['PORT']),
+     ('DATABASE_PASSWORD',config.DATABASE_DATA['PASSWORD']),
 	]+functional.json2list(config.WEB_ENVIROMENT))
 	.volumes(list_volumes=[
 		(
@@ -159,22 +159,23 @@ if __name__ == '__main__':
 ###########################################################################
 					## DATABASE CONTAINER OBJECT ##
 ###########################################################################
-	database_compose = compose.Container()
-	(database_compose.name(container_name=constants.DATABASE_CONTAINER_NAME)
-	.image(image_base=config.DATABASE_IMAGE)
-	.restart(restart_option='always')
-	.volumes(list_volumes=[
-		(constants.DATABASE_VOLUME,config.DATABASE_ROOT['DESTINATION'])
-	])
-	.environ([
-		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_USER']),
-		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PASSWORD']),
-		(config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB_NAME'],config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_DB']),
-	]+functional.json2list(config.DATABASE_OTHERS_ENVIROMENTS))
-	)
-	if config.DEBUG:
-		database_compose.ports(list_ports=[(config.DATABASE_EXTERNAL_PORT,config.DATABASE_DEFAULT_ENVIROMENTS['DATABASE_PORT'])])
-	# print(database_compose)
+	if not constants.DATABASE_EXTERNAL:
+		database_compose = compose.Container()
+		(database_compose.name(container_name=constants.DATABASE_CONTAINER_NAME)
+		.image(image_base=config.DATABASE_DATA['DB_IMAGE'])
+		.restart(restart_option='always')
+		.volumes(list_volumes=[
+			(constants.DATABASE_VOLUME,config.DATABASE_DATA['DB_DESTINATION'])
+		])
+		.environ([
+			(config.DATABASE_DATA['DB_USER'],config.DATABASE_DATA['USERNAME']),
+			(config.DATABASE_DATA['DB_PASSWORD'],config.DATABASE_DATA['PASSWORD']),
+			(config.DATABASE_DATA['DB_NAME'],config.DATABASE_DATA['NAME']),
+		]+functional.json2list(config.DATABASE_OTHERS_ENVIROMENTS))
+		)
+		if config.DEBUG:
+			database_compose.ports(list_ports=[(config.DATABASE_EXTERNAL_PORT,config.DATABASE_DATA['PORT'])])
+		# print(database_compose)
 ###########################################################################
 					## NODE CONTAINER OBJECT ##
 ###########################################################################
@@ -220,7 +221,7 @@ if __name__ == '__main__':
 	.ports(list_ports=[
 		(config.NGINX_PORT,config.WEB_PORT),
 		("443","443"),
-	] if config.ENABLE_HTTPS else [(config.NGINX_PORT,config.WEB_PORT),]))
+	] if constants.ENABLE_HTTPS else [(config.NGINX_PORT,config.WEB_PORT),]))
 # print(node_compose)
 ##########################################################################
 						## USER CONTAINERS OBJECTS##
@@ -244,7 +245,7 @@ if __name__ == '__main__':
 
 	if config.FRONT_DEV_TOOLS:
 		containers_development += [node_compose]
-	if not config.DATABASE_EXTERNAL:
+	if not constants.DATABASE_EXTERNAL:
 		containers_development += [deepcopy(database_compose)]
 		containers_production += [deepcopy(database_compose)]
 

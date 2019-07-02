@@ -19,15 +19,9 @@ class TestStringMethods(unittest.TestCase):
     def test_web_commands_build(self):
         self.assertIsInstance(config.WEB_COMMANDS_BUILD, list)
 
-    def test_database_image(self):
-        self.assertIsInstance(config.DATABASE_IMAGE, str)
-
-    def test_database_external(self):
-        self.assertIsInstance(config.DATABASE_EXTERNAL, bool)
-
     def test_database_default_enviroments(self):
-        self.assertIsInstance(config.DATABASE_DEFAULT_ENVIROMENTS, dict)
-        for key, value in config.DATABASE_DEFAULT_ENVIROMENTS.items():
+        self.assertIsInstance(config.DATABASE_DATA, dict)
+        for key, value in config.DATABASE_DATA.items():
             self.assertIsInstance(key, str)
             self.assertIsInstance(value, str)
 
@@ -37,15 +31,6 @@ class TestStringMethods(unittest.TestCase):
             self.assertIsInstance(key, str)
             self.assertIsInstance(value, str)
 
-    def test_database_root(self):
-        self.assertIsInstance(config.DATABASE_ROOT, dict)
-        for key, value in config.DATABASE_ROOT.items():
-            self.assertIsInstance(key, str)
-            self.assertIsInstance(value, str)
-
-    def test_database_engine(self):
-        self.assertIsInstance(config.DATABASE_ENGINE, str)
-
     def test_web_port(self):
         self.assertIsInstance(config.WEB_PORT, str)
         self.assertIsInstance(int(config.WEB_PORT), int)
@@ -53,10 +38,6 @@ class TestStringMethods(unittest.TestCase):
     def test_nginx_port(self):
         self.assertIsInstance(config.NGINX_PORT, str)
         self.assertIsInstance(int(config.NGINX_PORT), int)
-
-    def test_database_external_port(self):
-        self.assertIsInstance(config.DATABASE_EXTERNAL_PORT, str)
-        self.assertIsInstance(int(config.DATABASE_EXTERNAL_PORT), int)
 
     def test_web_enviroment(self):
         self.assertIsInstance(config.WEB_ENVIROMENT, dict)
@@ -78,9 +59,6 @@ class TestStringMethods(unittest.TestCase):
     def test_folder_to_save(self):
         self.assertIsInstance(config.FOLDER_TO_SAVE, str)
 
-    def test_enable_https(self):
-        self.assertIsInstance(config.ENABLE_HTTPS, bool)
-
     def test_server_names(self):
         self.assertIsInstance(config.SERVER_NAMES, list)
         for servername in config.SERVER_NAMES:
@@ -88,6 +66,9 @@ class TestStringMethods(unittest.TestCase):
 
     def test_number_web_instances(self):
         self.assertIsInstance(config.NUMBER_WEB_INSTANCES, int)
+
+    def test_in_production(self):
+        self.assertEqual(config.DEBUG, False)
 
 
 if __name__ == '__main__':
