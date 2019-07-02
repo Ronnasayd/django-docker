@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 5.0.0-beta #
+# VERSION: 5.0.1-beta #
 
 import os
 import config
@@ -298,7 +298,7 @@ if __name__ == '__main__':
 	requirements_content = pycontroller.build_requirements()
 
 	try:
-		if not config.ENABLE_HTTPS or 'nginx.conf' not in os.listdir(functional.path_join([CURRENT_DIRECTORY,'nginx'])):
+		if not constants.ENABLE_HTTPS or 'nginx.conf' not in os.listdir(functional.path_join([CURRENT_DIRECTORY,'nginx'])):
 			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx.conf',nginx_content)
 			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),constants.NGINX_SNIPPET_HTTPS_NAME,nginx_snippet_https_content)
 			functional.save(functional.path_join([CURRENT_DIRECTORY,'nginx']),'nginx_cert_script.sh',nginx_cert_script_content)	

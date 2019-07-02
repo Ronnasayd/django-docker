@@ -23,7 +23,7 @@
 # SOFTWARE.
 #
 
-# VERSION: 5.0.0-beta #
+# VERSION: 5.0.1-beta #
 
 DEBUG = False
 
@@ -114,6 +114,6 @@ NETWORK_NAME = "dd_net"
 
 FOLDER_TO_SAVE = "dd_auxfiles"
 
-SERVER_NAMES = ['0462de00.ngrok.io']
+SERVER_NAMES = ['8faebb1e.ngrok.io ']
 
 NUMBER_WEB_INSTANCES = 1

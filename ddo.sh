@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 5.0.0-beta #
+# VERSION: 5.0.1-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -190,6 +190,7 @@ elif [ "$1" = "--clear-all" -o "$1" = "-ca" ];then
   docker volume rm $(docker volume ls | grep web_root_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep certbot_etc_$PROJECT_NAME | awk '{print $2}')
   docker volume rm $(docker volume ls | grep certbot_var_$PROJECT_NAME | awk '{print $2}')
+  docker volume rm $(docker volume ls | grep app_$PROJECT_NAME | awk '{print $2}')
   echo "Enviroment cleaned"
 elif [ "$1" = "--clear-mig" -o "$1" = "-cmi" ];then
   rm -rf $(find . -name '__pycache__')
