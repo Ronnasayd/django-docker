@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 5.0.1-beta #
+# VERSION: 5.1.0-beta #
 
 PROJECT_RENAME=$(cat config.py | grep PROJECT_NAME | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/_/./g" | sed -e "s/ //g")
 FOLDER_TO_SAVE=$(cat config.py | grep FOLDER_TO_SAVE | awk '{split($0,a,"="); print a[2]}'| sed -e 's/"//g' | sed -e "s/'//g" | sed -e "s/ //g")
@@ -71,6 +71,7 @@ Options:
   --get-certs                |      -gtc     : Get certifies from https letsecnrypt
   --install                  |      -i       : Install python module
   --uninstall                |      -u       : Uninstall python module
+  --redirect-https           |      -rh      : Redirect trafic to https
 
 
 Examples:
@@ -107,6 +108,7 @@ Examples:
   $0 --get-certs
   $0 --install celery
   $0 --uninstall celery 
+  $0 --redirect-https
 
   "
 
@@ -146,6 +148,8 @@ elif [ "$1" = "--create-su" -o "$1" = "-csu" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py createsuperuser
 elif [ "$1" = "--get-certs" -o "$1" = "-gtc" ];then
   docker exec -ti nginx-$PROJECT_RENAME bash nginx_cert_script.sh
+elif [ "$1" = "--redirect-https" -o "$1" = "-rh" ];then
+  docker exec -ti nginx-$PROJECT_RENAME certbot --test-cert --nginx
 elif [ "$1" = "--migrate" -o "$1" = "-mi" ];then
   docker exec -ti web-$PROJECT_RENAME python manage.py makemigrations $2
   docker exec -ti web-$PROJECT_RENAME python manage.py migrate $2
