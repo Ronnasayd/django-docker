@@ -23,7 +23,7 @@
 # SOFTWARE.
 #
 
-# VERSION: 5.1.0-beta #
+# VERSION: 5.1.1-beta #
 
 DEBUG = False
 

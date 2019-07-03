@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# VERSION: 5.1.0-beta #
+# VERSION: 5.1.1-beta #
 
 import os
 import config
@@ -77,10 +77,10 @@ if __name__ == '__main__':
 		'pip install --upgrade pip',
 		'pip install -r requirements.txt',
 	]+config.WEB_COMMANDS_BUILD)
-	# .add(
-	# 	local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
-	# 	container_path=functional.path_join([config.PROJECT_NAME])
-	# )
+	.add(
+		local_path=functional.path_join([constants.ROOT_DIRECTORY, config.PROJECT_NAME]),
+		container_path=functional.path_join([config.PROJECT_NAME])
+	)
 	.workdir(work_directory=functional.path_join([config.PROJECT_NAME]))
 	.save(
 		path_to_save=functional.path_join([CURRENT_DIRECTORY, config.FOLDER_TO_SAVE]),
