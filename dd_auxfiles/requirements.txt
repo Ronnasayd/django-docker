@@ -1,5 +1,5 @@
 
-django==2.2.3
+django==2.2.18
 gunicorn
 python-decouple
 psycopg2-binary
