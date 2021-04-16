@@ -1,6 +1,6 @@
 Django==2.2.3
 django-autofixture==0.12.1
-django-debug-toolbar==1.11
+django-debug-toolbar==1.11.1
 gunicorn==19.9.0
 Pillow==6.0.0
 pip-autoremove==0.9.1
