@@ -2,9 +2,10 @@ Django==2.2.3
 django-autofixture==0.12.1
 django-debug-toolbar==1.11
 gunicorn==19.9.0
-Pillow==6.0.0
+Pillow==9.2.0
 pip-autoremove==0.9.1
 psycopg2-binary==2.8.2
 python-decouple==3.1
 pytz==2019.1
 sqlparse==0.3.0
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
