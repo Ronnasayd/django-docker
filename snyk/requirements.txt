@@ -2,7 +2,7 @@ Django==2.2.3
 django-autofixture==0.12.1
 django-debug-toolbar==1.11
 gunicorn==19.9.0
-Pillow==6.0.0
+Pillow==10.2.0
 pip-autoremove==0.9.1
 psycopg2-binary==2.8.2
 python-decouple==3.1
